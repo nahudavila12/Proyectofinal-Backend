@@ -22,7 +22,7 @@ export class OrderDetailAdditionalService{
     @OneToMany(() => AdditionalService, (additionalsServices) => additionalsServices.orderDetailAdditionalService)
     additionalService: AdditionalService;
 
-    @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.additionalSrviceOrderDetail)
+    @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.orderDetailAdditionalService)
     @JoinColumn()
-    order_detail: OrderDetail;
+    orderdetail: OrderDetail;
 }
