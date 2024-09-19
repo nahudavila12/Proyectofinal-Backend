@@ -8,7 +8,7 @@ import{
 }from 'typeorm';
 
 import { Payment } from './payment.entity';
-import { AdditionalServiceOrderDetail } from './orderDetailAdditionalService.entity';
+import { OrderDetailAdditionalService } from './orderDetailAdditionalService';
 import { User } from './user.entity';
 import { Reservation } from './reservation.entity';
 
@@ -35,12 +35,12 @@ export class OrderDetail{
     payment: Payment;
 
     @OneToOne(
-        () => AdditionalServiceOrderDetail, 
-        (additionalServiceOrderDetail) => additionalServiceOrderDetail.order_detail,
+        () => OrderDetailAdditionalService, 
+        (orderDetailAdditionalService) => orderDetailAdditionalService.orderdetail,
         { nullable: true }
     )
     @JoinColumn()
-    additionalSrviceOrderDetail?: AdditionalServiceOrderDetail;
+    orderDetailAdditionalService?: OrderDetailAdditionalService;
 
     @ManyToOne(() => User, (user) => user.orderDetail)
     @JoinColumn()
