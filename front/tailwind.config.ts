@@ -9,8 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        "first-color" : "#FFF5EB",
+        "second-color": "#4D8DA1",
+        "third-color" : "#92D6BB",
+         
+      },
+      backgroundImage: {
+        "custom-gradient": "linear-gradient(to right, #23516B 60%, #49918F 30%, #5F6E9E 10%)",
+      },
+      fontFamily: {
+        playfair: ['"Playfair Display"', 'serif'],
       },
     },
   },
