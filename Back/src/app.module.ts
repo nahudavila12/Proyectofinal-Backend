@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+import { CloudinaryConfig } from './config/cloudinary';
+import { CloudinaryService } from './commons/cloudinary.service';
+=======
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import typeOrmConfig from './config/typeorm.config';
+
 
 @Module({
   imports: [
@@ -17,7 +22,7 @@ import typeOrmConfig from './config/typeorm.config';
     useFactory: (configService: ConfigService) => configService.get('typeOrm') 
 })],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CloudinaryConfig, CloudinaryService],
 })
 
 export class AppModule {}
