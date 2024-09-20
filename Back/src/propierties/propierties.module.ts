@@ -1,8 +1,8 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import {  Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Property } from 'src/Entities/property.entity';
+import { Property } from '../propierties/property.entity';
 import { PropiertiesRepository } from './propierties.repository';
 import { PropertyService } from './propierties.service';
 import { PropertyController } from './propierties.controller';

@@ -7,7 +7,7 @@ import {
     OneToOne
 }from 'typeorm';
 
-import { AdditionalService } from './additionalService.entity';
+import { AdditionalService } from '../Entities/additionalService.entity';
 import { OrderDetail } from './OrderDetail.entity';
 
 @Entity('Additionals_Services_Order_Detail')
