@@ -45,4 +45,15 @@ export class AuthService {
 
   }
 
+  async singUp (user:Partial<User>){
+    const { email,password } = user 
+
+    const foundUser = await this.usersService.findByEmail(email)
+
+    if (foundUser) throw new BadRequestException ('El email ya se encuentra registrado')
+
+    const hashedPassword= await bcrypt.hash(password, 10);
+
+    return await this.usersService.addUser({ ...user, password: hashedPassword });
+  }
 } 
