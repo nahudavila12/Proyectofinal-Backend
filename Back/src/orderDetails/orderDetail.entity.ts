@@ -7,10 +7,10 @@ import{
     JoinColumn
 }from 'typeorm';
 
-import { Payment } from './payment.entity';
-import { AdditionalServiceOrderDetail } from './orderDetailAdditionalService.entity';
-import { User } from './user.entity';
-import { Reservation } from './reservation.entity';
+import { Payment } from '../payments/payment.entity';
+import { OrderDetailAdditionalService } from '../orderDetails/orderDetailAdditionalService';
+import { User } from '../users/user.entity';
+import { Reservation } from '../reservations/reservation.entity';
 
 @Entity('Orders_details')
 export class OrderDetail{
@@ -35,12 +35,12 @@ export class OrderDetail{
     payment: Payment;
 
     @OneToOne(
-        () => AdditionalServiceOrderDetail, 
+        () => OrderDetailAdditionalService, 
         (additionalServiceOrderDetail) => additionalServiceOrderDetail.order_detail,
         { nullable: true }
     )
     @JoinColumn()
-    additionalSrviceOrderDetail?: AdditionalServiceOrderDetail;
+    additionalSrviceOrderDetail?: OrderDetailAdditionalService;
 
     @ManyToOne(() => User, (user) => user.orderDetail)
     @JoinColumn()
