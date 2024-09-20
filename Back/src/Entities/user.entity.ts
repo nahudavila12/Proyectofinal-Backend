@@ -42,7 +42,7 @@ address: string;
 @Column({ nullable: false })
 password: string;
 
-@Column({ type: 'enum', default: IRol.User})
+@Column({ type: 'enum', enum: IRol, default: IRol.User})
 rol: IRol
 
 @Column({ default: true })

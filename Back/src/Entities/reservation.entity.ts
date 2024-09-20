@@ -4,13 +4,12 @@ import{
     Entity,
     ManyToOne,
     OneToOne,
-    OneToMany,
     JoinColumn
 }   from 'typeorm';
 
-import { Room } from "./room.entity";
-import { OrderDetail } from "./orderDetail.entity";
-import { User } from './user.entity';
+import { Room } from "../rooms/room.entity";
+import { OrderDetail } from "../orderDetails/orderDetail.entity";
+import { User } from '../users/user.entity';
 
 enum IStateBooking {
     ACTIVE = 'active',

@@ -7,12 +7,18 @@ import{
     JoinColumn
 }from 'typeorm';
 
+<<<<<<< HEAD:Back/src/Entities/orderDetail.entity.ts
 import { Payment } from './payment.entity';
 import { OrderDetailAdditionalService } from './orderDetailAdditionalService';
 import { User } from './user.entity';
 import { Reservation } from './reservation.entity';
+=======
+import { Payment } from '../payments/payment.entity';
+import { User } from '../users/user.entity';
+import { Reservation } from '../reservations/reservation.entity';
+>>>>>>> 2a953aa (fixed merges y coneccion a la base de datos):Back/src/orderDetails/orderDetail.entity.ts
 
-@Entity('Orders_details')
+@Entity('OrdersDetails')
 export class OrderDetail{
 
     @PrimaryGeneratedColumn('uuid')
@@ -34,6 +40,7 @@ export class OrderDetail{
     @JoinColumn()
     payment: Payment;
 
+<<<<<<< HEAD:Back/src/Entities/orderDetail.entity.ts
     @OneToOne(
         () => OrderDetailAdditionalService, 
         (orderDetailAdditionalService) => orderDetailAdditionalService.orderdetail,
@@ -42,6 +49,8 @@ export class OrderDetail{
     @JoinColumn()
     orderDetailAdditionalService?: OrderDetailAdditionalService;
 
+=======
+>>>>>>> 2a953aa (fixed merges y coneccion a la base de datos):Back/src/orderDetails/orderDetail.entity.ts
     @ManyToOne(() => User, (user) => user.orderDetail)
     @JoinColumn()
     user: User;
@@ -49,4 +58,5 @@ export class OrderDetail{
     @OneToOne(() => Reservation, (reservation) => reservation.order_detail)
     @JoinColumn()
     reservation: Reservation;
+
 }
