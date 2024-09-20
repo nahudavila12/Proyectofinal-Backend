@@ -1,4 +1,4 @@
-/* import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDto } from '../dtos/LoginUser.dto';
 import { CreateUserDto } from '../dtos/CreateUser.dto';
@@ -24,4 +24,3 @@ export class AuthController {
     return this.authService.singUp(createUserDto);
   }
 }
- */
