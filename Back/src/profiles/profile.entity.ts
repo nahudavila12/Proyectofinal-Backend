@@ -4,9 +4,8 @@ import{
     Column,
     OneToOne,
     JoinColumn,
-    OneToMany
 }from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../users/user.entity';
 
 @Entity('profile')
 export class Profile{
