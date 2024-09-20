@@ -4,19 +4,19 @@ import{
     Column,
     OneToMany,
     ManyToOne,
-    JoinColumn
 }from 'typeorm';
-import { Reservation } from './reservation.entity';
-import { Property } from './property.entity';
+import { Reservation } from '../reservations/reservation.entity'
+import { Property } from '../propierties/property.entity';
 import { RoomImg } from './roomImg.entity';
+import { RoomService } from './roomService.entity';
 
 export enum ICategories {
     STANDARD = 'standard',
     DELUXE = 'deluxe',
-    SUITE = 'suite'
+    SUITE = 'suite',
 }
 
-enum IRoomState{
+export enum IRoomState{
     Avaiable = 'avaiable',
     Reserved = 'reserved',
     Occupied = 'occupied',
@@ -27,10 +27,10 @@ enum IRoomState{
 export class Room{
 
     @PrimaryGeneratedColumn('uuid')
-    uuid: number;
+    uuid: string;
 
     @Column()
-    room_number: number;
+    room_number: number; 
 
     @Column({type: 'enum', enum: ICategories })
     category: ICategories;
@@ -49,6 +49,9 @@ export class Room{
 
     @OneToMany(() => Reservation, (reservation) => reservation.room)
     reservation: Reservation[]
+    
+    @OneToMany(() => RoomService, (roomService) => roomService.room)
+    services: RoomService[];
 
     @ManyToOne(() => Property, (property) => property.room)
     property: Property
