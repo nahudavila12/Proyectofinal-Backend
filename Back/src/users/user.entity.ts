@@ -4,13 +4,12 @@ import {
     Column,
     OneToOne,
     OneToMany,
-    JoinColumn
 } from 'typeorm';
 
-import { Profile } from './profile.entity';
-import { OrderDetail } from './orderDetail.entity';
-import { Reservation } from './reservation.entity';
-import { Owner } from './owner.entity';
+import { Profile } from '../profiles/profile.entity';
+import { OrderDetail } from '../orderDetails/orderDetail.entity';
+import { Reservation } from '../reservations/reservation.entity';
+import { Owner } from '../owners/owner.entity';
 
 export enum IRol {
     User = 'user',

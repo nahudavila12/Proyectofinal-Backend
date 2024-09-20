@@ -1,11 +1,11 @@
-import {
+/* import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service'; 
-import { LoginUserDto } from 'src/dtos/LoginUser.dto'; //necesito los DTO
-import { Users } from 'src/users/entities/users.entity';//necesito las entitiess
+import { LoginUserDto } from 'src/dtos/LoginUser.dto';
+import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 
@@ -45,7 +45,7 @@ export class AuthService {
 
   }
 
-  async singUp (user:Partial<Users>){
+  async singUp (user:Partial<User>){
     const { email,password } = user 
 
     const foundUser = await this.usersService.findByEmail(email)
@@ -56,4 +56,4 @@ export class AuthService {
 
     return await this.usersService.addUser({ ...user, password: hashedPassword });
   }
-}
+} */

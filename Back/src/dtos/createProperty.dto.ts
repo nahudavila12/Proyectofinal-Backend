@@ -14,6 +14,7 @@ export class PropertyDto {
   @IsString()
   owner:User;
 
+
   @IsEnum(PropertyType)
   propertyType: PropertyType;
 
