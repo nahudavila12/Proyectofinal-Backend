@@ -7,8 +7,8 @@ import{
     OneToOne
 }from 'typeorm'
 
-import { User } from './user.entity';
-import { Property } from './property.entity';
+import { User } from '../users/user.entity';
+import { Property } from '../propierties/property.entity';
 
 
 @Entity('Owners')

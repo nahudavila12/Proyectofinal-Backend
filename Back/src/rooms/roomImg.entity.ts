@@ -1,22 +1,21 @@
-import{
+import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
     ManyToOne,
     JoinColumn,
-}from 'typeorm';
+} from 'typeorm';
 import { Room } from './room.entity';
 
-@Entity('RoomsImg')
-export class RoomImg{
-
+@Entity('RoomImages')
+export class RoomImg {
     @PrimaryGeneratedColumn('uuid')
     uuid: string;
 
     @Column()
-    img: string;
+    img: string; 
 
-    @ManyToOne(() => Room)
+    @ManyToOne(() => Room, (room) => room.img)
     @JoinColumn()
-    room: Room
+    room: Room; 
 }
