@@ -6,7 +6,7 @@ import {
     JoinColumn
 }from 'typeorm';
 
-import { OrderDetail } from './OrderDetail.entity';
+import { OrderDetail } from '../orderDetails/orderDetail.entity';
 
 enum IState {
     Pending = 'pending',

@@ -2,6 +2,7 @@
 import { IsArray, IsEnum, IsOptional, IsString } from "class-validator";
 import { RoomDto } from "./createRoom.dto";
 import { PropertyType } from "src/propierties/property.entity";
+import { User } from "src/users/user.entity";
 
 export class PropertyDto {
   @IsString()
@@ -11,7 +12,8 @@ export class PropertyDto {
   location: string;
 
   @IsString()
-  owner:{owner:string};
+  owner:User;
+
 
   @IsEnum(PropertyType)
   propertyType: PropertyType;
