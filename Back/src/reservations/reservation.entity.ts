@@ -7,9 +7,9 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { Room } from './room.entity';
-import { OrderDetail } from './orderDetail.entity';
-import { User } from './user.entity';
+import { Room } from 'src/rooms/room.entity';
+import { OrderDetail } from 'src/orderDetails/orderDetail.entity';
+import { User } from 'src/users/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 enum IStateBooking {
