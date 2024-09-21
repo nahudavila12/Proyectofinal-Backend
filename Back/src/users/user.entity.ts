@@ -1,63 +1,101 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToOne,
-    OneToMany,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  OneToMany,
 } from 'typeorm';
-
 import { Profile } from '../profiles/profile.entity';
 import { OrderDetail } from '../orderDetails/orderDetail.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum IRol {
-    User = 'user',
-    Admin = 'admin',
-    Owner = 'owner'
+  User = 'user',
+  Admin = 'admin',
+  Owner = 'owner',
 }
 
 @Entity('users')
-export class User{
+export class User {
+  @ApiProperty({
+    example: 'e5bdda8e-3da4-4a5f-b9ea-6239c73222f4',
+    description: 'UUID del usuario',
+  })
+  @PrimaryGeneratedColumn('uuid')
+  uuid: string;
 
-@PrimaryGeneratedColumn('uuid')
-uuid: string;
+  @ApiProperty({ example: 'John Doe', description: 'Nombre del usuario' })
+  @Column({ nullable: false })
+  name: string;
 
-@Column({ nullable: false })
-name: string;
+  @ApiProperty({
+    example: 'john.doe@example.com',
+    description: 'Email del usuario',
+    uniqueItems: true,
+  })
+  @Column({ nullable: false, unique: true })
+  email: string;
 
-@Column({ nullable: false, unique: true })
-email: string;
+  @ApiProperty({
+    example: '1990-01-01',
+    description: 'Fecha de nacimiento del usuario',
+    type: 'string',
+    format: 'date',
+  })
+  @Column({ type: 'date' })
+  birthday: Date;
 
-@Column({ type: 'date' })
-birthday: Date;
+  @ApiProperty({ example: '+1234567890', description: 'Teléfono del usuario' })
+  @Column({ nullable: false })
+  phone: string;
 
-@Column({ nullable: false })
-phone: string;
+  @ApiProperty({ example: '123 Main St', description: 'Dirección del usuario' })
+  @Column({ nullable: false })
+  address: string;
 
-@Column({ nullable: false})
-address: string;
+  @ApiProperty({
+    example: 'password123',
+    description: 'Contraseña del usuario',
+  })
+  @Column({ nullable: false })
+  password: string;
 
-@Column({ nullable: false })
-password: string;
+  @ApiProperty({
+    enum: IRol,
+    default: IRol.User,
+    description: 'Rol del usuario',
+  })
+  @Column({ type: 'enum', default: IRol.User })
+  rol: IRol;
 
-@Column({ type: 'enum', default: IRol.User})
-rol: IRol
+  @ApiProperty({ example: true, description: 'Si el usuario está activo' })
+  @Column({ default: true })
+  isActive: boolean;
 
-@Column({ default: true })
-isActive: boolean;
+  @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
 
-@OneToOne(() => Profile, (profile) => profile.user )
-profile: Profile
+  @ApiProperty({
+    type: () => Owner,
+    description: 'Propietario relacionado al usuario',
+  })
+  @OneToOne(() => Owner, (owner) => owner.user)
+  owner: Owner;
 
-@OneToOne(() => Owner, (owner) => owner.user)
-owner: Owner
+  @ApiProperty({
+    type: () => [OrderDetail],
+    description: 'Detalles de órdenes del usuario',
+  })
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
+  orderDetail: OrderDetail[];
 
-@OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
-orderDetail: OrderDetail[]
-
-@OneToMany(() => Reservation, (reservation) => reservation.user)
-reservation: Reservation[]
-
-
+  @ApiProperty({
+    type: () => [Reservation],
+    description: 'Reservas del usuario',
+  })
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  reservation: Reservation[];
 }
