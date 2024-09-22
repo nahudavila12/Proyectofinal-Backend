@@ -27,9 +27,6 @@ export class RoomDto {
   @IsString({ each: true }) 
   roomImages?: string[];
   
-  @IsString()
-  property?: string;
-
   @IsOptional()
   @IsArray()
   @IsString({ each: true }) 
