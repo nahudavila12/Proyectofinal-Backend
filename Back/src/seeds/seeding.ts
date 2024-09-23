@@ -1,5 +1,5 @@
 import { Connection } from 'typeorm';
-import { User, Admin, IRol } from '../users/user.entity';
+import { User, IRol } from '../users/user.entity';
 import { Owner } from '../owners/owner.entity';
 import { Property, PropertyType } from '../propierties/property.entity';
 import { ICategories, Room } from '../rooms/room.entity';
@@ -19,7 +19,7 @@ export async function seedDatabase(connection: Connection) {
   user1.password = 'password123';
   user1.rol = IRol.User;
 
-  const user2 = new Admin();
+  const user2 = new User();
   user2.name = 'Jane Smith';
   user2.email = 'jane@example.com';
   user2.birthday = new Date('1985-05-05');
@@ -93,5 +93,3 @@ export async function seedDatabase(connection: Connection) {
 
   console.log('SEEDING SUCCESSFULL');
 }
-
-///comentario

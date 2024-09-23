@@ -71,4 +71,7 @@ export class Property {
   })
   @ManyToOne(() => Owner, (owner) => owner.property)
   owner: Owner;
+
+  @OneToMany(() => Room, (room) => room.property)
+  room: Room;
 }
