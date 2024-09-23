@@ -15,4 +15,3 @@ export class SeedCommand extends CommandRunner {
   }
 }
 
-//commentario

@@ -1,86 +1,52 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToOne,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import{
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToOne,
+    ManyToOne,
+    JoinColumn
+}from 'typeorm';
+
 import { Payment } from '../payments/payment.entity';
 import { OrderDetailAdditionalService } from '../orderDetails/orderDetailAdditionalService';
 import { User } from '../users/user.entity';
 import { Reservation } from '../reservations/reservation.entity';
-import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('Orders_details')
-export class OrderDetail {
-  @ApiProperty({
-    example: 'e5bdda8e-3da4-4a5f-b9ea-6239c73222f4',
-    description: 'UUID del detalle del pedido',
-  })
-  @PrimaryGeneratedColumn('uuid')
-  uuid: string;
+export class OrderDetail{
 
-  @ApiProperty({
-    example: '2024-09-20T15:00:00Z',
-    description: 'Fecha de la orden',
-  })
-  @Column()
-  date: Date;
+    @PrimaryGeneratedColumn('uuid')
+    uuid: string;
 
-  @ApiProperty({
-    example: 150.0,
-    description: 'Total del costo de la habitación',
-  })
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  room_total: number;
+    @Column()
+    date: Date;
+    
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
+    room_total: number;
 
-  @ApiProperty({
-    example: 50.0,
-    description: 'Total de los servicios adicionales (opcional)',
-    nullable: true,
-  })
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  additionals_services_total: number;
+    @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+    additionals_services_total: number;
 
-  @ApiProperty({ example: 200.0, description: 'Total del pedido' })
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  total: number;
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
+    total: number;
 
-  @ApiProperty({
-    type: () => Payment,
-    description: 'Pago asociado al detalle del pedido',
-  })
-  @OneToOne(() => Payment, (payment) => payment.orderDetail)
-  @JoinColumn()
-  payment: Payment;
+    @OneToOne(() => Payment, (payment) => payment.orderDetail)
+    @JoinColumn()
+    payment: Payment;
 
-  @ApiProperty({
-    type: () => OrderDetailAdditionalService,
-    description: 'Detalles de los servicios adicionales de la orden (opcional)',
-    nullable: true,
-  })
-  @OneToOne(
-    () => OrderDetailAdditionalService,
-    (additionalServiceOrderDetail) => additionalServiceOrderDetail.order_detail,
-    { nullable: true },
-  )
-  @JoinColumn()
-  additionalSrviceOrderDetail?: OrderDetailAdditionalService;
+    @OneToOne(
+        () => OrderDetailAdditionalService, 
+        (additionalServiceOrderDetail) => additionalServiceOrderDetail.order_detail,
+        { nullable: true }
+    )
+    @JoinColumn()
+    additionalSrviceOrderDetail?: OrderDetailAdditionalService;
 
-  @ApiProperty({
-    type: () => User,
-    description: 'Usuario asociado con el detalle del pedido',
-  })
-  @ManyToOne(() => User, (user) => user.orderDetail)
-  @JoinColumn()
-  user: User;
+    @ManyToOne(() => User, (user) => user.orderDetail)
+    @JoinColumn()
+    user: User;
 
-  @ApiProperty({
-    type: () => Reservation,
-    description: 'Reservación asociada con el detalle del pedido',
-  })
-  @OneToOne(() => Reservation, (reservation) => reservation.order_detail)
-  @JoinColumn()
-  reservation: Reservation;
+    @OneToOne(() => Reservation, (reservation) => reservation.order_detail)
+    @JoinColumn()
+    reservation: Reservation;
 }

@@ -209,4 +209,3 @@ async findPropertiesByFilters(filters: PropertyFilters): Promise<Property[]> {
   return await queryBuilder.getMany();
 }
 }
-s
