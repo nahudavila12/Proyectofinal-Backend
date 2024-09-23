@@ -1,30 +1,24 @@
-import {
-    Entity,
-    PrimaryColumn,
-    Column,
-    ManyToOne,
-    JoinColumn
-} from 'typeorm'; 
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 
-import { OrderDetailAdditionalService } from './orderDetailAdditionalService';
+import { OrderDetailAdditionalService } from 'src/orderDetails/orderDetailAdditionalService';
 
 @Entity('Additionals_Services')
 export class AdditionalService {
+  @PrimaryColumn()
+  id: number;
 
-    @PrimaryColumn()
-    id: number;
+  @Column()
+  description: string;
 
-    @Column()
-    description: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price_per_person: number;
 
-    @Column({ type: 'decimal', precision: 10, scale: 2 })
-    price_per_person: number;
-
-    @ManyToOne(
-        () => OrderDetailAdditionalService, 
-        (OrderDetailAdditionalService) => OrderDetailAdditionalService.additionalService
-    )
-    @JoinColumn()
-    OrderDetailAdditionalService: OrderDetailAdditionalService; 
-    orderDetailAdditionalService: any;
+  @ManyToOne(
+    () => OrderDetailAdditionalService,
+    (OrderDetailAdditionalService) =>
+      OrderDetailAdditionalService.additionalService,
+  )
+  @JoinColumn()
+  OrderDetailAdditionalService: OrderDetailAdditionalService;
+  orderDetailAdditionalService: any;
 }
