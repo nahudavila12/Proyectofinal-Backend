@@ -1,0 +1,191 @@
+[
+    {
+        "name": "Hotel Paraíso",
+        "location": "Playa del Carmen",
+        "owner": { "uuid": "owner-uuid-1" }, 
+        "propertyType": "HOTEL",
+        "propertyImages": ["hotel1.jpg", "hotel2.jpg"],
+        "rooms": [
+            {
+                "room_number": 101,
+                "capacity": 2,
+                "price_per_day": 150,
+                "disponibility": "avaiable",
+                "roomImages": ["room1.jpg", "room2.jpg"],
+                "services": ["WiFi", "Desayuno"],
+                "category": "STANDARD"
+            },
+            {
+                "room_number": 102,
+                "capacity": 4,
+                "price_per_day": 200,
+                "disponibility": "avaiable",
+                "roomImages": ["room3.jpg"],
+                "services": ["WiFi", "Estacionamiento"],
+                "category": "STANDARD"
+            }
+        ]
+    },
+    {
+        "name": "Cabaña en la Montaña",
+        "location": "San Martín de los Andes",
+        "owner": { "uuid": "owner-uuid-2" },
+        "propertyType": "CABANA",
+        "propertyImages": ["cabaña1.jpg"],
+        "rooms": [
+            {
+                "room_number": 1,
+                "capacity": 3,
+                "price_per_day": 100,
+                "disponibility": "avaiable",
+                "roomImages": ["room4.jpg"],
+                "services": ["WiFi", "Chimenea"],
+                "category": "STANDARD"
+            }
+        ]
+    },
+    {
+        "name": "Departamento Centro",
+        "location": "Buenos Aires",
+        "owner": { "uuid": "owner-uuid-3" },
+        "propertyType": "DEPARTAMENTO",
+        "propertyImages": ["departamento1.jpg"],
+        "rooms": [
+            {
+                "room_number": 1,
+                "capacity": 2,
+                "price_per_day": 120,
+                "disponibility": "avaiable",
+                "roomImages": ["room5.jpg"],
+                "services": ["WiFi"],
+                "category": "STANDARD"
+            }
+        ]
+    },
+    {
+        "name": "Hotel Playa",
+        "location": "Cancún",
+        "owner": { "uuid": "owner-uuid-4" },
+        "propertyType": "HOTEL",
+        "propertyImages": ["hotel3.jpg"],
+        "rooms": [
+            {
+                "room_number": 201,
+                "capacity": 2,
+                "price_per_day": 180,
+                "disponibility": "reserved",
+                "roomImages": ["room6.jpg"],
+                "services": ["WiFi", "Desayuno"],
+                "category": "DELUXE"
+            }
+        ]
+    },
+    {
+        "name": "Cabaña del Bosque",
+        "location": "Bariloche",
+        "owner": { "uuid": "owner-uuid-5" },
+        "propertyType": "CABANA",
+        "propertyImages": ["cabaña2.jpg"],
+        "rooms": [
+            {
+                "room_number": 1,
+                "capacity": 4,
+                "price_per_day": 150,
+                "disponibility": "avaiable",
+                "roomImages": ["room7.jpg"],
+                "services": ["WiFi", "Chimenea", "Desayuno"],
+                "category": "STANDARD"
+            }
+        ]
+    },
+    {
+        "name": "Departamento Moderno",
+        "location": "Santiago",
+        "owner": { "uuid": "owner-uuid-6" },
+        "propertyType": "DEPARTAMENTO",
+        "propertyImages": ["departamento2.jpg"],
+        "rooms": [
+            {
+                "room_number": 1,
+                "capacity": 2,
+                "price_per_day": 130,
+                "disponibility": "avaiable",
+                "roomImages": ["room8.jpg"],
+                "services": ["WiFi", "Estacionamiento"],
+                "category": "STANDARD"
+            }
+        ]
+    },
+    {
+        "name": "Hotel del Lago",
+        "location": "Villa la Angostura",
+        "owner": { "uuid": "owner-uuid-7" },
+        "propertyType": "HOTEL",
+        "propertyImages": ["hotel4.jpg"],
+        "rooms": [
+            {
+                "room_number": 301,
+                "capacity": 2,
+                "price_per_day": 250,
+                "disponibility": "avaiable",
+                "roomImages": ["room9.jpg"],
+                "services": ["WiFi", "Spa"],
+                "category": "SUITE"
+            }
+        ]
+    },
+    {
+        "name": "Cabaña Río",
+        "location": "El Bolsón",
+        "owner": { "uuid": "owner-uuid-8" },
+        "propertyType": "CABANA",
+        "propertyImages": ["cabaña3.jpg"],
+        "rooms": [
+            {
+                "room_number": 1,
+                "capacity": 5,
+                "price_per_day": 200,
+                "disponibility": "avaiable",
+                "roomImages": ["room10.jpg"],
+                "services": ["WiFi"],
+                "category": "STANDARD"
+            }
+        ]
+    },
+    {
+        "name": "Departamento en la Playa",
+        "location": "Mendoza",
+        "owner": { "uuid": "owner-uuid-9" },
+        "propertyType": "DEPARTAMENTO",
+        "propertyImages": ["departamento3.jpg"],
+        "rooms": [
+            {
+                "room_number": 1,
+                "capacity": 3,
+                "price_per_day": 140,
+                "disponibility": "reserved",
+                "roomImages": ["room11.jpg"],
+                "services": ["WiFi", "Estacionamiento"],
+                "category": "STANDARD"
+            }
+        ]
+    },
+    {
+        "name": "Hotel Boutique",
+        "location": "Salta",
+        "owner": { "uuid": "owner-uuid-10" },
+        "propertyType": "HOTEL",
+        "propertyImages": ["hotel5.jpg"],
+        "rooms": [
+            {
+                "room_number": 401,
+                "capacity": 2,
+                "price_per_day": 220,
+                "disponibility": "avaiable",
+                "roomImages": ["room12.jpg"],
+                "services": ["WiFi", "Desayuno", "Spa"],
+                "category": "STANDARD"
+            }
+        ]
+    }
+]
