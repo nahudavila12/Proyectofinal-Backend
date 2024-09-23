@@ -1,6 +1,7 @@
 "use client";
 
-import SearchBar from '@/components/SearchBar';
+
+// import { SearchBar } from '@/components/SearchBar';
 import Image from 'next/image'
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
@@ -50,7 +51,7 @@ export default function LandingPage() {
              Tu estadía, al instante.
             </span>
             <div className='mt-4'>
-            <SearchBar />
+            {/* <SearchBar /> */}
             </div>
             </div>
         </div>
@@ -158,7 +159,7 @@ export default function LandingPage() {
               &quot;Encuentra tu alojamiento perfecto al mejor precio.&quot;
             </span>
             </div>
-            <Link href="/products">
+            <Link href="/home">
             <button className="text-white bg-second-color hover:bg-third-color focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
               Reserva ahora!
             </button>

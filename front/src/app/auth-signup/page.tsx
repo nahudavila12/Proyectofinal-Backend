@@ -20,15 +20,9 @@ export default function AuthSignUp() {
         <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-first-color">
             <div>
             <h1 className="self-center text-6xl playfair-display-bold">
-              BlueOcean
+              InstaStay
             </h1>
-            <span className="text-2xl text-white text-left w-full playfair-display-regular">
-               All Inclusive Adult Resort
-            </span>
-            </div>
-          <p className="text-lg p-10 font-semibold max-w-3xl mx-auto">
-            &quot;Vive una experiencia única en nuestro hotel&quot;
-          </p>
+            </div>    
         </div>
       </div>
        <div className='flex-1 p-8'>
