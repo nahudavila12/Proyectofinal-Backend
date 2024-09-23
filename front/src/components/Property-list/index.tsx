@@ -105,3 +105,80 @@ export function PropertyList({
     </div>
   );
 }
+
+
+// import { useEffect, useState } from 'react';
+// import { Property } from '../PropertyForm';
+// import { PropertyFilters } from "@/app/home/page";
+
+// interface PropertyListProps {
+//   properties: Property[];
+//   filters: PropertyFilters;
+//   currentPage: number;
+//   totalPages: number;
+//   setCurrentPage: (page: number) => void;
+// }
+
+// export function PropertyList({
+//   filters,
+//   properties: externalProperties,
+//   currentPage,
+//   totalPages,
+//   setCurrentPage,
+// }: PropertyListProps) {
+//   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
+
+//   useEffect(() => {
+//     const storedProperties = JSON.parse(localStorage.getItem('properties') || '[]');
+//     const combinedProperties = [...storedProperties, ...externalProperties];
+
+//     const filtered = combinedProperties.filter((property) => {
+//       const matchesFilters = (
+//         (!filters.location || property.location.toLowerCase().includes(filters.location.toLowerCase())) &&
+//          (!filters.type || property.type === filters.type) // &&
+//         // (!filters.minPrice || property.rooms.some(room => room.price_per_day >= filters.minPrice!)) &&
+//         // (!filters.maxPrice || property.rooms.some(room => room.price_per_day <= filters.maxPrice!))
+//       );
+//       return matchesFilters;
+//     });
+
+//     setFilteredProperties(filtered);
+//   }, [externalProperties, filters]);
+
+//   // Paginación
+//   const itemsPerPage = 3;
+//   const paginatedProperties = filteredProperties.slice(
+//     (currentPage - 1) * itemsPerPage,
+//     currentPage * itemsPerPage
+//   );
+
+//   return (
+//     <div className="container mx-auto px-4 py-8">
+//       <h1 className="text-3xl font-bold mb-6">Lista de Alojamientos</h1>
+//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+//         {paginatedProperties.map((property) => (
+//           <div key={property.id} className="bg-white shadow-md rounded-lg overflow-hidden">
+//             {/* Aquí va tu código para mostrar la propiedad */}
+//           </div>
+//         ))}
+//       </div>
+//       {/* Paginación */}
+//       <div className="flex justify-center mt-8 space-x-2">
+//         <button
+//           onClick={() => setCurrentPage(currentPage - 1)}
+//           disabled={currentPage === 1}
+//           className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50"
+//         >
+//           Anterior
+//         </button>
+//         <button
+//           onClick={() => setCurrentPage(currentPage + 1)}
+//           disabled={currentPage === totalPages}
+//           className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50"
+//         >
+//           Siguiente
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }

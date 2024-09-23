@@ -40,21 +40,20 @@ export interface PropertyFilters {
 
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('')
   const [filters, setFilters] = useState<PropertyFilters>({})
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 3
 
   const filteredProperties = mockData.filter((property) => {
-    const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          property.location.toLowerCase().includes(searchTerm.toLowerCase())
+    // const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //                       property.location.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesFilters = (
       (!filters.location || property.location.toLowerCase().includes(filters.location.toLowerCase())) &&
       (!filters.type || property.type === filters.type) &&
       (!filters.minPrice || property.rooms.some(room => room.price_per_day >= filters.minPrice!)) &&
       (!filters.maxPrice || property.rooms.some(room => room.price_per_day <= filters.maxPrice!))
     )
-    return matchesSearch && matchesFilters
+    return  matchesFilters
   })
 
   const totalPages = Math.ceil(filteredProperties.length / itemsPerPage)
@@ -66,7 +65,7 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Reserva de Alojamientos</h1>
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <SearchBar filters={filters} setFilters={setFilters} />
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-8">
         <div className="md:col-span-1">
           <PropertyFilters filters={filters} setFilters={setFilters} />

@@ -96,3 +96,38 @@ export const validateSigninField = (name: string, value: string) => {
 
     return error;
 };
+
+interface SearchParams {
+    location: string;
+    checkInDate: string;
+    checkOutDate: string;
+    numberOfGuests: number;
+  }
+  
+  export const validateSearchBar = (params: SearchParams) => {
+    const errors: string[] = [];
+    const today = new Date();
+    const checkIn = new Date(params.checkInDate);
+    const checkOut = new Date(params.checkOutDate);
+  
+    // Validar la ubicación
+    if (!params.location || params.location.trim().length === 0) {
+      errors.push("Please enter a valid location.");
+    }
+  
+    // Validar fechas
+    if (isNaN(checkIn.getTime()) || checkIn < today) {
+      errors.push("Check-in date must be later than today's date.");
+    }
+  
+    if (isNaN(checkOut.getTime()) || checkOut <= checkIn) {
+      errors.push("Check-out date must be after the check-in date.");
+    }
+  
+    // Validar número de personas
+    if (params.numberOfGuests < 1 || params.numberOfGuests > 50) {
+      errors.push("Number of guests must be between 1 and 50.");
+    }
+  
+    return errors;
+  };
