@@ -8,7 +8,7 @@ import {
 import { OrderDetail } from '../orderDetails/orderDetail.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-enum IState {
+export enum IState {
   Pending = 'pending',
   Successful = 'successful',
   Refused = 'refused',
