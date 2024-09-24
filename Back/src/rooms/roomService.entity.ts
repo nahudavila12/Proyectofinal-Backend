@@ -1,4 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, 
+    Entity, 
+    ManyToOne, 
+    PrimaryGeneratedColumn } 
+    from "typeorm";
 import { Room } from "./room.entity";
 
 
@@ -10,6 +14,6 @@ export class RoomService {
     @Column()
     serviceName: string;
 
-    @ManyToOne(() => Room, (room) => room.services)
+    @ManyToOne(() => Room, (room) => room.roomServices)
     room: Room;
 }

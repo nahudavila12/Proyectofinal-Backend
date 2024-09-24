@@ -67,7 +67,7 @@ export class User {
     default: IRol.User,
     description: 'Rol del usuario',
   })
-  @Column({ type: 'enum', default: IRol.User })
+  @Column({ type: 'enum', enum: IRol, default: IRol.User })
   rol: IRol;
 
   @ApiProperty({ example: true, description: 'Si el usuario está activo' })
