@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Payment } from '../payments/payment.entity';
-import { OrderDetailAdditionalService } from '../orderDetails/orderDetailAdditionalService';
+import { OrderDetailAdditionalService } from '../additionalsServices/orderDetailAdditionalService.entity';
 import { User } from '../users/user.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -26,7 +26,7 @@ export class OrderDetail {
     description: 'Fecha de la orden',
   })
   @Column()
-  date: Date;
+  date: Date; 
 
   @ApiProperty({
     example: 150.0,
@@ -62,11 +62,11 @@ export class OrderDetail {
   })
   @OneToOne(
     () => OrderDetailAdditionalService,
-    (additionalServiceOrderDetail) => additionalServiceOrderDetail.order_detail,
-    { nullable: true },
+    (additionalServiceOrderDetail) => additionalServiceOrderDetail.orderDetail,
+    { nullable: true},
   )
   @JoinColumn()
-  additionalSrviceOrderDetail?: OrderDetailAdditionalService;
+  additionalServiceOrderDetail?: OrderDetailAdditionalService; 
 
   @ApiProperty({
     type: () => User,
@@ -84,3 +84,4 @@ export class OrderDetail {
   @JoinColumn()
   reservation: Reservation;
 }
+
