@@ -6,13 +6,13 @@ import { NavbarContext } from '@/context/navbar';
 import { UserContext } from '@/context/user';
 import Image from 'next/image';
 import Link from 'next/link'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect} from 'react'
 import { useState } from 'react';
 
 export default function NavbarComponent() {
   const { isDropdownOpen, toggleDropdown, closeDropdown } = useContext(NavbarContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const { isLogged, logOut } = useContext(UserContext);
   
   
@@ -23,11 +23,28 @@ export default function NavbarComponent() {
       closeDropdown();
   }
 
-  
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const { clientY } = event;
+
+      // Show the navbar if mouse is within 100px of the top
+      if (clientY < 300) {
+        setIsNavbarVisible(true);
+      } else {
+        setIsNavbarVisible(false);
+      }
+    };
+
+    // Add mouse move event listener
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Clean up event listener on unmount
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
  
   
   return (
-    <nav className={`relative top-0 left-0 w-full bg-second-color/90 transition-transform duration-300 ease-in-out z-50`}>
+    <nav className={`fixed top-0 left-0 w-full bg-second-color/90 transition-transform duration-300 ease-in-out ${isNavbarVisible ? 'translate-y-0' : '-translate-y-full'} z-50`}>
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <div>
           <Link href="/" className="flex flex-col items-center space-y-2 rtl:space-y-reverse playfair-display-regular" onClick={closeDropdown}>
@@ -72,7 +89,7 @@ export default function NavbarComponent() {
           <ul className="flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-whit">
             <li>
               <Link
-                href="/home"
+                href="/"
                 className="nav-link block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-third-color"
                 aria-current="page"
                 onClick={closeDropdown}
@@ -82,7 +99,7 @@ export default function NavbarComponent() {
             </li>
             <li>
               <Link
-                href="/property-own-list"
+                href="/rental-lists"
                 className="nav-link block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-third-color"
                 aria-current="page"
                 onClick={closeDropdown}
@@ -92,7 +109,7 @@ export default function NavbarComponent() {
             </li>
             <li>
               <Link
-                href="/property-form"
+                href="/form-rent"
                 className="nav-link block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-third-color"
                 aria-current="page"
                 onClick={closeDropdown}
