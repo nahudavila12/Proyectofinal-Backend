@@ -8,14 +8,9 @@ import {
 import { Reservation } from '../reservations/reservation.entity';
 import { Property } from '../propierties/property.entity';
 import { RoomImg } from './roomImg.entity';
-import { RoomService } from './roomService.entity';
 import { ApiProperty } from '@nestjs/swagger';
-
-export enum ICategories {
-  STANDARD = 'standard',
-  DELUXE = 'deluxe',
-  SUITE = 'suite',
-}
+import { RoomCategory } from './roomCategory.entity';
+import { RoomService } from './roomService.entity'
 
 export enum IRoomState {
   Avaiable = 'avaiable',
@@ -38,13 +33,12 @@ export class Room {
   room_number: number;
 
   @ApiProperty({
-    enum: ICategories,
-    example: ICategories.STANDARD,
+    example: 'STANDARD',
     description: 'Categoría de la habitación',
   })
-  @Column({ type: 'enum', enum: ICategories })
-  category: ICategories;
-
+  @ManyToOne(() => RoomCategory, { nullable: true })
+  category: RoomCategory;
+    
   @ApiProperty({ example: 2, description: 'Capacidad de la habitación' })
   @Column()
   capacity: number;
@@ -76,16 +70,12 @@ export class Room {
   reservation: Reservation[];
 
   @ApiProperty({
-    type: () => [RoomService],
-    description: 'Servicios de la habitación',
-  })
-  @OneToMany(() => RoomService, (roomService) => roomService.room)
-  services: RoomService[];
-
-  @ApiProperty({
     type: () => Property,
     description: 'Propiedad a la que pertenece la habitación',
   })
   @ManyToOne(() => Property, (property) => property.room)
   property: Property;
+
+  @OneToMany(() => RoomService, (roomService) => roomService.room)
+  roomServices?: RoomService;
 }
