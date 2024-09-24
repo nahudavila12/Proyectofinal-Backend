@@ -1,6 +1,6 @@
 import { IsArray, IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
-import { ICategories, IRoomState } from "src/rooms/room.entity";
-
+import { IRoomState } from "src/rooms/room.entity";
+import { ICategories } from "../rooms/roomCategory.entity"
 
 export class RoomDto {
   @IsNumber()

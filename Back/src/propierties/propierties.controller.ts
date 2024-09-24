@@ -24,15 +24,15 @@ export class PropertyController{
 
 
 
-  @Post() 
-  async addProperty() {
-    const result = await this.propertyService.addProperty();
-    return {
-      statusCode: HttpStatus.CREATED,
-      message: result,
-    };
-  }
-d
+  // @Post() 
+  // async addProperty() {
+  //   const result = await this.propertyService.addProperty();
+  //   return {
+  //     statusCode: HttpStatus.CREATED,
+  //     message: result,
+  //   };
+  // }
+
 
   @Delete(':uuid') 
   async removeProperty(@Param('uuid') uuid: string) {
