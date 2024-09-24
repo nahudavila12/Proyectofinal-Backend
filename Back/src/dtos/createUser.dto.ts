@@ -75,7 +75,7 @@ export class CreateUserDto {
      */
     @IsNotEmpty({ message: 'El número de teléfono es requerido.' })
     @IsString({ message: 'El número de teléfono debe ser un número entero válido.' })
-    @Min(10, { message: 'El número de teléfono debe ser un número válido de 10 dígitos.' }) 
+    @Length(9,15, { message: 'El número de teléfono debe ser un número válido de 10 dígitos.' }) 
     phone: string;
 
 
