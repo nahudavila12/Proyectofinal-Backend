@@ -1,4 +1,3 @@
-
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Property } from "../propierties/property.entity";
