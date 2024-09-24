@@ -51,12 +51,15 @@ export class Property {
   })
   propertyType: PropertyType;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  rate: number;
+
   @ApiProperty({
     example: false,
     description: 'Si la propiedad está prohibida o no',
   })
   @Column({ default: false })
-  isBanned: boolean;
+  isActive: boolean;
 
   @ApiProperty({
     type: () => [PropertyImg],
@@ -70,5 +73,9 @@ export class Property {
     description: 'Propietario de la propiedad',
   })
   @ManyToOne(() => Owner, (owner) => owner.property)
+  @JoinColumn()
   owner: Owner;
+
+  @OneToMany(() => Room, room => room.property)
+    room: Room[];
 }

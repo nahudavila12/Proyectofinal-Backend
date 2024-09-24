@@ -7,10 +7,10 @@ import {
   OneToOne,
 } from 'typeorm';
 
-import { AdditionalService } from '../Entities/additionalService.entity';
-import { OrderDetail } from './orderDetail.entity';
+import { AdditionalService } from './additionalService.entity';
+import { OrderDetail } from '../orderDetails/orderDetail.entity';
 
-@Entity('Additionals_Services_Order_Detail')
+@Entity('AdditionalsServicesOrderDetail')
 export class OrderDetailAdditionalService {
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
@@ -22,12 +22,12 @@ export class OrderDetailAdditionalService {
     () => AdditionalService,
     (additionalsServices) => additionalsServices.orderDetailAdditionalService,
   )
-  additionalService: AdditionalService;
+  additionalService: AdditionalService[];
 
   @OneToOne(
     () => OrderDetail,
-    (orderDetail) => orderDetail.additionalSrviceOrderDetail,
+    (orderDetail) => orderDetail.additionalServiceOrderDetail,
   )
   @JoinColumn()
-  order_detail: OrderDetail;
+  orderDetail: OrderDetail;
 }

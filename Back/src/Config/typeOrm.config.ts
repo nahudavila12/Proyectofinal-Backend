@@ -3,7 +3,8 @@ import { config as dotenvConfig } from 'dotenv';
 import { registerAs } from '@nestjs/config';
 
 
-dotenvConfig({ path: '.env.development' });
+dotenvConfig();
+console.log(process.env.DB_PASSWORD);
 
 const config = {
   type: 'postgres',

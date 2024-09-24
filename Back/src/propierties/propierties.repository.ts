@@ -3,7 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Property } from "../propierties/property.entity";
 import * as propertyData from '../../data.json';
 import { Repository } from "typeorm";
-import { ICategories, IRoomState, Room } from "src/rooms/room.entity";
+import { IRoomState, Room } from "src/rooms/room.entity";
+import { ICategories } from "src/rooms/roomCategory.entity";
 import { PropertyImg } from "./propertyImg.entity";
 import { RoomImg } from "src/rooms/roomImg.entity";
 import { PropertyType } from "./property.entity";
@@ -42,95 +43,95 @@ export class PropiertiesRepository {
         return property;
     }
 
-    async addProperty() {
-        const data = propertyData;
+    // async addProperty() {
+    //     const data = propertyData;
 
-        for (const element of data) {
-            const propertyType = PropertyType[element.propertyType.toUpperCase()];
+    //     for (const element of data) {
+    //         const propertyType = PropertyType[element.propertyType.toUpperCase()];
 
-            if (!propertyType) {
-                console.error(`Tipo de propiedad no válido: ${element.propertyType}`);
-                continue;
-            }
+    //         if (!propertyType) {
+    //             console.error(`Tipo de propiedad no válido: ${element.propertyType}`);
+    //             continue;
+    //         }
 
-            const owner = await this.ownerRepository.findOne({
-                where: { uuid: element.owner.uuid },
-            });
+    //         const owner = await this.ownerRepository.findOne({
+    //             where: { uuid: element.owner.uuid },
+    //         });
 
-            if (!owner) {
-                console.error(`Propietario no encontrado: ${element.owner.uuid}`);
-                continue;
-            }
+    //         if (!owner) {
+    //             console.error(`Propietario no encontrado: ${element.owner.uuid}`);
+    //             continue;
+    //         }
 
-            const property = this.propertyRepository.create({
-                name: element.name,
-                location: element.location,
-                owner: owner,
-                propertyType: propertyType,
-            });
+    //         const property = this.propertyRepository.create({
+    //             name: element.name,
+    //             location: element.location,
+    //             owner: owner,
+    //             propertyType: propertyType,
+    //         });
 
-            const savedProperty = await this.propertyRepository.save(property);
-
-
-            if (Array.isArray(element.propertyImages) && element.propertyImages.length > 0) {
-                const propertyImages = element.propertyImages.map((img: string) => {
-                    return this.propertyImgRepository.create({
-                        img,
-                        property: savedProperty,
-                    });
-                });
-
-                await this.propertyImgRepository.save(propertyImages);
-            }
+    //         const savedProperty = await this.propertyRepository.save(property);
 
 
-            if (Array.isArray(element.rooms) && element.rooms.length > 0) {
-                for (const roomElement of element.rooms) {
+    //         if (Array.isArray(element.propertyImages) && element.propertyImages.length > 0) {
+    //             const propertyImages = element.propertyImages.map((img: string) => {
+    //                 return this.propertyImgRepository.create({
+    //                     img,
+    //                     property: savedProperty,
+    //                 });
+    //             });
 
-                    if (!roomElement.category || !Object.values(ICategories).includes(roomElement.category as ICategories)) {
-                      console.error(`Categoría no válida: ${roomElement.category}`);
-                      continue; 
-                  }
-
-
-                    const room = this.roomRepository.create({
-                        room_number: roomElement.room_number,
-                        category: roomElement.category as ICategories,
-                        capacity: roomElement.capacity,
-                        price_per_day: roomElement.price_per_day,
-                        disponibility: roomElement.disponibility as IRoomState,
-                        property: savedProperty,
-                    });
+    //             await this.propertyImgRepository.save(propertyImages);
+    //         }
 
 
-                    const savedRoom = await this.roomRepository.save(room);
+    //         if (Array.isArray(element.rooms) && element.rooms.length > 0) {
+    //             for (const roomElement of element.rooms) {
+
+    //                 if (!roomElement.category || !Object.values(ICategories).includes(roomElement.category as ICategories)) {
+    //                   console.error(`Categoría no válida: ${roomElement.category}`);
+    //                   continue; 
+    //               }
 
 
-                    if (Array.isArray(roomElement.roomImages) && roomElement.roomImages.length > 0) {
-                        const roomImages = roomElement.roomImages.map((roomImg: string) => {
-                            return this.roomImgRepository.create({
-                                img: roomImg,
-                                room: savedRoom,
-                            });
-                        });
-
-                        await this.roomImgRepository.save(roomImages);
-                    }
+    //                 const room = this.roomRepository.create({
+    //                     room_number: roomElement.room_number,
+    //                     category: roomElement.category as ICategories,
+    //                     capacity: roomElement.capacity,
+    //                     price_per_day: roomElement.price_per_day,
+    //                     disponibility: roomElement.disponibility as IRoomState,
+    //                     property: savedProperty,
+    //                 });
 
 
-                    if (propertyType !== PropertyType.HOTEL && Array.isArray(roomElement.services)) {
-                        const servicesToSave = roomElement.services.map(serviceName => ({
-                            serviceName,
-                            room: savedRoom,
-                        }));
-                        await this.roomServiceRepository.save(servicesToSave);
-                    }
-                }
-            }
-        }
+    //                 const savedRoom = await this.roomRepository.save(room);
 
-        return 'Propiedades agregadas exitosamente';
-    }
+
+    //                 if (Array.isArray(roomElement.roomImages) && roomElement.roomImages.length > 0) {
+    //                     const roomImages = roomElement.roomImages.map((roomImg: string) => {
+    //                         return this.roomImgRepository.create({
+    //                             img: roomImg,
+    //                             room: savedRoom,
+    //                         });
+    //                     });
+
+    //                     await this.roomImgRepository.save(roomImages);
+    //                 }
+
+
+    //                 if (propertyType !== PropertyType.HOTEL && Array.isArray(roomElement.services)) {
+    //                     const servicesToSave = roomElement.services.map(serviceName => ({
+    //                         serviceName,
+    //                         room: savedRoom,
+    //                     }));
+    //                     await this.roomServiceRepository.save(servicesToSave);
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return 'Propiedades agregadas exitosamente';
+    // }
 
     async removeProperty(uuid: string): Promise<string> {
       const property = await this.propertyRepository.findOne({ where: { uuid } });
@@ -167,7 +168,7 @@ export class PropiertiesRepository {
     }
 
 
-    property.isBanned = ban;
+    property.isActive = false;
     await this.propertyRepository.save(property);
 
     return `Propiedad ${ban ? 'baneada' : 'reactivada'} exitosamente: ${uuid}`;
@@ -209,4 +210,3 @@ async findPropertiesByFilters(filters: PropertyFilters): Promise<Property[]> {
   return await queryBuilder.getMany();
 }
 }
-s
