@@ -1,23 +1,22 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
-import { Bussines } from './property.entity';
+import { Property } from 'src/propierties/property.entity';
 
 @Entity('BussinesImg')
 export class BussinesImg {
+  @PrimaryGeneratedColumn('uuid')
+  uuid: string;
 
-    @PrimaryGeneratedColumn('uuid')
-    uuid: string;
+  @Column()
+  img: string;
 
-    @Column()
-    img: string; 
-
-    @ManyToOne(() => Bussines, (bussines) => bussines.img)
-    @JoinColumn()
-    hotel: Bussines;  
+  @ManyToOne(() => Property, (property) => property.img)
+  @JoinColumn()
+  hotel: Property;
 }

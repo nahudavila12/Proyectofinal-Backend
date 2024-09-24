@@ -18,15 +18,21 @@ export default function AuthSignIn() {
         <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-first-color">
             <div>
             <h1 className="self-center text-6xl playfair-display-bold">
-              InstaStay
+              BlueOcean
             </h1>
+            <span className="text-2xl text-white text-left w-full playfair-display-regular">
+               All Inclusive Adult Resort
+            </span>
             </div>
+          <p className="text-lg p-10 font-semibold max-w-3xl mx-auto">
+            &quot;Vive una experiencia única en nuestro hotel&quot;
+          </p>
         </div>
       </div>
     <div className='flex flex-col p-8 md:flex-row md:self-center 
                     min-w-full md:items-center md:justify-evenly'>
        <div className='flex-1 mt-8 md:mt-0'>
-          <h2 className='text-2xl font-bold text-center'>Iniciar sesión</h2>
+          <h2 className='text-2xl font-bold text-center'>Sign In</h2>
           <SigninForm />
        </div>
     </div>
