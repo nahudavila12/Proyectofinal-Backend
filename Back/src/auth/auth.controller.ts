@@ -1,9 +1,7 @@
-/* import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
-import { LoginUserDto } from '../dtos/LoginUser.dto';
 import { CreateUserDto } from '../dtos/CreateUser.dto';
 import { LoginUserDto } from '../dtos/LoginUser.dto';
-import { CreateUserDto } from '../dtos/CreateUser.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('auth')
@@ -24,4 +22,3 @@ export class AuthController {
     return this.authService.singUp(createUserDto);
   }
 }
- */

@@ -1,4 +1,4 @@
-/* import {
+import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
@@ -56,4 +56,4 @@ export class AuthService {
 
     return await this.usersService.addUser({ ...user, password: hashedPassword });
   }
-} */
+} 
