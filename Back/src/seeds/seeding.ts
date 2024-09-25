@@ -82,7 +82,6 @@ export async function seedDatabase(connection: Connection) {
   orderDetail1.date = new Date();
   orderDetail1.room_total = 750.0;
   orderDetail1.total = 750.0;
-  orderDetail1.user = user1;
   orderDetail1.reservation = reservation1;
 
   // Guardar detalle del pedido

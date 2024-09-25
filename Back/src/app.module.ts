@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import typeOrmConfig from './Config/typeOrm.config';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import typeOrmConfig from './Config/typeOrm.config';
       useFactory: (configService: ConfigService) =>
         configService.get('typeOrm'),
     }),
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService, SeedCommand],
