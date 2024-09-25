@@ -63,6 +63,9 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
+  @Column({ nullable: false })  
+  country: string;
+
   @ApiProperty({
     enum: IRol,
     default: IRol.User,
@@ -78,6 +81,9 @@ export class User {
   @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
   @OneToOne(() => Profile, (profile) => profile.user)
   profile: Profile;
+  
+  @Column({default:false})
+  isAdmin: boolean
 
   @ApiProperty({
     type: () => Owner,
