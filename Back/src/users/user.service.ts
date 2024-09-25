@@ -8,8 +8,11 @@ export class UserService {
         private readonly userRepository: UserRepository
     ){}
 
-    getAllUsers(){
-        return this.userRepository.getAllUsers()
+    getAllUsers(page: number, limit: number){
+
+        const offset = (page -  1)* limit;
+
+        return this.userRepository.getAllUsers(offset, limit)
     }
 
     addUser(newUser: CreateUserDto){

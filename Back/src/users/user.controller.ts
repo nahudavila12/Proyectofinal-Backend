@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Put } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 
@@ -10,8 +10,11 @@ export class UsersController {
 
     @Get('allUsers')
     @HttpCode(200)
-    async getAllUsers(){
-        return this.userService.getAllUsers()
+    async getAllUsers(
+        @Query('page')page = 1,
+        @Query('limit')limit = 10
+    ){
+        return this.userService.getAllUsers(page, limit)
     }
 
     @Put('addUser')
@@ -20,4 +23,6 @@ export class UsersController {
     ){
         return this.userService.addUser(newUser);
     }
+
+    //@Put('userRol')
 }
