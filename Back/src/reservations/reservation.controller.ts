@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 
-//CHECK
 import {
   CreateReservationDto,
   UpdateReservationDto,
@@ -18,7 +17,6 @@ import {
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/guards/roles.decorator';
 import { IRol } from 'src/users/user.entity';
-import { IsUrl } from 'class-validator';
 
 @Controller('reservations')
 export class ReservationController {
