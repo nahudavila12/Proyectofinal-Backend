@@ -11,9 +11,12 @@ export class UserRepository{
         private readonly userRepository: Repository<User>
     ){}
 
-    async getAllUsers(){
+    async getAllUsers(offset, limit){
 
-        return await this.userRepository.find()
+        const splitUsers = await this.userRepository.find();
+        splitUsers.slice(offset, offset + limit)
+
+        return splitUsers;
     }
 
     async addUser(newUser: CreateUserDto): Promise<User>{
