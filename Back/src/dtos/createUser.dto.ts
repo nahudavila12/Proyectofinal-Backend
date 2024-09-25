@@ -1,13 +1,12 @@
 import { 
     IsEmail,
-    IsInt,
     IsNotEmpty,
     IsString,
     Length, 
     Matches,
-    Min,
     Validate,
-    IsDateString
+    IsDateString,
+    IsEmpty
 }
  from "class-validator";
 import { MatchPassword } from "../decorators/matchPassword.decorator";
@@ -21,7 +20,7 @@ export class CreateUserDto {
     @IsNotEmpty({ message: 'El nombre es requerido.' })
     @IsString({ message: 'El nombre debe ser una cadena de texto.' })
     @Length(3, 80, { message: 'El nombre debe tener entre 3 y 80 caracteres.' })
-    name:string;
+    name?:string;
      
     /**
      * Debe ser un string y un email valido 
@@ -29,7 +28,7 @@ export class CreateUserDto {
      */
     @IsNotEmpty({message:'El email es requerido'})
     @IsEmail()
-    email:string;
+    email?:string;
 
     /**
      * Debe ser un Date mayo de 18 años
@@ -38,7 +37,7 @@ export class CreateUserDto {
     @IsDateString({}, { message: 'La fecha debe estar en formato YYYY-MM-DD' })
     @IsNotEmpty({ message: 'La fecha de nacimiento es obligatoria' })
     @Validate(AgeValidator, { message: 'Debe ser mayor de 18 años' })
-    birthday: string;
+    birthday?: Date;
     
     /**
      * Debe ser un string entre 8 y 15 caracteres, con al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*'
@@ -50,7 +49,7 @@ export class CreateUserDto {
     message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*',
     })
     @Length(8, 15, { message: 'La contraseña debe tener entre 8 y 15 caracteres.' })
-    password:string;
+    password?:string;
 
     /**
      * Debe ser igual a la password 
@@ -58,7 +57,10 @@ export class CreateUserDto {
      */
     @IsNotEmpty()
     @Validate(MatchPassword, ['password'])
-    confirmPassword:string;
+    confirmPassword?:string;
+    
+    @IsEmpty()
+    isAdmin?: boolean
 
     /**
      * Debe ser un string entre 3 y 80 caracteres
@@ -66,7 +68,7 @@ export class CreateUserDto {
      */
     @IsNotEmpty({ message: 'La direccion es requerido.' })
     @Length(3, 80, { message: 'La direccion debe tener entre 3 y 80 caracteres.' })
-    address:string;
+    address?:string;
 
 
     /**
@@ -76,7 +78,7 @@ export class CreateUserDto {
     @IsNotEmpty({ message: 'El número de teléfono es requerido.' })
     @IsString({ message: 'El número de teléfono debe ser un número entero válido.' })
     @Length(9,15, { message: 'El número de teléfono debe ser un número válido de 10 dígitos.' }) 
-    phone: string;
+    phone?: string;
 
 
     /**
@@ -85,7 +87,7 @@ export class CreateUserDto {
      */
     @IsNotEmpty({ message: 'El pais es requerido.' })
     @Length(3, 20, { message: 'El pais debe tener entre 5 y 20 caracteres.' })
-    country:string;
+    country?:string;
 
 
 }

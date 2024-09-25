@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Repository } from "typeorm";
@@ -11,12 +11,15 @@ export class UserRepository{
         private readonly userRepository: Repository<User>
     ){}
 
-    async getAllUsers(){
+    async getAllUsers(offset, limit){
 
-        return await this.userRepository.find()
+        const splitUsers = await this.userRepository.find();
+        splitUsers.slice(offset, offset + limit)
+
+        return splitUsers;
     }
 
-    async addUser(newUser: CreateUserDto): Promise<User | string>{
+    async addUser(newUser: CreateUserDto): Promise<User>{
 
         const { email } = newUser;
 
@@ -27,6 +30,13 @@ export class UserRepository{
             await this.userRepository.save(addUser);
         
         return addUser;
+    }
+    async getUserByEmail(email: string): Promise<User | undefined> {
+        try {
+            return await this.userRepository.findOne({ where: { email } });
+        } catch (error) {
+            throw new InternalServerErrorException('Error al buscar el usuario por email en el repositorio.', error.message);
+        }
     }
 }
 
