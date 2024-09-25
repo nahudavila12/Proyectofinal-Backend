@@ -7,9 +7,11 @@ import {
     Matches,
     Min,
     Validate,
+    IsDateString
 }
  from "class-validator";
 import { MatchPassword } from "../decorators/matchPassword.decorator";
+import { AgeValidator } from "src/decorators/ageValidator";
 
 export class CreateUserDto {
     /**
@@ -28,6 +30,15 @@ export class CreateUserDto {
     @IsNotEmpty({message:'El email es requerido'})
     @IsEmail()
     email:string;
+
+    /**
+     * Debe ser un Date mayo de 18 años
+     * @example 01-01-2006
+     */
+    @IsDateString({}, { message: 'La fecha debe estar en formato YYYY-MM-DD' })
+    @IsNotEmpty({ message: 'La fecha de nacimiento es obligatoria' })
+    @Validate(AgeValidator, { message: 'Debe ser mayor de 18 años' })
+    birthday: string;
     
     /**
      * Debe ser un string entre 8 y 15 caracteres, con al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*'
@@ -63,8 +74,8 @@ export class CreateUserDto {
      * @example '1234567890'
      */
     @IsNotEmpty({ message: 'El número de teléfono es requerido.' })
-    @IsInt({ message: 'El número de teléfono debe ser un número entero válido.' })
-    @Min(10, { message: 'El número de teléfono debe ser un número válido de 10 dígitos.' }) 
+    @IsString({ message: 'El número de teléfono debe ser un número entero válido.' })
+    @Length(9,15, { message: 'El número de teléfono debe ser un número válido de 10 dígitos.' }) 
     phone: string;
 
 
@@ -77,11 +88,4 @@ export class CreateUserDto {
     country:string;
 
 
-    /**
-     * Debe ser un string entre 5 y 20 caracteres
-     * @example 'Catamarca'
-     */
-    @IsNotEmpty({ message: 'La ciudad es requerida.' })
-    @Length(5, 20, { message: 'La ciudad debe tener entre 5 y 20 caracteres.' })
-    city:string;
 }

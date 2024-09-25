@@ -3,7 +3,7 @@ import { config as dotenvConfig } from 'dotenv';
 import { registerAs } from '@nestjs/config';
 
 
-dotenvConfig({ path: '.env.development' });
+dotenvConfig();
 
 
 const config = {
@@ -16,7 +16,7 @@ const config = {
   autoLoadEntities: true,
   synchronize: true,
   logging: true,
-  entities: [__dirname + 'dist/**/*.entity{.ts,.js}'],
+  entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.js,.ts}'],
   dropSchema: false,
 };
