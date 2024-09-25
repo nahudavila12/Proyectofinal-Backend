@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './Config/typeOrm.config';
 import { UserModule } from './users/user.module';
 import { OrdersModule } from './orders/orders.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { OrdersModule } from './orders/orders.module';
     }),
     UserModule,
     OrdersModule,
+    FileUploadModule
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService, SeedCommand],
