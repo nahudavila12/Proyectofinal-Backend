@@ -6,10 +6,11 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Profile } from '../profiles/profile.entity';
-import { OrderDetail } from '../orderDetails/orderDetail.entity';
+// import { OrderDetail } from '../orderDetails/orderDetail.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Orders } from 'src/orders/order.entity';
 
 export enum IRol {
   User = 'user',
@@ -85,12 +86,19 @@ export class User {
   @OneToOne(() => Owner, (owner) => owner.user)
   owner: Owner;
 
+  // @ApiProperty({
+  //   type: () => [OrderDetail],
+  //   description: 'Detalles de órdenes del usuario',
+  // })
+  // @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
+  // orderDetail: OrderDetail[];
+
   @ApiProperty({
-    type: () => [OrderDetail],
-    description: 'Detalles de órdenes del usuario',
+    type: () => [Orders],
+    description: 'Ordenes del usuario',
   })
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
-  orderDetail: OrderDetail[];
+  @OneToMany(() => Orders, (orders) => orders.user)
+  orders: Orders[];
 
   @ApiProperty({
     type: () => [Reservation],
