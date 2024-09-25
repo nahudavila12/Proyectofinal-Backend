@@ -17,7 +17,7 @@ export class UsersController {
         return this.userService.getAllUsers(page, limit)
     }
 
-    @Put('addUser')
+    @Post('addUser')
     async addUser(
         @Body() newUser:CreateUserDto
     ){
