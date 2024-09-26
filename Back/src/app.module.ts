@@ -9,6 +9,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './Config/typeOrm.config';
 import { UserModule } from './users/user.module';
 import { OrdersModule } from './orders/orders.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport'
 
 @Module({
   imports: [
@@ -21,8 +24,14 @@ import { OrdersModule } from './orders/orders.module';
       useFactory: (configService: ConfigService) =>
         configService.get('typeOrm'),
     }),
+    PassportModule.register({ session: false }),
+    JwtModule.register({
+        secret: process.env.JWT_SECRET, 
+        signOptions: { expiresIn: '60s' },
+    }),
     UserModule,
     OrdersModule,
+    FileUploadModule
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService, SeedCommand],

@@ -15,6 +15,7 @@ export async function seedDatabase(connection: Connection) {
   const user1 = new User();
   user1.name = 'John Doe';
   user1.email = 'john@example.com';
+  user1.country = 'Argentina'
   user1.birthday = new Date('1990-01-01');
   user1.phone = '123456789';
   user1.address = '123 Main St';
