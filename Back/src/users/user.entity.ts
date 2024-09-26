@@ -6,10 +6,11 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Profile } from '../profiles/profile.entity';
-import { OrderDetail } from '../orderDetails/orderDetail.entity';
+// import { OrderDetail } from '../orderDetails/orderDetail.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Orders } from 'src/orders/order.entity';
 
 export enum IRol {
   User = 'user',
@@ -62,12 +63,15 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
+  @Column({ nullable: false })  
+  country: string;
+
   @ApiProperty({
     enum: IRol,
     default: IRol.User,
     description: 'Rol del usuario',
   })
-  @Column({ type: 'enum', default: IRol.User })
+  @Column({ type: 'enum', enum: IRol, default: IRol.User })
   rol: IRol;
 
   @ApiProperty({ example: true, description: 'Si el usuario está activo' })
@@ -77,6 +81,9 @@ export class User {
   @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
   @OneToOne(() => Profile, (profile) => profile.user)
   profile: Profile;
+  
+  @Column({default:false})
+  isAdmin: boolean
 
   @ApiProperty({
     type: () => Owner,
@@ -85,12 +92,19 @@ export class User {
   @OneToOne(() => Owner, (owner) => owner.user)
   owner: Owner;
 
+  // @ApiProperty({
+  //   type: () => [OrderDetail],
+  //   description: 'Detalles de órdenes del usuario',
+  // })
+  // @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
+  // orderDetail: OrderDetail[];
+
   @ApiProperty({
-    type: () => [OrderDetail],
-    description: 'Detalles de órdenes del usuario',
+    type: () => [Orders],
+    description: 'Ordenes del usuario',
   })
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
-  orderDetail: OrderDetail[];
+  @OneToMany(() => Orders, (orders) => orders.user)
+  orders: Orders[];
 
   @ApiProperty({
     type: () => [Reservation],

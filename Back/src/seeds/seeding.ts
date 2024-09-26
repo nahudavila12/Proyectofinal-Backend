@@ -2,7 +2,9 @@ import { Connection } from 'typeorm';
 import { User, IRol } from '../users/user.entity';
 import { Owner } from '../owners/owner.entity';
 import { Property, PropertyType } from '../propierties/property.entity';
-import { ICategories, Room } from '../rooms/room.entity';
+import { Room } from '../rooms/room.entity';
+import { RoomCategory } from 'src/rooms/roomCategory.entity';
+import { ICategories } from 'src/rooms/roomCategory.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Payment } from '../payments/payment.entity';
 import { OrderDetail } from '../orderDetails/orderDetail.entity';
@@ -13,6 +15,7 @@ export async function seedDatabase(connection: Connection) {
   const user1 = new User();
   user1.name = 'John Doe';
   user1.email = 'john@example.com';
+  user1.country = 'Argentina'
   user1.birthday = new Date('1990-01-01');
   user1.phone = '123456789';
   user1.address = '123 Main St';
@@ -50,9 +53,14 @@ export async function seedDatabase(connection: Connection) {
   await connection.getRepository(Property).save(property1);
 
   // Crear habitación
+  const roomCategory = new RoomCategory();
+  roomCategory.name = ICategories.STANDARD;
+  
+  const savedRoomCategory = await this.roomCategoryRepository.save(roomCategory);
+
   const room1 = new Room();
   room1.room_number = 101;
-  room1.category = ICategories.STANDARD;
+  room1.category = savedRoomCategory;
   room1.capacity = 2;
   room1.price_per_day = 150.0;
   room1.property = property1;
@@ -75,7 +83,6 @@ export async function seedDatabase(connection: Connection) {
   orderDetail1.date = new Date();
   orderDetail1.room_total = 750.0;
   orderDetail1.total = 750.0;
-  orderDetail1.user = user1;
   orderDetail1.reservation = reservation1;
 
   // Guardar detalle del pedido

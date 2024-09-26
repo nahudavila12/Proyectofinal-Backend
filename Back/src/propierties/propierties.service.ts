@@ -24,14 +24,7 @@ export class PropertyService {
     }
     return property;
   }
-  async addProperty(): Promise<string> {
-    try {
-      return await this.propiertiesRepository.addProperty();
-    } catch (error) {
-      console.error('Error agregando propiedades:', error.message);
-      throw new Error('Hubo un problema al agregar las propiedades');
-    }
-  }
+
   async removeProperty(uuid: string): Promise<string> {
     try {
       return await this.propiertiesRepository.removeProperty(uuid);

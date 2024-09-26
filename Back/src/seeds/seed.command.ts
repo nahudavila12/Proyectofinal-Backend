@@ -14,5 +14,3 @@ export class SeedCommand extends CommandRunner {
     await seedDatabase(this.connection);
   }
 }
-
-//commentario

@@ -7,10 +7,11 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Payment } from '../payments/payment.entity';
-import { OrderDetailAdditionalService } from '../orderDetails/orderDetailAdditionalService';
-import { User } from '../users/user.entity';
+import { OrderDetailAdditionalService } from '../additionalsServices/orderDetailAdditionalService.entity';
+// import { User } from '../users/user.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Orders } from 'src/orders/order.entity';
 
 @Entity('Orders_details')
 export class OrderDetail {
@@ -26,7 +27,7 @@ export class OrderDetail {
     description: 'Fecha de la orden',
   })
   @Column()
-  date: Date;
+  date: Date; 
 
   @ApiProperty({
     example: 150.0,
@@ -62,19 +63,26 @@ export class OrderDetail {
   })
   @OneToOne(
     () => OrderDetailAdditionalService,
-    (additionalServiceOrderDetail) => additionalServiceOrderDetail.order_detail,
-    { nullable: true },
+    (additionalServiceOrderDetail) => additionalServiceOrderDetail.orderDetail,
+    { nullable: true},
   )
   @JoinColumn()
-  additionalSrviceOrderDetail?: OrderDetailAdditionalService;
+  additionalServiceOrderDetail?: OrderDetailAdditionalService; 
 
-  @ApiProperty({
-    type: () => User,
-    description: 'Usuario asociado con el detalle del pedido',
-  })
-  @ManyToOne(() => User, (user) => user.orderDetail)
-  @JoinColumn()
-  user: User;
+  // @ApiProperty({
+  //   type: () => User,
+  //   description: 'Usuario asociado con el detalle del pedido',
+  // })
+  // @ManyToOne(() => User, (user) => user.orderDetail)
+  // @JoinColumn()
+  // user: User;
+
+  @ApiProperty({ 
+    type: () => Orders,
+    description: 'Orden asociado con el detalle del pedido' })
+  @OneToOne(() => Orders, (orders) => orders.orderDetails)
+  @JoinColumn({name: 'order_id'})
+  orders: Orders;
 
   @ApiProperty({
     type: () => Reservation,
@@ -84,3 +92,4 @@ export class OrderDetail {
   @JoinColumn()
   reservation: Reservation;
 }
+

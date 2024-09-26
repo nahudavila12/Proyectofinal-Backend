@@ -6,6 +6,7 @@ import { Property } from '../propierties/property.entity';
 import { PropiertiesRepository } from './propierties.repository';
 import { PropertyService } from './propierties.service';
 import { PropertyController } from './propierties.controller';
+import { RoomService } from 'src/rooms/roomService.entity';
 
 @Module({
   imports: [
@@ -21,6 +22,6 @@ import { PropertyController } from './propierties.controller';
   ],
   providers: [PropertyService, PropiertiesRepository],
   controllers: [PropertyController],
-  exports: [PropiertiesRepository, PropertyService],
+  exports: [PropiertiesRepository, PropertyService,RoomService],
 })
 export class PropertyModule {}
