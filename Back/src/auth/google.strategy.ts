@@ -27,8 +27,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         if (!user) {
             const newUser: CreateUserDto = {
                 email: email,
-                name: `${given_name} ${family_name}`,
-                password: 'password', 
+                user_name: `${given_name} ${family_name}`,
+                password: 'password',
+                firstName: family_name,
+                lastName: family_name, 
             };
     
             user = await this.usersService.addUser(newUser);

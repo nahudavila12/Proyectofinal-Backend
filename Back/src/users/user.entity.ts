@@ -26,10 +26,17 @@ export class User {
   })
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
+  @ApiProperty({ example: 'John', description: 'Nombre de pila del usuario' })
+  @Column()
+  firstName: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Nombre del usuario' })
-  @Column({ nullable: false })
-  name: string;
+  @ApiProperty({ example: 'Doe', description: 'Apellido del usuario'})
+  @Column()
+  lastName: string;
+
+  @ApiProperty({ example: 'John_Doe12', description: 'Nombre del usuario' })
+  @Column({ nullable: false, unique: true })
+  user_name: string;
 
   @ApiProperty({
     example: 'john.doe@example.com',

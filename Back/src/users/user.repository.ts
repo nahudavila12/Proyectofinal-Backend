@@ -33,7 +33,7 @@ export class UserRepository{
             await this.userRepository.save(addUser);
             
         const profileUser: Profile = new Profile
-        profileUser.user_name = addUser.name
+        profileUser.user_name = addUser.user_name
         profileUser.mail = addUser.email
         profileUser.password = addUser.password
         profileUser.phone = addUser.phone
