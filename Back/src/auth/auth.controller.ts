@@ -19,6 +19,6 @@ export class AuthController {
   @ApiResponse({status:200, description:'user created correctly'})
   @Post('signup')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    return this.authService.singUp(createUserDto);
+    return this.authService.signUp(createUserDto);
   }
 }

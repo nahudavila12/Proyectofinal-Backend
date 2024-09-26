@@ -9,14 +9,14 @@ export class UserService {
         private readonly userRepository: UserRepository
     ){}
 
-    getAllUsers(page: number, limit: number){
+    async getAllUsers(page: number, limit: number){
 
         const offset = (page -  1)* limit;
 
         return this.userRepository.getAllUsers(offset, limit)
     }
 
-    addUser(newUser: CreateUserDto): Promise<User>{
+    async addUser(newUser: CreateUserDto): Promise<User>{
         return this.userRepository.addUser(newUser)
     }
     
@@ -26,6 +26,10 @@ export class UserService {
         } catch (error) {
             throw new InternalServerErrorException('Error al buscar el usuario por email en el servicio.', error.message);
         }
+    }
+
+    async deleteUser(uuid: string){
+        return await this.userRepository.deleteUser(uuid)
     }
 
 }

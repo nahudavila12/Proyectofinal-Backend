@@ -23,12 +23,15 @@ export class Profile{
     phone: string;
 
     @Column()
+    country: string
+
+    @Column()
     address: string;
 
     @Column()
     password: string;
 
-    @Column()
+    @Column({ nullable: true})
     userIMG: string;
 
     @OneToOne(() => User, (user) => user.profile)
