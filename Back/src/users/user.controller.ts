@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { 
+    Body,
+    Controller, 
+    Delete, 
+    Get, 
+    HttpCode, 
+    Param, 
+    Post,
+    Put 
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 import { UuidValidationPipe } from './pipe/uuid-validation.pipe';
@@ -23,12 +32,21 @@ export class UsersController {
     async addUser(
         @Body() newUser:CreateUserDto
     ){
-        return this.userService.addUser(newUser);
+        return await this.userService.addUser(newUser);
     }
 
-    @Delete('delete/:uuid')
-    deleteUser(@Param('id', UuidValidationPipe) id: string) {
-        return this.userService.deleteUser(id);
+    @Put('bannUser/:uuid')
+    async bannUser(
+        @Param('uuid', UuidValidationPipe) uuid: string
+    ){
+        return await this.userService.bannUser(uuid)
+    }
+
+    @Delete('deleteUser/:uuid')
+    async deleteUser(
+        @Param('id', UuidValidationPipe) id: string
+    ) {
+        return await this.userService.deleteUser(id);
       }
 }
 

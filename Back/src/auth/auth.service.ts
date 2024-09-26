@@ -67,7 +67,7 @@ export class AuthService {
     const payload = {
       uuid: user.uuid,
       email: user.email,
-      isAdmin: user.isAdmin,
+      rol: user.rol,
     };
 
     const generateAccessToken = this.jwtService.sign(payload, { expiresIn: '15m' }); 

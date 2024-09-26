@@ -78,20 +78,20 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
-  @OneToOne(() => Profile, (profile) => profile.user)
-  profile: Profile;
   
   @Column({default:false})
-  isAdmin: boolean
-
+  isBanned: boolean
+  
   @ApiProperty({
     type: () => Owner,
     description: 'Propietario relacionado al usuario',
   })
   @OneToOne(() => Owner, (owner) => owner.user)
   owner: Owner;
-
+  
+  @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
   // @ApiProperty({
   //   type: () => [OrderDetail],
   //   description: 'Detalles de órdenes del usuario',
