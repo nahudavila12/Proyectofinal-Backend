@@ -1,17 +1,7 @@
-import { 
-    Body, 
-    Controller, 
-    Get, 
-    HttpCode, 
-    Param, 
-    ParseUUIDPipe, 
-    Post, 
-    Put, 
-    Query,
-    Delete 
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
+import { UuidValidationPipe } from './pipe/uuid-validation.pipe';
 
 @Controller('user')
 export class UsersController {
@@ -21,27 +11,24 @@ export class UsersController {
 
     @Get('allUsers')
     @HttpCode(200)
-    async getAllUsers(
-        @Query('page')page = 1,
-        @Query('limit')limit = 10
-    ){
-        return await this.userService.getAllUsers(page, limit)
+    async getAllUsers(page,limit){
+        return this.userService.getAllUsers(page,limit)
     }
 
+    getUser(@Param('uuid', UuidValidationPipe) uuid: string) {
+        return this.userService.findByEmail(uuid);
+      }
+
     @Post('addUser')
-    @HttpCode(201)
     async addUser(
         @Body() newUser:CreateUserDto
     ){
-        return await this.userService.addUser(newUser);
+        return this.userService.addUser(newUser);
     }
 
-    @Delete('deleteUser/:uuid')
-    @HttpCode(204)
-    async deleteUser(
-        @Param('uuid', ParseUUIDPipe) uuid:string
-    ){
-        return await this.userService.deleteUser(uuid)
-    }
+    @Delete('delete/:uuid')
+    deleteUser(@Param('id', UuidValidationPipe) id: string) {
+        return this.userService.deleteUser(id);
+      }
 }
 
