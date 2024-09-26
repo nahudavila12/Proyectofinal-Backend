@@ -12,6 +12,7 @@ import { OrdersModule } from './orders/orders.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport'
+import { PropertyModule } from './propierties/propierties.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { PassportModule } from '@nestjs/passport'
     }),
     UserModule,
     OrdersModule,
-    FileUploadModule
+    FileUploadModule,
+
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService, SeedCommand],

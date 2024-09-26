@@ -4,7 +4,7 @@ import { User } from "./user.entity";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "src/dtos/createUser.dto";
 import { Profile } from "src/profiles/profile.entity";
-import { json } from "stream/consumers";
+
 
 @Injectable()
 export class UserRepository{
@@ -45,7 +45,7 @@ export class UserRepository{
             
             return addUser;
         
-        }catch(error){
+        }catch{
             throw new InternalServerErrorException('Error en el servidor')
         }
 
@@ -59,7 +59,7 @@ export class UserRepository{
         }
     }
 
-    async deleteUser(uuid: string): Promise<string>{
+    async deleteUser(uuid: string){
         try{
             const foundUser = await this.userRepository.findOne({where: {uuid}})
                 if (!foundUser) throw new NotFoundException('usuario no encontrado');
@@ -68,9 +68,9 @@ export class UserRepository{
 
                 await this.userRepository.save(foundUser);
             
-            return 'Usuario eliminado con éxito';
+            return foundUser;
         
-        }catch(err){
+        }catch{
             throw new InternalServerErrorException('Error en el servidor')
         }
     }
