@@ -15,6 +15,10 @@ export class UsersController {
         return this.userService.getAllUsers(page,limit)
     }
 
+    getUser(@Param('uuid', UuidValidationPipe) uuid: string) {
+        return this.userService.findByEmail(uuid);
+      }
+
     @Post('addUser')
     async addUser(
         @Body() newUser:CreateUserDto
