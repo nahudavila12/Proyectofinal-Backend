@@ -31,12 +31,10 @@ export class UsersController {
         return this.userService.findByEmail(uuid);
       }
 
-
-      @Post('addUser')
-async addUser(@Body() newUser: CreateUserDto) {
+    @Post('addUser')
+    async addUser(@Body() newUser: CreateUserDto) {
 
     const user = await this.userService.addUser(newUser);
-
 
     const emailSent = await this.emailService.sendEmail({
         from: "mekhi.mcdermott@ethereal.email", 
@@ -44,31 +42,29 @@ async addUser(@Body() newUser: CreateUserDto) {
         sendTo: newUser.email, 
         template: Template.WELCOME, 
         params: {
-            name: newUser.name 
+            name: newUser.user_name 
         }
     });
-
 
     if (!emailSent) {
         throw new Error('Error al enviar el correo de bienvenida.');
     }
 
     return user; 
-  
-      @Put('bannUser/:uuid')
+    }
+
+    @Put('bannUser/:uuid')
     async bannUser(
         @Param('uuid', UuidValidationPipe) uuid: string
     ){
         return await this.userService.bannUser(uuid)
     }
-}
-
-
 
     @Delete('delete/:uuid')
-    deleteUser(@Param('id', UuidValidationPipe) id: string) {
+    async deleteUser(@Param('id', UuidValidationPipe) id: string) {
         return await this.userService.deleteUser(id);
-
-      }
+        
+    }
 }
+
 
