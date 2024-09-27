@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { 
+    Body,
+    Controller, 
+    Delete, 
+    Get, 
+    HttpCode, 
+    Param, 
+    Post,
+    Put 
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 import { UuidValidationPipe } from './pipe/uuid-validation.pipe';
@@ -22,35 +31,44 @@ export class UsersController {
         return this.userService.findByEmail(uuid);
       }
 
+
       @Post('addUser')
 async addUser(@Body() newUser: CreateUserDto) {
-    // Agregar el usuario a la base de datos
+
     const user = await this.userService.addUser(newUser);
 
-    // Envío de notificación vía email
+
     const emailSent = await this.emailService.sendEmail({
-        from: "mekhi.mcdermott@ethereal.email", // Remitente
-        subjectEmail: "Te damos la bienvenida a Nuestro Sitio", // Asunto
-        sendTo: newUser.email, // Destinatario
-        template: Template.WELCOME, // Aquí pasas el template
+        from: "mekhi.mcdermott@ethereal.email", 
+        subjectEmail: "Te damos la bienvenida a Nuestro Sitio", 
+        sendTo: newUser.email, 
+        template: Template.WELCOME, 
         params: {
-            name: newUser.name // Parámetros para el template
+            name: newUser.name 
         }
     });
 
-    // Chequeo para ver si el correo se envió correctamente
+
     if (!emailSent) {
         throw new Error('Error al enviar el correo de bienvenida.');
     }
 
-    return user; // Retornar el usuario creado
+    return user; 
+  
+      @Put('bannUser/:uuid')
+    async bannUser(
+        @Param('uuid', UuidValidationPipe) uuid: string
+    ){
+        return await this.userService.bannUser(uuid)
+    }
 }
 
 
 
     @Delete('delete/:uuid')
     deleteUser(@Param('id', UuidValidationPipe) id: string) {
-        return this.userService.deleteUser(id);
+        return await this.userService.deleteUser(id);
+
       }
 }
 

@@ -26,10 +26,17 @@ export class User {
   })
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
+  @ApiProperty({ example: 'John', description: 'Nombre de pila del usuario' })
+  @Column()
+  firstName: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Nombre del usuario' })
-  @Column({ nullable: false })
-  name: string;
+  @ApiProperty({ example: 'Doe', description: 'Apellido del usuario'})
+  @Column()
+  lastName: string;
+
+  @ApiProperty({ example: 'John_Doe12', description: 'Nombre del usuario' })
+  @Column({ nullable: false, unique: true })
+  user_name: string;
 
   @ApiProperty({
     example: 'john.doe@example.com',
@@ -78,20 +85,20 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
-  @OneToOne(() => Profile, (profile) => profile.user)
-  profile: Profile;
   
   @Column({default:false})
-  isAdmin: boolean
-
+  isBanned: boolean
+  
   @ApiProperty({
     type: () => Owner,
     description: 'Propietario relacionado al usuario',
   })
   @OneToOne(() => Owner, (owner) => owner.user)
   owner: Owner;
-
+  
+  @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
   // @ApiProperty({
   //   type: () => [OrderDetail],
   //   description: 'Detalles de órdenes del usuario',
