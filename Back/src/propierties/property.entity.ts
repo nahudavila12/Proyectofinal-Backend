@@ -13,7 +13,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export enum PropertyType {
   HOTEL = 'hotel',
-  CABANA = 'cabaña',
+  CABAÑA = 'cabaña',
   DEPARTAMENTO = 'departamento',
 }
 
