@@ -13,7 +13,8 @@ import { IState } from '../payments/payment.entity';
 export async function seedDatabase(connection: Connection) {
   // Crear usuarios
   const user1 = new User();
-  user1.name = 'John Doe';
+  user1.firstName = 'John';
+  user1.lastName = 'Doe'
   user1.email = 'john@example.com';
   user1.country = 'Argentina'
   user1.birthday = new Date('1990-01-01');
@@ -23,7 +24,8 @@ export async function seedDatabase(connection: Connection) {
   user1.rol = IRol.User;
 
   const user2 = new User();
-  user2.name = 'Jane Smith';
+  user2.firstName = 'Jane ';
+  user2.lastName = 'Smith'
   user2.email = 'jane@example.com';
   user2.birthday = new Date('1985-05-05');
   user2.phone = '987654321';

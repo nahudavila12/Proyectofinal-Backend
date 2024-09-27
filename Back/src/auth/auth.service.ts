@@ -33,7 +33,7 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  async signUp(user: Partial<User>) {
+  async signUp(user: CreateUserDto) {
     const { email, password } = user;
 
     const foundUser = await this.usersService.findByEmail(email);
@@ -54,9 +54,11 @@ export class AuthService {
     if (!user) {
       const newUser: CreateUserDto = {
         email: email,
-        name: `${given_name} ${family_name}`,
-        password: 'password',  
-      };
+        password: 'password',
+        user_name: `${given_name}`,
+        firstName: family_name,
+        lastName: family_name,
+    };
       user = await this.usersService.addUser(newUser);
     }
 
@@ -67,7 +69,7 @@ export class AuthService {
     const payload = {
       uuid: user.uuid,
       email: user.email,
-      isAdmin: user.isAdmin,
+      rol: user.rol,
     };
 
     const generateAccessToken = this.jwtService.sign(payload, { expiresIn: '15m' }); 
