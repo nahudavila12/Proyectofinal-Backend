@@ -24,9 +24,6 @@ export class PropertyDto {
   location: string;
 
   @IsNotEmpty()
-  @IsString()
-  owner: Owner;
-
   @IsEnum(PropertyType)
   propertyType: PropertyType;
 

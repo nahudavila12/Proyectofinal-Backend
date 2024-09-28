@@ -30,7 +30,7 @@ export class Property {
     example: 'Hotel California',
     description: 'Nombre de la propiedad',
   })
-  @Column({ nullable: false })
+  @Column({ unique: true, nullable: false })
   name: string;
 
   @ApiProperty({
@@ -51,14 +51,14 @@ export class Property {
   })
   propertyType: PropertyType;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   rate: number;
 
   @ApiProperty({
     example: false,
     description: 'Si la propiedad está prohibida o no',
   })
-  @Column({ default: false })
+  @Column({ default: true })
   isActive: boolean;
 
   @ApiProperty({
@@ -66,18 +66,18 @@ export class Property {
     description: 'Imágenes de la propiedad',
   })
   @OneToMany(() => PropertyImg, (propertyImg) => propertyImg.property)
-  img: PropertyImg[];
+  img?: PropertyImg[];
 
   @ApiProperty({
     type: () => Owner,
     description: 'Propietario de la propiedad',
   })
-  @ManyToOne(() => Owner, (owner) => owner.property)
+  @ManyToOne(() => Owner, (owner) => owner.property, { eager: false})
   @JoinColumn()
   owner: Owner;
 
 
   @OneToMany(() => Room, room => room.property)
-    room: Room[];
+    room?: Room[];
 
 }
