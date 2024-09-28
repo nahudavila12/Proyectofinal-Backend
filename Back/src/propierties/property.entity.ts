@@ -66,7 +66,7 @@ export class Property {
     description: 'Imágenes de la propiedad',
   })
   @OneToMany(() => PropertyImg, (propertyImg) => propertyImg.property)
-  img?: PropertyImg[];
+  propImg?: PropertyImg[];
 
   @ApiProperty({
     type: () => Owner,

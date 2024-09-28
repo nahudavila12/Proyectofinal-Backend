@@ -7,10 +7,16 @@ import { PropertyRepository } from './property.repository';
 import { PropertyService } from './property.service';
 import { PropertyController } from './property.controller';
 import { Owner } from 'src/owners/owner.entity';
+import { PropertyImg } from './propertyImg.entity';
+import { CloudinaryService } from 'src/commons/cloudinary.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Property, Owner]),
+    TypeOrmModule.forFeature([
+      Property, 
+      Owner, 
+      PropertyImg
+    ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -20,7 +26,11 @@ import { Owner } from 'src/owners/owner.entity';
       inject: [ConfigService],
     }),
   ],
-  providers: [PropertyService, PropertyRepository],
+  providers: [
+    PropertyService, 
+    PropertyRepository, 
+    CloudinaryService
+  ],
   controllers: [PropertyController],
   exports: [PropertyRepository, PropertyService],
 })

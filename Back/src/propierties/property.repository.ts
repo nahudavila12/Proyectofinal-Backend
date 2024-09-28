@@ -10,6 +10,7 @@ import { RoomService } from "src/rooms/roomService.entity";
 import { Owner } from "src/owners/owner.entity";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { PropertyDto } from "src/dtos/createProperty.dto";
+import { CloudinaryService } from "src/commons/cloudinary.service";
 
 @Injectable()
 export class PropertyRepository {
@@ -18,14 +19,15 @@ export class PropertyRepository {
         private readonly propertyRepository: Repository<Property>,
         //@InjectRepository(Room)
         //private readonly roomRepository: Repository<Room>,
-        //@InjectRepository(PropertyImg)
-        //private readonly propertyImgRepository: Repository<PropertyImg>,
+        @InjectRepository(PropertyImg)
+        private readonly propertyImgRepository: Repository<PropertyImg>,
         //@InjectRepository(RoomImg)
         //private readonly roomImgRepository: Repository<RoomImg>,
         //@InjectRepository(RoomService)
         //private readonly roomServiceRepository: Repository<RoomService>,
         @InjectRepository(Owner)
-        private readonly ownerRepository: Repository<Owner>
+        private readonly ownerRepository: Repository<Owner>,
+        private readonly cloudinaryService: CloudinaryService
     ) {}
 
 //     async getPropierties(): Promise<Property[]> {
@@ -120,24 +122,43 @@ export class PropertyRepository {
 //   return await queryBuilder.getMany();
 // }
 
-async addProperty(uuid: string, property: PropertyDto): Promise<Property | null>{
-
-    const owner = await this.ownerRepository.findOneBy({uuid});
-        if (!owner) throw new NotFoundException('Propietario no encontrado');
-
-    const { name } = property;
+async addProperty(uuid: string, property: PropertyDto): Promise<Property | null> {
     
-    const foundProperty = await this.propertyRepository.findOneBy({name});
-        if(foundProperty) throw new ConflictException('Propiedad ya existente')
-        
-            const newProperty = new Property()
-            newProperty.owner = owner
-            newProperty.name = property.name
-            newProperty.location = property.location
-            newProperty.propertyType = property.propertyType
-    
-    return await this.propertyRepository.save(newProperty);
-        
+    const owner = await this.ownerRepository.findOneBy({ uuid });
+    if (!owner) throw new NotFoundException('Propietario no encontrado');
+
+    const { name, propImg } = property;
+
+    const foundProperty = await this.propertyRepository.findOneBy({ name });
+    if (foundProperty) throw new ConflictException('Propiedad ya existente');
+
+    const newProperty = new Property();
+    newProperty.owner = owner;
+    newProperty.name = property.name;
+    newProperty.location = property.location;
+    newProperty.propertyType = property.propertyType;
+
+    const addedProperty = await this.propertyRepository.save(newProperty);
+
+    if (propImg && propImg.length > 0) {
+        const imageUploadPromises = propImg.map(async (image) => {
+            let uploadResult;
+
+            uploadResult = await this.cloudinaryService.uploadImage(image);
+
+            const propertyImage = new PropertyImg(); 
+            propertyImage.img = uploadResult.secure_url; 
+            propertyImage.property = addedProperty; 
+
+            await this.propertyImgRepository.save(propertyImage);
+        });
+
+        await Promise.all(imageUploadPromises);    
+    }
+
+    return addedProperty;
 }
-        
-}
+
+}        
+
+

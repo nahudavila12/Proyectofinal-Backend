@@ -5,9 +5,10 @@ import {
   IsNotEmpty, 
   IsOptional, 
   IsString, 
-  Length 
+  Length, 
+  Matches
 } from "class-validator";
-import { RoomDto } from "./createRoom.dto";
+import { CreateRoomDto } from "./createRoom.dto";
 import { PropertyType } from "src/propierties/property.entity";
 import { Owner } from "src/owners/owner.entity";
 
@@ -28,12 +29,14 @@ export class PropertyDto {
   propertyType: PropertyType;
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true }) 
-  propertyImages?: string[];
+    @IsArray()
+    @IsString({ each: true })
+    @Matches(/^data:image\/(png|jpeg|jpg);base64,[A-Za-z0-9+/=]+$/, 
+      { message: 'El texto de imagen debe ser en formato Base64 válido.' })
+    propImg?: (Express.Multer.File)[];
 
   @IsOptional()
   @IsArray()
   @IsArray({ each: true })
-  rooms?: RoomDto[];
+  rooms?: CreateRoomDto[];
 }
