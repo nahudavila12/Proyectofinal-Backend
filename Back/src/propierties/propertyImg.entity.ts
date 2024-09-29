@@ -15,7 +15,7 @@ import {
     @Column()
     img: string;
     
-    @ManyToOne(() => Property, (property) => property.img) 
+    @ManyToOne(() => Property, (property) => property.propImg) 
     @JoinColumn()
     property: Property;
   }

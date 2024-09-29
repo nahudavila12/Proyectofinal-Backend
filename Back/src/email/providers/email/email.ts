@@ -10,7 +10,7 @@ export class Email {
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-      user: 'mekhi.mcdermott@ethereal.email', //crear correo en 'ethereal.email' de prueba
+      user: 'mekhi.mcdermott@ethereal.email', 
       pass: 'dkqUCPwfyxtjCDA5zQ'
     }
   });
@@ -18,14 +18,14 @@ export class Email {
   async sendEmail(from, subjectEmail, sendTo, html) {
     try {
       const info = await this.transporter.sendMail({
-        from: '"Mekhi" <mekhi.mcdermott@ethereal.email>', // sender address
-        to: sendTo, // list of receivers
-        subject: subjectEmail, // Subject line
-        html: html, // html body
+        from: '"Mekhi" <mekhi.mcdermott@ethereal.email>', 
+        to: sendTo, 
+        subject: subjectEmail, 
+        html: html, 
       });
-      // Puedes loguear la información sobre el envío
-      console.log('Message sent: %s', info.messageId); // ID del mensaje
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info)); // URL de vista previa si usas Ethereal
+      
+      console.log('Message sent: %s', info.messageId); 
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info)); 
     } catch (error) {
       throw error;
     }
@@ -35,14 +35,13 @@ export class Email {
     try {
 
       const info = await this.transporter.sendMail({
-        from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-        to: "bar@example.com, baz@example.com", // list of receivers
-        subject: 'Email de prueba', // Subject line
-        html: '<b>Test Email</b>', // html body
+        from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', 
+        to: "bar@example.com, baz@example.com", 
+        subject: 'Email de prueba', 
+        html: '<b>Test Email</b>', 
       });
-      // Puedes loguear la información sobre el envío
-      console.log('Message sent: %s', info.messageId); // ID del mensaje
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info)); // URL de vista previa si usas Ethereal
+      console.log('Message sent: %s', info.messageId); 
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info)); 
     } catch (error) {
       throw error
     }

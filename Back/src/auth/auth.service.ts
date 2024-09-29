@@ -23,11 +23,11 @@ export class AuthService {
       throw new UnauthorizedException('El email y la contraseña son requeridos.');
     }
     const user = await this.usersService.findByEmail(email);
-
-    if (!user) throw new BadRequestException('Credenciales inválidas');
+    
+    if (!user) throw new BadRequestException('Usuario no encontrado');
 
     const validPassword = await bcrypt.compare(password, user.password);
-  
+    
     if (!validPassword) throw new BadRequestException('Credenciales inválidas');
     
     return this.generateTokens(user);
@@ -42,6 +42,7 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
     return await this.usersService.addUser({ ...user, password: hashedPassword });
   }
+
   async googleAuth(req: any) {
     const userProfile = req.user; 
     return this.handleOAuthUser(userProfile);

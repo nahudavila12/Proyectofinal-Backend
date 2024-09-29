@@ -6,7 +6,9 @@ import { User } from '../users/user.entity';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';  
+import { config as dotenvConfig } from 'dotenv';
 
+dotenvConfig()
 
 @Module({
   imports: [

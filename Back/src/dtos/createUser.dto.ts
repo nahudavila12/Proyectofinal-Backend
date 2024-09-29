@@ -67,7 +67,7 @@ export class CreateUserDto {
     {
     message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*',
     })
-    @Length(8, 15, { message: 'La contraseña debe tener entre 8 y 15 caracteres.' })
+    @Length(8, 80, { message: 'La contraseña debe tener entre 8 y 15 caracteres.' })
     password?:string;
 
     /**

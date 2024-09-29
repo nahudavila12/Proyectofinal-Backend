@@ -18,6 +18,7 @@ export class UsersController {
     constructor(
         private readonly userService: UserService,
         private readonly emailService: EmailService
+
     ) {}
 
     @Post('addUser')
@@ -52,3 +53,33 @@ export class UsersController {
         }
     }
 }
+
+
+
+    @Get('allUsers')
+    @HttpCode(200)
+    async getAllUsers(page,limit){
+        return this.userService.getAllUsers(page,limit)
+    }
+
+    getUser(@Param('uuid', UuidValidationPipe) uuid: string) {
+        return this.userService.findByEmail(uuid);
+      }
+
+   
+
+    @Put('bannUser/:uuid')
+    async bannUser(
+        @Param('uuid', UuidValidationPipe) uuid: string
+    ){
+        return await this.userService.bannUser(uuid)
+    }
+
+    @Delete('delete/:uuid')
+    async deleteUser(@Param('id', UuidValidationPipe) id: string) {
+        return await this.userService.deleteUser(id);
+        
+    }
+}
+
+

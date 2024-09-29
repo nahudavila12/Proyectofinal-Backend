@@ -27,10 +27,31 @@ export class Owner {
   bussines_name: string;
 
   @ApiProperty({
+    example: '5-5421654-0',
+    description: 'Numero de identificación del negocio',
+  })
+  @Column({unique: true, nullable: false})
+  bussinesId: string;
+
+  @ApiProperty({
+    example: '54-4546545435',
+    description: 'Numero telefonico del negocio',
+  })
+  @Column({nullable: false})
+  phone: string;
+
+  @ApiProperty({
+    example: 'COMPANI@MAIL.COM',
+    description: 'MAIL del negocio del propietario',
+  })
+  @Column()
+  email: string;
+  
+  @ApiProperty({
     type: () => User,
     description: 'Usuario asociado con el propietario',
   })
-  @OneToOne(() => User, (user) => user.owner)
+  @OneToOne(() => User, (user) => user.owner, { eager: false })
   @JoinColumn()
   user: User;
 
