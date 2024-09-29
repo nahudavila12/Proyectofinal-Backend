@@ -4,6 +4,7 @@ import {
   Column,
   OneToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Profile } from '../profiles/profile.entity';
 // import { OrderDetail } from '../orderDetails/orderDetail.entity';
@@ -93,7 +94,7 @@ export class User {
     type: () => Owner,
     description: 'Propietario relacionado al usuario',
   })
-  @OneToOne(() => Owner, (owner) => owner.user)
+  @OneToOne(() => Owner, (owner) => owner.user, { eager: false })
   owner: Owner;
   
   @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
@@ -111,6 +112,7 @@ export class User {
     description: 'Ordenes del usuario',
   })
   @OneToMany(() => Orders, (orders) => orders.user)
+  @JoinColumn()
   orders: Orders[];
 
   @ApiProperty({
@@ -118,5 +120,6 @@ export class User {
     description: 'Reservas del usuario',
   })
   @OneToMany(() => Reservation, (reservation) => reservation.user)
+  @JoinColumn()
   reservation: Reservation[];
 }

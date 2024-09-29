@@ -1,30 +1,42 @@
 
-import { IsArray, IsEnum, IsOptional, IsString } from "class-validator";
-import { RoomDto } from "./createRoom.dto";
+import { 
+  IsArray, 
+  IsEnum, 
+  IsNotEmpty, 
+  IsOptional, 
+  IsString, 
+  Length, 
+  Matches
+} from "class-validator";
+import { CreateRoomDto } from "./createRoom.dto";
 import { PropertyType } from "src/propierties/property.entity";
-import { User } from "src/users/user.entity";
+import { Owner } from "src/owners/owner.entity";
 
 export class PropertyDto {
+  
+  @IsNotEmpty()
+  @Length(4, 20)
   @IsString()
   name: string;
 
+  @IsNotEmpty()
+  @Length(4, 20)
   @IsString()
   location: string;
 
-  @IsString()
-  owner:User;
-
-
+  @IsNotEmpty()
   @IsEnum(PropertyType)
   propertyType: PropertyType;
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true }) 
-  propertyImages?: string[];
+    @IsArray()
+    @IsString({ each: true })
+    @Matches(/^data:image\/(png|jpeg|jpg);base64,[A-Za-z0-9+/=]+$/, 
+      { message: 'El texto de imagen debe ser en formato Base64 válido.' })
+    propImg?: (Express.Multer.File)[];
 
   @IsOptional()
   @IsArray()
   @IsArray({ each: true })
-  rooms?: RoomDto[];
+  rooms?: CreateRoomDto[];
 }
