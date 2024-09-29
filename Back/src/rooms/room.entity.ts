@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Reservation } from '../reservations/reservation.entity';
-import { Property } from '../propierties/property.entity';
+import { Property } from '../properties/property.entity';
 import { RoomImg } from './roomImg.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { RoomCategory } from './roomCategory.entity';

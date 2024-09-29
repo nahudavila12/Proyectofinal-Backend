@@ -1,7 +1,7 @@
 import { Connection } from 'typeorm';
 import { User, IRol } from '../users/user.entity';
 import { Owner } from '../owners/owner.entity';
-import { Property, PropertyType } from '../propierties/property.entity';
+import { Property, PropertyType } from '../properties/property.entity';
 import { Room } from '../rooms/room.entity';
 import { RoomCategory } from 'src/rooms/roomCategory.entity';
 import { ICategories } from 'src/rooms/roomCategory.entity';

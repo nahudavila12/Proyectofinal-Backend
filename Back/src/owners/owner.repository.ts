@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { Owner } from "./owner.entity";
-import { Property } from "src/propierties/property.entity";
+import { Property } from "src/properties/property.entity";
 import { User } from "src/users/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";

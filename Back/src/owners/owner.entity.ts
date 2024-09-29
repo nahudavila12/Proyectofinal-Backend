@@ -7,7 +7,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { User } from '../users/user.entity';
-import { Property } from '../propierties/property.entity';
+import { Property } from '../properties/property.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('Owners')

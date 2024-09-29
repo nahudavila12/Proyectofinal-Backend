@@ -15,7 +15,7 @@ import { PassportModule } from '@nestjs/passport'
 import { AuthModule } from './auth/auth.module'; 
 import { EmailModule } from './email/email.module';
 import { OwnersModule } from './owners/owner.module';
-import { PropertyModule } from './propierties/property.module';
+import { PropertyModule } from './properties/property.module';
 
 @Module({
   imports: [
