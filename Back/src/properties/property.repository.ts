@@ -138,7 +138,7 @@ async addProperty(uuid: string, property: PropertyDto): Promise<Property | null>
     newProperty.owner = owner;
 
     const addedProperty = await this.propertyRepository.save(newProperty);
-
+    
     return addedProperty;
 }
 

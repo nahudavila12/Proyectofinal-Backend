@@ -51,7 +51,7 @@ export class Owner {
     type: () => User,
     description: 'Usuario asociado con el propietario',
   })
-  @OneToOne(() => User, (user) => user.owner, { eager: false })
+  @OneToOne(() => User, (user) => user.owner, { eager: true })
   @JoinColumn()
   user: User;
 

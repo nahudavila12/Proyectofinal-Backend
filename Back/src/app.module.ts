@@ -16,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { OwnersModule } from './owners/owner.module';
 import { PropertyModule } from './properties/property.module';
+import { RoomsModule } from './rooms/room.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { PropertyModule } from './properties/property.module';
     AuthModule,
     EmailModule,
     OwnersModule,
-    PropertyModule
+    PropertyModule,
+    RoomsModule
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService, SeedCommand],

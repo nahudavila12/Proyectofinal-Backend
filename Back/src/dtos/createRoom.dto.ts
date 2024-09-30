@@ -11,7 +11,7 @@ export class CreateRoomDto {
 
   @IsOptional()
   @IsEnum(ICategories)
-  category?: ICategories;
+  roomCategory?: ICategories;
 
   @IsNumber()
   @Min(1) 
