@@ -9,7 +9,7 @@ import {
   Matches
 } from "class-validator";
 import { CreateRoomDto } from "./createRoom.dto";
-import { PropertyType } from "src/propierties/property.entity";
+import { PropertyType } from "src/properties/property.entity";
 import { Owner } from "src/owners/owner.entity";
 
 export class PropertyDto {
@@ -29,11 +29,9 @@ export class PropertyDto {
   propertyType: PropertyType;
 
   @IsOptional()
-    @IsArray()
-    @IsString({ each: true })
-    @Matches(/^data:image\/(png|jpeg|jpg);base64,[A-Za-z0-9+/=]+$/, 
-      { message: 'El texto de imagen debe ser en formato Base64 válido.' })
-    propImg?: (Express.Multer.File)[];
+  @IsArray()
+  @IsString({ each: true })
+  propImg?: (Express.Multer.File)[];
 
   @IsOptional()
   @IsArray()

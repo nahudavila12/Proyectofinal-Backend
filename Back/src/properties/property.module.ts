@@ -9,13 +9,17 @@ import { PropertyController } from './property.controller';
 import { Owner } from 'src/owners/owner.entity';
 import { PropertyImg } from './propertyImg.entity';
 import { CloudinaryService } from 'src/commons/cloudinary.service';
+import { Room } from 'src/rooms/room.entity';
+import { RoomImg } from 'src/rooms/roomImg.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Property, 
       Owner, 
-      PropertyImg
+      PropertyImg,
+      Room,
+      RoomImg
     ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],

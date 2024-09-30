@@ -7,7 +7,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { User } from '../users/user.entity';
-import { Property } from '../propierties/property.entity';
+import { Property } from '../properties/property.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('Owners')
@@ -51,7 +51,7 @@ export class Owner {
     type: () => User,
     description: 'Usuario asociado con el propietario',
   })
-  @OneToOne(() => User, (user) => user.owner, { eager: false })
+  @OneToOne(() => User, (user) => user.owner, { eager: true })
   @JoinColumn()
   user: User;
 

@@ -4,7 +4,7 @@ import { FileUploadService } from './file-upload.service';
 import { FileUploadRepository } from './file-upload.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoomImg } from '../rooms/roomImg.entity'; 
-import { PropertyImg } from '../propierties/propertyImg.entity'; // Asegúrate de que esta ruta sea correcta
+import { PropertyImg } from '../properties/propertyImg.entity'; // Asegúrate de que esta ruta sea correcta
 import { CloudinaryService } from '../commons/cloudinary.service';
 
 @Module({

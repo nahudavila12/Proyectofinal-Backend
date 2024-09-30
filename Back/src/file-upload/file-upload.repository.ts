@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomImg } from '../rooms/roomImg.entity';
-import { PropertyImg } from '../propierties/propertyImg.entity';
+import { PropertyImg } from '../properties/propertyImg.entity';
 import { Room } from '../rooms/room.entity';
-import { Property } from '../propierties/property.entity';
+import { Property } from '../properties/property.entity';
 
 @Injectable()
 export class FileUploadRepository {

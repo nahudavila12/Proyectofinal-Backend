@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { Owner } from "./owner.entity";
-import { Property } from "src/propierties/property.entity";
+import { Property } from "src/properties/property.entity";
 import { User } from "src/users/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -26,16 +26,13 @@ export class OwnerRepository{
         if (existingOwner) throw new ConflictException('Este ID de negocio ya está registrado.');
           
         const addOwner = new Owner()
-        addOwner.bussines_name = newOwner.bussines_name
-        addOwner.bussinesId = newOwner.bussinesId
-        addOwner.email = newOwner.email
-        addOwner.phone = newOwner.phone
+        Object.assign(addOwner, newOwner)
         addOwner.user = foundUser
 
-        await this.ownerRepository.save(addOwner);
+        const returnedOwner = await this.ownerRepository.save(addOwner);
 
-        const {bussinesId, ...returnedOwner } = addOwner;
-
-        return returnedOwner;
+        const { bussines_name, email, phone } = returnedOwner;
+    
+        return { bussines_name, email, phone };
     }
 }

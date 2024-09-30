@@ -6,10 +6,10 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Reservation } from '../reservations/reservation.entity';
-import { Property } from '../propierties/property.entity';
+import { Property } from '../properties/property.entity';
 import { RoomImg } from './roomImg.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { RoomCategory } from './roomCategory.entity';
+import { ICategories, RoomCategory } from './roomCategory.entity';
 import { RoomService } from './roomService.entity'
 
 export enum IRoomState {
@@ -36,8 +36,9 @@ export class Room {
     example: 'STANDARD',
     description: 'Categoría de la habitación',
   })
-  @ManyToOne(() => RoomCategory, { nullable: true })
-  category: RoomCategory;
+
+  @Column({type: 'enum', enum: ICategories})
+  roomCategory: ICategories
     
   @ApiProperty({ example: 2, description: 'Capacidad de la habitación' })
   @Column()
@@ -60,7 +61,7 @@ export class Room {
     description: 'Imágenes de la habitación',
   })
   @OneToMany(() => RoomImg, (roomImg) => roomImg.room)
-  img: RoomImg[];
+  roomImages?: RoomImg[];
 
   @ApiProperty({
     type: () => [Reservation],

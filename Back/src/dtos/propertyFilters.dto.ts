@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
-import { PropertyType } from "src/propierties/property.entity";
+import { PropertyType } from "src/properties/property.entity";
 
 export class PropertyFilters {
     @IsOptional()

@@ -18,6 +18,4 @@ export class RoomCategory {
     @Column({ nullable: true })
     description: string;
 
-    @OneToMany(() => Room, room => room.category)
-    rooms: Room[];
 }

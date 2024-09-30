@@ -27,11 +27,16 @@ export class UserRepository {
         const user = this.userRepository.create(newUser);  
         const savedUser = await this.userRepository.save(user);  
         
-        const profile = this.profileRepository.create({
-            user: savedUser,
-            userIMG: imageUrl,  // Asigna la URL de Cloudinary
-        });
-        await this.profileRepository.save(profile);  
+
+        const addUser = await this.userRepository.create(newUser)
+            await this.userRepository.save(addUser);
+            
+        const profileUser: Profile = new Profile
+        Object.assign(profileUser, newUser)
+        profileUser.user = addUser
+        
+        await this.profileRepository.save(profileUser) 
+
 
         return savedUser;  
     }

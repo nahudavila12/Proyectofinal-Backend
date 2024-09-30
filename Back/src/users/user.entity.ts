@@ -94,7 +94,7 @@ export class User {
     type: () => Owner,
     description: 'Propietario relacionado al usuario',
   })
-  @OneToOne(() => Owner, (owner) => owner.user, { eager: false })
+  @OneToOne(() => Owner, (owner) => owner.user, {eager:false})
   owner: Owner;
   
   @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })

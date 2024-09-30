@@ -1,7 +1,7 @@
 import { Connection } from 'typeorm';
 import { User, IRol } from '../users/user.entity';
 import { Owner } from '../owners/owner.entity';
-import { Property, PropertyType } from '../propierties/property.entity';
+import { Property, PropertyType } from '../properties/property.entity';
 import { Room } from '../rooms/room.entity';
 import { RoomCategory } from 'src/rooms/roomCategory.entity';
 import { ICategories } from 'src/rooms/roomCategory.entity';
@@ -62,7 +62,7 @@ export async function seedDatabase(connection: Connection) {
 
   const room1 = new Room();
   room1.room_number = 101;
-  room1.category = savedRoomCategory;
+  room1.roomCategory = savedRoomCategory;
   room1.capacity = 2;
   room1.price_per_day = 150.0;
   room1.property = property1;
