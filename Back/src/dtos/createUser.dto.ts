@@ -108,5 +108,7 @@ export class CreateUserDto {
     @Length(3, 20, { message: 'El pais debe tener entre 5 y 20 caracteres.' })
     country?:string;
 
+    @IsEmpty()
+    imageUrl?: string;
 
 }
