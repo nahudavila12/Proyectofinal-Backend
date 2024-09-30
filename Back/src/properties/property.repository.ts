@@ -132,29 +132,12 @@ async addProperty(uuid: string, property: PropertyDto): Promise<Property | null>
     const foundProperty = await this.propertyRepository.findOneBy({ name });
     if (foundProperty) throw new ConflictException('Propiedad ya existente');
 
-    const newProperty = new Property();
+    const newProperty = new Property()
+    
+    Object.assign(newProperty, property)
     newProperty.owner = owner;
-    newProperty.name = property.name;
-    newProperty.location = property.location;
-    newProperty.propertyType = property.propertyType;
 
     const addedProperty = await this.propertyRepository.save(newProperty);
-
-    if (propImg && propImg.length > 0) {
-        const imageUploadPromises = propImg.map(async (image) => {
-            let uploadResult;
-
-            uploadResult = await this.cloudinaryService.uploadImage(image);
-
-            const propertyImage = new PropertyImg(); 
-            propertyImage.img = uploadResult.secure_url; 
-            propertyImage.property = addedProperty; 
-
-            await this.propertyImgRepository.save(propertyImage);
-        });
-
-        await Promise.all(imageUploadPromises);    
-    }
 
     return addedProperty;
 }
