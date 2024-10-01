@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Room } from 'src/rooms/room.entity';
-import { OrderDetail } from 'src/orderDetails/orderDetail.entity';
+import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
 import { User } from 'src/users/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -39,19 +39,19 @@ export class Reservation {
     example: '2024-09-20T15:00:00Z',
     description: 'Fecha de check-in',
   })
-  @Column()
-  checkIn: Date;
+  @Column({nullable: false})
+  checkin: Date;
 
   @ApiProperty({
     example: '2024-09-25T11:00:00Z',
     description: 'Fecha de check-out',
   })
-  @Column()
-  checkOut: Date;
+  @Column({nullable: false})
+  checkout: Date;
 
   @ApiProperty({
-    type: () => User,
-    description: 'Usuario que hizo la reservación',
+  type: () => User,
+  description: 'Usuario que hizo la reservación',
   })
   @ManyToOne(() => User, (user) => user.reservation)
   @JoinColumn()

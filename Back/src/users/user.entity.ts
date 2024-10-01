@@ -7,11 +7,11 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Profile } from '../profiles/profile.entity';
-// import { OrderDetail } from '../orderDetails/orderDetail.entity';
+import { OrderDetail } from '../orderDetail/orderDetail.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Orders } from 'src/orders/order.entity';
+import { Orders } from 'src/orderDetail/order.entity';
 
 export enum IRol {
   User = 'user',
@@ -100,21 +100,17 @@ export class User {
   @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
   @OneToOne(() => Profile, (profile) => profile.user)
   profile: Profile;
-  // @ApiProperty({
-  //   type: () => [OrderDetail],
-  //   description: 'Detalles de órdenes del usuario',
-  // })
-  // @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
-  // orderDetail: OrderDetail[];
-
   @ApiProperty({
-    type: () => [Orders],
-    description: 'Ordenes del usuario',
+    type: () => [OrderDetail],
+    description: 'Detalles de órdenes del usuario',
   })
-  @OneToMany(() => Orders, (orders) => orders.user)
-  @JoinColumn()
-  orders: Orders[];
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
+  orderDetail: OrderDetail[];
 
+<<<<<<< HEAD
+  @OneToMany(()=> Reservation, (reservations) => reservations.user)
+  reservation: Reservation[]
+=======
   @ApiProperty({
     type: () => [Reservation],
     description: 'Reservas del usuario',
@@ -124,4 +120,8 @@ export class User {
   reservation: Reservation[];
 
 
+>>>>>>> c5d3039ebf8bf6377899f6edca659ccd95a51f4e
 }
+
+  
+  

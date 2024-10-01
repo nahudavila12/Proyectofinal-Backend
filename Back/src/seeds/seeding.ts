@@ -7,7 +7,7 @@ import { RoomCategory } from 'src/rooms/roomCategory.entity';
 import { ICategories } from 'src/rooms/roomCategory.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Payment } from '../payments/payment.entity';
-import { OrderDetail } from '../orderDetails/orderDetail.entity';
+import { OrderDetail } from '../orderDetail/orderDetail.entity';
 import { IState } from '../payments/payment.entity';
 
 export async function seedDatabase(connection: Connection) {
@@ -72,8 +72,8 @@ export async function seedDatabase(connection: Connection) {
 
   // Crear reservación
   const reservation1 = new Reservation();
-  reservation1.checkIn = new Date('2024-09-20');
-  reservation1.checkOut = new Date('2024-09-25');
+  reservation1.checkin = new Date('2024-09-20');
+  reservation1.checkout = new Date('2024-09-25');
   reservation1.user = user1;
   reservation1.room = room1;
 
