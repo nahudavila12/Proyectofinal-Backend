@@ -107,8 +107,20 @@ export class User {
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
   orderDetail: OrderDetail[];
 
+<<<<<<< HEAD
   @OneToMany(()=> Reservation, (reservations) => reservations.user)
   reservation: Reservation[]
+=======
+  @ApiProperty({
+    type: () => [Reservation],
+    description: 'Reservas del usuario',
+  })
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  @JoinColumn()
+  reservation: Reservation[];
+
+
+>>>>>>> c5d3039ebf8bf6377899f6edca659ccd95a51f4e
 }
 
   
