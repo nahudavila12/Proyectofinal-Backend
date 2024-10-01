@@ -38,12 +38,10 @@ export class UserService {
             throw new ConflictException('El email ya está en uso');
         }
 
-        if (newUser.password !== newUser.confirmPassword) {
-            throw new ConflictException('Las contraseñas no coinciden');
-        }
+
 
         try {
-            // Crear un nuevo usuario con todos los campos requeridos
+         
             const user = new User(); 
             user.firstName = newUser.firstName;  // Asignar firstName
             user.lastName = newUser.lastName;    // Asignar lastName
