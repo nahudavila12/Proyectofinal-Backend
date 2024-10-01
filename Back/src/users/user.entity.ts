@@ -11,7 +11,7 @@ import { OrderDetail } from '../orderDetail/orderDetail.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Orders } from 'src/orderDetail/order.entity';
+
 
 export enum IRol {
   User = 'user',
@@ -107,10 +107,6 @@ export class User {
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
   orderDetail: OrderDetail[];
 
-<<<<<<< HEAD
-  @OneToMany(()=> Reservation, (reservations) => reservations.user)
-  reservation: Reservation[]
-=======
   @ApiProperty({
     type: () => [Reservation],
     description: 'Reservas del usuario',
@@ -120,7 +116,6 @@ export class User {
   reservation: Reservation[];
 
 
->>>>>>> c5d3039ebf8bf6377899f6edca659ccd95a51f4e
 }
 
   

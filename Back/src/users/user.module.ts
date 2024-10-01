@@ -11,23 +11,9 @@ import { CloudinaryService } from '../commons/cloudinary.service'; // Importaci�
 import { FileUploadModule } from '../file-upload/file-upload.module'; // Importación del módulo de carga de archivos
 
 @Module({
-<<<<<<< HEAD
-  imports: [TypeOrmModule.forFeature([
-    User, 
-    Profile
-  ]), EmailModule
-], 
-  controllers: [UsersController],
-  providers: [
-    UserService, 
-    UserRepository, 
-    ProfileRepository
-  ],
-=======
   imports: [TypeOrmModule.forFeature([User, Profile]), EmailModule, FileUploadModule], // Agregado FileUploadModule
   controllers: [UsersController],
   providers: [UserService, UserRepository, ProfileRepository, CloudinaryService], // Agregado CloudinaryService
->>>>>>> c5d3039ebf8bf6377899f6edca659ccd95a51f4e
   exports: [UserService]
 })
 export class UserModule {}

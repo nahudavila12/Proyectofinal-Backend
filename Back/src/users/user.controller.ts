@@ -2,23 +2,29 @@ import {
     Body,
     Controller, 
     Post,
+    Get,
+    Put,
+    Delete,
+    HttpCode,
+    Param,
     UseInterceptors,
     UploadedFile,
     InternalServerErrorException,
-    ConflictException
+    ConflictException,
+    Query
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 import { EmailService } from '../email/services/email/email.service';
 import { Template } from 'src/email/enums/template.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UuidValidationPipe } from './pipe/uuid-validation.pipe'; 
 
 @Controller('users')
 export class UsersController {
     constructor(
         private readonly userService: UserService,
         private readonly emailService: EmailService
-
     ) {}
 
     @Post('addUser')
@@ -52,34 +58,34 @@ export class UsersController {
             throw new InternalServerErrorException('Error al agregar el usuario.', error.message);
         }
     }
-}
-
-
 
     @Get('allUsers')
     @HttpCode(200)
-    async getAllUsers(page,limit){
-        return this.userService.getAllUsers(page,limit)
+    async getAllUsers(
+        @Query('page') page: number, 
+        @Query('limit') limit: number
+    ) {
+        return this.userService.getAllUsers(page, limit);
     }
 
-    getUser(@Param('uuid', UuidValidationPipe) uuid: string) {
+    @Get(':uuid')
+    async getUser(
+        @Param('uuid', UuidValidationPipe) uuid: string
+    ) {
         return this.userService.findByEmail(uuid);
-      }
-
-   
+    }
 
     @Put('bannUser/:uuid')
     async bannUser(
         @Param('uuid', UuidValidationPipe) uuid: string
-    ){
-        return await this.userService.bannUser(uuid)
+    ) {
+        return await this.userService.bannUser(uuid);
     }
 
-    @Delete('delete/:uuid')
-    async deleteUser(@Param('id', UuidValidationPipe) id: string) {
+    @Delete('delete/:id')
+    async deleteUser(
+        @Param('id', UuidValidationPipe) id: string
+    ) {
         return await this.userService.deleteUser(id);
-        
     }
 }
-
-

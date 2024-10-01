@@ -11,7 +11,7 @@ import { OrderDetailAdditionalService } from '../additionalsServices/orderDetail
 import { User } from '../users/user.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Orders } from 'src/orderDetail/order.entity';
+
 
 @Entity('Orders_details')
 export class OrderDetail {
