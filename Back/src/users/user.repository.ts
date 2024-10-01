@@ -23,7 +23,7 @@ export class UserRepository {
         return users;
     }
 
-    async createUser(newUser: CreateUserDto, imageUrl: string): Promise<User> {
+    async createUser(newUser: CreateUserDto): Promise<User> {
         const user = this.userRepository.create(newUser);  
         const savedUser = await this.userRepository.save(user);  
         
