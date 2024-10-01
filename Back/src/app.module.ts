@@ -32,11 +32,10 @@ import { ReservationsModule } from './reservations/reservations.module';
     }),
     PassportModule.register({ session: false }),
     JwtModule.register({
-        secret: process.env.JWT_SECRET, 
-        signOptions: { expiresIn: '60s' },
+      secret: process.env.JWT_SECRET, 
+      signOptions: { expiresIn: '60s' },
     }),
     UserModule,
-//    OrdersModule,
     FileUploadModule,
     AuthModule,
     EmailModule,
