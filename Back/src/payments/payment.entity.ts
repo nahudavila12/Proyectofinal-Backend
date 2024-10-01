@@ -5,7 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { OrderDetail } from '../orderDetails/orderDetail.entity';
+import { OrderDetail } from '../orderDetail/orderDetail.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum IState {

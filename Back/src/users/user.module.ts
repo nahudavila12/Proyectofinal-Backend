@@ -10,9 +10,17 @@ import { EmailModule } from 'src/email/email.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Profile]), EmailModule], 
+  imports: [TypeOrmModule.forFeature([
+    User, 
+    Profile
+  ]), EmailModule
+], 
   controllers: [UsersController],
-  providers: [UserService, UserRepository, ProfileRepository],
+  providers: [
+    UserService, 
+    UserRepository, 
+    ProfileRepository
+  ],
   exports: [UserService]
 })
 export class UserModule {}  

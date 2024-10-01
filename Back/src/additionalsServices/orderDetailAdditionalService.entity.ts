@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 import { AdditionalService } from './additionalService.entity';
-import { OrderDetail } from '../orderDetails/orderDetail.entity';
+import { OrderDetail } from '../orderDetail/orderDetail.entity';
 
 @Entity('AdditionalsServicesOrderDetail')
 export class OrderDetailAdditionalService {

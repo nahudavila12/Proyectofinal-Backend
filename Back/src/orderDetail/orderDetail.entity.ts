@@ -8,10 +8,10 @@ import {
 } from 'typeorm';
 import { Payment } from '../payments/payment.entity';
 import { OrderDetailAdditionalService } from '../additionalsServices/orderDetailAdditionalService.entity';
-// import { User } from '../users/user.entity';
+import { User } from '../users/user.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Orders } from 'src/orders/order.entity';
+import { Orders } from 'src/orderDetail/order.entity';
 
 @Entity('Orders_details')
 export class OrderDetail {
@@ -42,7 +42,7 @@ export class OrderDetail {
     nullable: true,
   })
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  additionals_services_total: number;
+  additionals_services_total?: number;
 
   @ApiProperty({ example: 200.0, description: 'Total del pedido' })
   @Column({ type: 'decimal', precision: 10, scale: 2 })
@@ -52,7 +52,7 @@ export class OrderDetail {
     type: () => Payment,
     description: 'Pago asociado al detalle del pedido',
   })
-  @OneToOne(() => Payment, (payment) => payment.orderDetail)
+  @OneToOne(() => Payment, (payment) => payment.orderDetail )
   @JoinColumn()
   payment: Payment;
 
@@ -69,20 +69,13 @@ export class OrderDetail {
   @JoinColumn()
   additionalServiceOrderDetail?: OrderDetailAdditionalService; 
 
-  // @ApiProperty({
-  //   type: () => User,
-  //   description: 'Usuario asociado con el detalle del pedido',
-  // })
-  // @ManyToOne(() => User, (user) => user.orderDetail)
-  // @JoinColumn()
-  // user: User;
-
-  @ApiProperty({ 
-    type: () => Orders,
-    description: 'Orden asociado con el detalle del pedido' })
-  @OneToOne(() => Orders, (orders) => orders.orderDetails)
-  @JoinColumn({name: 'order_id'})
-  orders: Orders;
+  @ApiProperty({
+    type: () => User,
+    description: 'Usuario asociado con el detalle del pedido',
+  })
+  @ManyToOne(() => User, (user) => user.orderDetail)
+  @JoinColumn()
+  user: User;
 
   @ApiProperty({
     type: () => Reservation,

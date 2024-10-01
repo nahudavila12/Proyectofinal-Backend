@@ -7,13 +7,13 @@ import {
   Patch,
   Delete,
   UseGuards,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
-
 import {
   CreateReservationDto,
   UpdateReservationDto,
-} from 'src/dtos/createReservation.dto';
+} from '../dtos/createReservation.dto';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/guards/roles.decorator';
 import { IRol } from 'src/users/user.entity';
@@ -22,15 +22,12 @@ import { IRol } from 'src/users/user.entity';
 export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
 
-  @Post()
-  createReservation(
+  @Post('addReservation/:uuid')
+  async addReservation(
     @Body() createReservationDto: CreateReservationDto,
-    @Param('userId') userId: string,
+    @Param('uuid', ParseUUIDPipe) userId: string,
   ) {
-    return this.reservationService.createReservation(
-      createReservationDto,
-      userId,
-    );
+    return await this.reservationService.addReservation(createReservationDto, userId);
   }
 
   @Get('user/:userId')

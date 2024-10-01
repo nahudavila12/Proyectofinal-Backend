@@ -1,6 +1,6 @@
 
 import { ApiProperty } from "@nestjs/swagger";
-import { OrderDetail } from "src/orderDetails/orderDetail.entity";
+import { OrderDetail } from "src/orderDetail/orderDetail.entity";
 import { User } from "src/users/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -22,7 +22,4 @@ export class Orders {
     @OneToOne(() => OrderDetail, (orderDetails) => orderDetails.orders)
     orderDetails: OrderDetail;
 
-    @ManyToOne(() => User, (user) => user.orders)
-    @JoinColumn({name: 'user_id'})
-    user: User;
 }

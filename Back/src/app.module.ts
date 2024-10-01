@@ -8,7 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './Config/typeOrm.config';
 import { UserModule } from './users/user.module';
-import { OrdersModule } from './orders/orders.module';
+//import { OrdersModule } from './orderDetail/orders.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport'
@@ -17,6 +17,7 @@ import { EmailModule } from './email/email.module';
 import { OwnersModule } from './owners/owner.module';
 import { PropertyModule } from './properties/property.module';
 import { RoomsModule } from './rooms/room.module';
+import { ReservationsModule } from './reservations/reservations.module';
 
 @Module({
   imports: [
@@ -35,13 +36,14 @@ import { RoomsModule } from './rooms/room.module';
         signOptions: { expiresIn: '60s' },
     }),
     UserModule,
-    OrdersModule,
+//    OrdersModule,
     FileUploadModule,
     AuthModule,
     EmailModule,
     OwnersModule,
     PropertyModule,
-    RoomsModule
+    RoomsModule,
+    ReservationsModule
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService, SeedCommand],
