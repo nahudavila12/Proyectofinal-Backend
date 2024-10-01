@@ -76,7 +76,7 @@ export class UserService {
                     user: savedUser,
                     userIMG: imageUrl,
                     user_name: savedUser.user_name,
-                    mail: savedUser.email,
+                    email: savedUser.email,
                     phone: savedUser.phone,
                     country: savedUser.country,
                     address: savedUser.address,
