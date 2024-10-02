@@ -28,6 +28,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/typeorm": "^10.0.2",
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "axios": "^1.7.7",
     "back": "file:",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
