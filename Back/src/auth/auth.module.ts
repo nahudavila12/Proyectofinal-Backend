@@ -7,6 +7,7 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';  
 import { config as dotenvConfig } from 'dotenv';
+import { CloudinaryModule } from 'src/commons/cloudinary.module';
 
 dotenvConfig()
 
@@ -19,6 +20,7 @@ dotenvConfig()
       secret: process.env.JWT_SECRET, 
       signOptions: { expiresIn: '60s'  }, 
     }),
+    CloudinaryModule
   ],
   controllers: [AuthController],
   providers: [AuthService],

@@ -9,12 +9,14 @@ import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
+import { CloudinaryService } from 'src/commons/cloudinary.service'; // Importar CloudinaryService
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async signIn(loginUserDto: LoginUserDto) {
@@ -33,15 +35,28 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  async signUp(user: CreateUserDto) {
-    const { email, password } = user;
+  async signUp(user: CreateUserDto, file?: Express.Multer.File) {
+    const { email } = user;
 
     const foundUser = await this.usersService.findByEmail(email);
     if (foundUser) throw new BadRequestException('El email ya se encuentra registrado');
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    return await this.usersService.addUser({ ...user, password: hashedPassword });
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const createdUser = await this.usersService.addUser({ ...user, password: hashedPassword });
+
+    // Cargar la imagen a Cloudinary si existe
+    let userImageUrl = '';
+    if (file) {
+      const uploadResult = await this.cloudinaryService.uploadImage(file);
+      userImageUrl = uploadResult.secure_url;
+    }
+
+    // Actualizar el perfil del usuario con la URL de la imagen
+    await this.usersService.updateUserProfileImage(createdUser.uuid, userImageUrl);
+
+    return createdUser; // Retornar el usuario creado
   }
+
 
   async googleAuth(req: any) {
     const userProfile = req.user; 
