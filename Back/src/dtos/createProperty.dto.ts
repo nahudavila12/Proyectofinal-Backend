@@ -5,12 +5,11 @@ import {
   IsNotEmpty, 
   IsOptional, 
   IsString, 
+  IsUUID, 
   Length, 
-  Matches
 } from "class-validator";
 import { CreateRoomDto } from "./createRoom.dto";
 import { PropertyType } from "src/properties/property.entity";
-import { Owner } from "src/owners/owner.entity";
 
 export class PropertyDto {
   
@@ -23,6 +22,10 @@ export class PropertyDto {
   @Length(4, 20)
   @IsString()
   location: string;
+
+
+  @IsUUID()
+  owner: string;
 
   @IsNotEmpty()
   @IsEnum(PropertyType)

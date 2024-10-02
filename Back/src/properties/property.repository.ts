@@ -1,12 +1,10 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Property } from "./property.entity";
-import * as propertyData from '../../data.json';
 import { Repository } from "typeorm";
 import {  Room } from "src/rooms/room.entity";
 import { PropertyImg } from "./propertyImg.entity";
 import { RoomImg } from "src/rooms/roomImg.entity";
-import { RoomService } from "src/rooms/roomService.entity";
 import { Owner } from "src/owners/owner.entity";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { PropertyDto } from "src/dtos/createProperty.dto";
@@ -30,20 +28,23 @@ export class PropertyRepository {
         private readonly cloudinaryService: CloudinaryService
     ) {}
 
-    async getPropierties(): Promise<Property[]> {
-        return this.propertyRepository.find();
+    async getProperties(): Promise<Property[]> {
+        return this.propertyRepository.find({
+            relations: [ 'room'], 
+        });
     }
-
     async getPropertyById(uuid: string): Promise<Property> {
-        const property = await this.propertyRepository.findOne({ where: { uuid } });
-
-        if (!property) {
-            throw new NotFoundException(`Alojamiento no existe`);
-        }
-
-        return property;
+      const property = await this.propertyRepository.findOne({
+          where: { uuid },
+          relations: [ 'room'], 
+      });
+    
+      if (!property) {
+          throw new NotFoundException(`Propiedad con ${uuid} no encontrado`);
+      }
+    
+      return property;
     }
-
 
     async removeProperty(uuid: string): Promise<string> {
       const property = await this.propertyRepository.findOne({ where: { uuid } });
@@ -127,7 +128,7 @@ async addProperty(uuid: string, property: PropertyDto): Promise<Property | null>
     const owner = await this.ownerRepository.findOneBy({ uuid });
     if (!owner) throw new NotFoundException('Propietario no encontrado');
 
-    const { name, propImg } = property;
+    const { name} = property;
 
     const foundProperty = await this.propertyRepository.findOneBy({ name });
     if (foundProperty) throw new ConflictException('Propiedad ya existente');

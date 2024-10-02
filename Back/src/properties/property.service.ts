@@ -17,17 +17,16 @@ export class PropertyService {
   ) {}
 
   async getProperties(): Promise<Property[]> {
-    return this.propiertiesRepository.getPropierties();
-  }
-  
-  async getPropertyById(uuid: string): Promise<Property> {
-    const property = await this.propiertiesRepository.getPropertyById(uuid);
-    if (!property) {
-      throw new NotFoundException(`Propiedad con  ${uuid} no encontrado`);
-    }
-    return property;
-  }
+    return this.propiertiesRepository.getProperties(); 
+}
 
+async getPropertyById(uuid: string): Promise<Property> {
+    const property = await this.propiertiesRepository.getPropertyById(uuid); 
+    if (!property) {
+        throw new NotFoundException(`Propiedad con ${uuid} no encontrado`);
+    }
+    return property; 
+}
   async removeProperty(uuid: string): Promise<string> {
     try {
       return await this.propiertiesRepository.removeProperty(uuid);
