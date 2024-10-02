@@ -38,19 +38,16 @@ export class UserService {
             throw new ConflictException('El email ya está en uso');
         }
 
-
-
         try {
-         
             const user = new User(); 
-            user.firstName = newUser.firstName;  // Asignar firstName
-            user.lastName = newUser.lastName;    // Asignar lastName
-            user.user_name = newUser.user_name;  // Asignar user_name
-            user.email = newUser.email;          // Asignar email
-            user.password = newUser.password;    // Asignar password
-            user.address = newUser.address;      // Asignar address
-            user.phone = newUser.phone;          // Asignar phone
-            user.country = newUser.country;      // Asignar country
+            user.firstName = newUser.firstName;  
+            user.lastName = newUser.lastName;    
+            user.user_name = newUser.user_name;  
+            user.email = newUser.email;          
+            user.password = newUser.password;    
+            user.address = newUser.address;      
+            user.phone = newUser.phone;          
+            user.country = newUser.country;      
             user.birthday = newUser.birthday;
 
             const savedUser = await this.userRepository.save(user); 
@@ -69,8 +66,7 @@ export class UserService {
                 profile.userIMG = imageUrl; 
                 await this.profileRepository.save(profile);
             } else {
-                // Crear un nuevo perfil si no existe
-                const newProfile = await this.profileRepository.createProfile({
+                const newProfile = await this.profileRepository.create({
                     user: savedUser,
                     userIMG: imageUrl,
                     user_name: savedUser.user_name,
@@ -103,6 +99,20 @@ export class UserService {
                 error.message
             );
         }
+    }
+
+    // Nuevo método para actualizar la imagen del perfil
+    async updateUserProfileImage(userUuid: string, userImageUrl: string): Promise<void> {
+        const profile = await this.profileRepository.findOne({
+            where: { user: { uuid: userUuid } },
+        });
+
+        if (!profile) {
+            throw new NotFoundException('Perfil no encontrado para el usuario.');
+        }
+
+        profile.userIMG = userImageUrl;
+        await this.profileRepository.save(profile);
     }
 
     async deleteUser(uuid: string) {

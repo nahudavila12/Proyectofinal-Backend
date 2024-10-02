@@ -1,9 +1,10 @@
-import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Req, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDto } from '../dtos/loginUser.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/dtos/CreateUser.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -20,9 +21,14 @@ export class AuthController {
   @ApiOperation({summary: 'signUp / Register'})
   @ApiResponse({status:200, description:'User created correctly'})
   @Post('signup')
-  async signUp(@Body() createUserDto: CreateUserDto) {
-    return this.authService.signUp(createUserDto);
+  @UseInterceptors(FileInterceptor('file')) // Añadir interceptor para manejar archivos
+  async signUp(
+    @Body() createUserDto: CreateUserDto,
+    @UploadedFile() file?: Express.Multer.File // Recibir el archivo
+  ) {
+    return this.authService.signUp(createUserDto, file); // Pasar el archivo a signUp
   }
+
 
   @ApiOperation({summary: 'Login with Google'})
   @Get('google')
