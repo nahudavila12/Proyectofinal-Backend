@@ -9,7 +9,7 @@ import { Reservation } from '../reservations/reservation.entity';
 import { Property } from '../properties/property.entity';
 import { RoomImg } from './roomImg.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { ICategories, RoomCategory } from './roomCategory.entity';
+import { ICategories} from './roomCategory.entity';
 import { RoomService } from './roomService.entity'
 
 export enum IRoomState {
@@ -37,8 +37,8 @@ export class Room {
     description: 'Categoría de la habitación',
   })
 
-  @Column({type: 'enum', enum: ICategories})
-  roomCategory: ICategories
+  @Column({type: 'enum', enum: ICategories,nullable:true})
+  roomCategory?: ICategories
     
   @ApiProperty({ example: 2, description: 'Capacidad de la habitación' })
   @Column()

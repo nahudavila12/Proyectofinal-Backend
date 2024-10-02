@@ -30,7 +30,7 @@ export class Property {
     example: 'Hotel California',
     description: 'Nombre de la propiedad',
   })
-  @Column({ unique: true, nullable: false })
+  @Column({ nullable: false })
   name: string;
 
   @ApiProperty({

@@ -9,12 +9,15 @@ import {
   ParseUUIDPipe, 
   Patch, 
   Post, 
-  Query
+  Query,
+  UploadedFiles,
+  UseInterceptors
 } from "@nestjs/common";
 import { PropertyService } from "./property.service";
 import { Property } from "./property.entity";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { PropertyDto } from "src/dtos/createProperty.dto";
+import { FilesInterceptor } from "@nestjs/platform-express";
 
 
 @Controller('properties')
@@ -22,17 +25,16 @@ export class PropertyController{
   constructor(private readonly propertyService: PropertyService){}
 
 
-  @Get()
+  @Get() 
   async getProperties(): Promise<Property[]> {
-    return this.propertyService.getProperties();
+      return this.propertyService.getProperties(); 
   }
-
 
   @Get(':uuid') 
-  async getPropertyById(@Param('uuid', ParseUUIDPipe) uuid: string) {
-    return this.propertyService.getPropertyById(uuid);
+  async getPropertyById(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<Property> {
+      return this.propertyService.getPropertyById(uuid); 
   }
-  
+
   @Delete(':uuid') 
   async removeProperty(@Param('uuid') uuid: string) {
     try {
@@ -101,10 +103,13 @@ export class PropertyController{
   }
 
   @Post('addProperty/:id')
+  @UseInterceptors(FilesInterceptor('propImg')) // Cambia para permitir múltiples imágenes
   async addProperty(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body()newProperty: PropertyDto
-  ){
-    return await this.propertyService.addProperty(id, newProperty)
+    @UploadedFiles() files: Express.Multer.File[], // Recibe los archivos de imagen
+    @Body() newProperty: PropertyDto
+  ) {
+    newProperty.propImg = files; // Asigna las imágenes al DTO
+    return await this.propertyService.addProperty(id, newProperty);
   }
 }

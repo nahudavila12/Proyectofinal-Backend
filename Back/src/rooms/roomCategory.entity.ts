@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Room } from './room.entity'
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
 
 export enum ICategories{
     STANDARD = 'standard',
