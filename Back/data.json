@@ -2,9 +2,17 @@
     {
         "name": "Hotel Paraíso",
         "location": "Playa del Carmen",
-        "owner": { "uuid": "owner-uuid-1" }, 
-        "propertyType": "HOTEL",
-        "propertyImages": ["hotel1.jpg", "hotel2.jpg"],
+        "propertyType": "hotel", 
+        "rate": 150.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "a3b2f4f2-404d-4dc0-a84a-774b54663b19",
+            "bussines_name": "Hotel Paraíso S.A.",
+            "bussinesId": "HP123",
+            "phone": "555-0101",
+            "email": "info@hotelparaiso.com"
+        },
+        "propImg": ["hotel1.jpg", "hotel2.jpg"],
         "rooms": [
             {
                 "room_number": 101,
@@ -12,8 +20,8 @@
                 "price_per_day": 150,
                 "disponibility": "avaiable",
                 "roomImages": ["room1.jpg", "room2.jpg"],
-                "services": ["WiFi", "Desayuno"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi", "Desayuno"],
+                "roomCategory": "standard"
             },
             {
                 "room_number": 102,
@@ -21,17 +29,25 @@
                 "price_per_day": 200,
                 "disponibility": "avaiable",
                 "roomImages": ["room3.jpg"],
-                "services": ["WiFi", "Estacionamiento"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi", "Estacionamiento"],
+                "roomCategory": "standard"
             }
         ]
     },
     {
         "name": "Cabaña en la Montaña",
         "location": "San Martín de los Andes",
-        "owner": { "uuid": "owner-uuid-2" },
-        "propertyType": "CABANA",
-        "propertyImages": ["cabaña1.jpg"],
+        "propertyType": "cabaña",
+        "rate": 100.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "be2f2e1b-88b8-4c4c-9b26-476c68ff4d25",
+            "bussines_name": "Cabañas en la Montaña",
+            "bussinesId": "CM456",
+            "phone": "555-0102",
+            "email": "info@cabanasenlamontana.com"
+        },
+        "propImg": ["cabaña1.jpg"],
         "rooms": [
             {
                 "room_number": 1,
@@ -39,17 +55,24 @@
                 "price_per_day": 100,
                 "disponibility": "avaiable",
                 "roomImages": ["room4.jpg"],
-                "services": ["WiFi", "Chimenea"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi", "Chimenea"]
             }
         ]
     },
     {
         "name": "Departamento Centro",
         "location": "Buenos Aires",
-        "owner": { "uuid": "owner-uuid-3" },
-        "propertyType": "DEPARTAMENTO",
-        "propertyImages": ["departamento1.jpg"],
+        "propertyType": "departamento",
+        "rate": 120.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "2bcb6485-d802-47e6-a457-e29a62bbd547",
+            "bussines_name": "Departamentos Buenos Aires",
+            "bussinesId": "DB789",
+            "phone": "555-0103",
+            "email": "info@departamentosbuenosaires.com"
+        },
+        "propImg": ["departamento1.jpg"],
         "rooms": [
             {
                 "room_number": 1,
@@ -57,17 +80,24 @@
                 "price_per_day": 120,
                 "disponibility": "avaiable",
                 "roomImages": ["room5.jpg"],
-                "services": ["WiFi"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi"]
             }
         ]
     },
     {
         "name": "Hotel Playa",
         "location": "Cancún",
-        "owner": { "uuid": "owner-uuid-4" },
-        "propertyType": "HOTEL",
-        "propertyImages": ["hotel3.jpg"],
+        "propertyType": "hotel",
+        "rate": 180.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "39d81435-0836-4797-bb45-4d29d6df8c60",
+            "bussines_name": "Hotel Playa S.A.",
+            "bussinesId": "HP321",
+            "phone": "555-0104",
+            "email": "info@hotelplaya.com"
+        },
+        "propImg": ["hotel3.jpg"],
         "rooms": [
             {
                 "room_number": 201,
@@ -75,17 +105,25 @@
                 "price_per_day": 180,
                 "disponibility": "reserved",
                 "roomImages": ["room6.jpg"],
-                "services": ["WiFi", "Desayuno"],
-                "category": "DELUXE"
+                "roomServices": ["WiFi", "Desayuno"],
+                "roomCategory": "deluxe"
             }
         ]
     },
     {
         "name": "Cabaña del Bosque",
         "location": "Bariloche",
-        "owner": { "uuid": "owner-uuid-5" },
-        "propertyType": "CABANA",
-        "propertyImages": ["cabaña2.jpg"],
+        "propertyType": "cabaña",
+        "rate": 150.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "39e0de0e-56d3-4b4f-83fc-60d3ef60e009",
+            "bussines_name": "Cabañas del Bosque",
+            "bussinesId": "CB102",
+            "phone": "555-0105",
+            "email": "info@cabanasdelbosque.com"
+        },
+        "propImg": ["cabaña2.jpg"],
         "rooms": [
             {
                 "room_number": 1,
@@ -93,17 +131,24 @@
                 "price_per_day": 150,
                 "disponibility": "avaiable",
                 "roomImages": ["room7.jpg"],
-                "services": ["WiFi", "Chimenea", "Desayuno"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi", "Chimenea", "Desayuno"]
             }
         ]
     },
     {
         "name": "Departamento Moderno",
         "location": "Santiago",
-        "owner": { "uuid": "owner-uuid-6" },
-        "propertyType": "DEPARTAMENTO",
-        "propertyImages": ["departamento2.jpg"],
+        "propertyType": "departamento",
+        "rate": 130.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "9f0864af-4db3-47f8-a1cc-6f538e635f1e",
+            "bussines_name": "Departamentos Modernos",
+            "bussinesId": "DM204",
+            "phone": "555-0106",
+            "email": "info@departamentosmodernos.com"
+        },
+        "propImg": ["departamento2.jpg"],
         "rooms": [
             {
                 "room_number": 1,
@@ -111,17 +156,24 @@
                 "price_per_day": 130,
                 "disponibility": "avaiable",
                 "roomImages": ["room8.jpg"],
-                "services": ["WiFi", "Estacionamiento"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi", "Estacionamiento"]
             }
         ]
     },
     {
         "name": "Hotel del Lago",
         "location": "Villa la Angostura",
-        "owner": { "uuid": "owner-uuid-7" },
-        "propertyType": "HOTEL",
-        "propertyImages": ["hotel4.jpg"],
+        "propertyType": "hotel",
+        "rate": 250.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "0a6c7c7b-f9de-45bc-a3e2-8e3e9939da99",
+            "bussines_name": "Hotel del Lago S.A.",
+            "bussinesId": "HDL505",
+            "phone": "555-0107",
+            "email": "info@hoteldellago.com"
+        },
+        "propImg": ["hotel4.jpg"],
         "rooms": [
             {
                 "room_number": 301,
@@ -129,17 +181,25 @@
                 "price_per_day": 250,
                 "disponibility": "avaiable",
                 "roomImages": ["room9.jpg"],
-                "services": ["WiFi", "Spa"],
-                "category": "SUITE"
+                "roomServices": ["WiFi", "Spa"],
+                "roomCategory": "suite"
             }
         ]
     },
     {
         "name": "Cabaña Río",
         "location": "El Bolsón",
-        "owner": { "uuid": "owner-uuid-8" },
-        "propertyType": "CABANA",
-        "propertyImages": ["cabaña3.jpg"],
+        "propertyType": "cabaña",
+        "rate": 200.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "f61c3cc5-0d3f-4054-87e2-8aaab4a7e1ff",
+            "bussines_name": "Cabañas Río",
+            "bussinesId": "CR808",
+            "phone": "555-0108",
+            "email": "info@cabanasrio.com"
+        },
+        "propImg": ["cabaña3.jpg"],
         "rooms": [
             {
                 "room_number": 1,
@@ -147,17 +207,24 @@
                 "price_per_day": 200,
                 "disponibility": "avaiable",
                 "roomImages": ["room10.jpg"],
-                "services": ["WiFi"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi"]
             }
         ]
     },
     {
         "name": "Departamento en la Playa",
         "location": "Mendoza",
-        "owner": { "uuid": "owner-uuid-9" },
-        "propertyType": "DEPARTAMENTO",
-        "propertyImages": ["departamento3.jpg"],
+        "propertyType": "departamento",
+        "rate": 140.00,
+        "isActive": true,
+        "owner": { 
+            "uuid": "5a70f302-72c6-46a6-9c85-bc9491fc8ae3",
+            "bussines_name": "Departamentos en la Playa",
+            "bussinesId": "DP202",
+            "phone": "555-0109",
+            "email": "info@departamentoenlaplaya.com"
+        },
+        "propImg": ["departamento3.jpg"],
         "rooms": [
             {
                 "room_number": 1,
@@ -165,26 +232,7 @@
                 "price_per_day": 140,
                 "disponibility": "reserved",
                 "roomImages": ["room11.jpg"],
-                "services": ["WiFi", "Estacionamiento"],
-                "category": "STANDARD"
-            }
-        ]
-    },
-    {
-        "name": "Hotel Boutique",
-        "location": "Salta",
-        "owner": { "uuid": "owner-uuid-10" },
-        "propertyType": "HOTEL",
-        "propertyImages": ["hotel5.jpg"],
-        "rooms": [
-            {
-                "room_number": 401,
-                "capacity": 2,
-                "price_per_day": 220,
-                "disponibility": "avaiable",
-                "roomImages": ["room12.jpg"],
-                "services": ["WiFi", "Desayuno", "Spa"],
-                "category": "STANDARD"
+                "roomServices": ["WiFi", "Estacionamiento"]
             }
         ]
     }

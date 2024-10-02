@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CloudinaryConfig } from './config/cloudinary';
 import { CloudinaryService } from './commons/cloudinary.service';
-import { SeedCommand } from './seeds/seed.command';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './Config/typeOrm.config';
@@ -18,6 +18,7 @@ import { OwnersModule } from './owners/owner.module';
 import { PropertyModule } from './properties/property.module';
 import { RoomsModule } from './rooms/room.module';
 import { ReservationsModule } from './reservations/reservations.module';
+import { SeedService } from './preload/seed';
 
 @Module({
   imports: [
@@ -45,6 +46,6 @@ import { ReservationsModule } from './reservations/reservations.module';
     ReservationsModule
   ],
   controllers: [AppController],
-  providers: [AppService, CloudinaryConfig, CloudinaryService, SeedCommand],
+  providers: [AppService, CloudinaryConfig, CloudinaryService,SeedService],
 })
 export class AppModule {}

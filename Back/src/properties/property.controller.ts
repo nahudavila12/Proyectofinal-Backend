@@ -25,17 +25,16 @@ export class PropertyController{
   constructor(private readonly propertyService: PropertyService){}
 
 
-  @Get()
+  @Get() 
   async getProperties(): Promise<Property[]> {
-    return this.propertyService.getProperties();
+      return this.propertyService.getProperties(); 
   }
-
 
   @Get(':uuid') 
-  async getPropertyById(@Param('uuid', ParseUUIDPipe) uuid: string) {
-    return this.propertyService.getPropertyById(uuid);
+  async getPropertyById(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<Property> {
+      return this.propertyService.getPropertyById(uuid); 
   }
-  
+
   @Delete(':uuid') 
   async removeProperty(@Param('uuid') uuid: string) {
     try {
