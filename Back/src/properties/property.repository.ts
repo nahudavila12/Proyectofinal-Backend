@@ -142,6 +142,10 @@ async addProperty(uuid: string, property: PropertyDto): Promise<Property | null>
     return addedProperty;
 }
 
+async saveImages(images: PropertyImg[]): Promise<PropertyImg[]> {
+    return await this.propertyImgRepository.save(images);
+  }
+
 }        
 
 
