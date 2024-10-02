@@ -94,7 +94,7 @@ export async function seedDatabase(connection: Connection) {
   const payment1 = new Payment();
   payment1.date = new Date();
   payment1.state = IState.Pending;
-  payment1.method = 'credit card';
+  payment1.total = 50;
   payment1.orderDetail = orderDetail1;
 
   // Guardar pago

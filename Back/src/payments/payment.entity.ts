@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { OrderDetail } from '../orderDetail/orderDetail.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Reservation } from 'src/reservations/reservation.entity';
+import { User } from 'src/users/user.entity';
 
 export enum IState {
   Pending = 'pending',
@@ -43,7 +45,7 @@ export class Payment {
     description: 'Método de pago utilizado',
   })
   @Column()
-  method: string;
+  total: number;
 
   @ApiProperty({
     type: () => OrderDetail,
@@ -52,4 +54,12 @@ export class Payment {
   @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.payment)
   @JoinColumn()
   orderDetail: OrderDetail;
+
+  @OneToOne(()=> Reservation, (reservation) => reservation.payment)
+  @JoinColumn()
+  reservation: Reservation
+
+  @OneToOne(()=> User, (user)=> user.payment)
+  @JoinColumn()
+  user: User
 }

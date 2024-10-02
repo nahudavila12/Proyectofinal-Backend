@@ -6,7 +6,7 @@ import { CloudinaryService } from './commons/cloudinary.service';
 import { SeedCommand } from './seeds/seed.command';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import typeOrmConfig from './Config/typeOrm.config';
+import typeOrmConfig from './config/typeOrm.config';
 import { UserModule } from './users/user.module';
 //import { OrdersModule } from './orderDetail/orders.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
