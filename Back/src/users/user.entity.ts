@@ -11,6 +11,7 @@ import { OrderDetail } from '../orderDetail/orderDetail.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Payment } from 'src/payments/payment.entity';
 
 
 export enum IRol {
@@ -114,6 +115,9 @@ export class User {
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   @JoinColumn()
   reservation: Reservation[];
+
+  @OneToOne(()=> Payment, (payment) => payment.user)
+  payment: Payment;
 
 
 }

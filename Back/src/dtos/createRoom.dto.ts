@@ -21,9 +21,6 @@ export class CreateRoomDto {
   @Min(0) 
   price_per_day: number;
 
-  @IsEnum(IRoomState)
-  disponibility: IRoomState;
-
   @IsOptional()
   @IsArray()
   @IsString({ each: true }) 

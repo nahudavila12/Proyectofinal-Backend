@@ -40,6 +40,10 @@ export class UserService {
 
         try {
             const user = new User(); 
+<<<<<<< HEAD
+            Object.assign(user, newUser)
+=======
+>>>>>>> 2f9bdbb360d975724d550e72d9cb8b8bc59322db
             user.firstName = newUser.firstName;  
             user.lastName = newUser.lastName;    
             user.user_name = newUser.user_name;  
@@ -66,7 +70,11 @@ export class UserService {
                 profile.userIMG = imageUrl; 
                 await this.profileRepository.save(profile);
             } else {
+<<<<<<< HEAD
+                const newProfile = await this.profileRepository.createProfile({
+=======
                 const newProfile = await this.profileRepository.create({
+>>>>>>> 2f9bdbb360d975724d550e72d9cb8b8bc59322db
                     user: savedUser,
                     userIMG: imageUrl,
                     user_name: savedUser.user_name,

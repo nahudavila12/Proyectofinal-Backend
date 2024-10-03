@@ -11,8 +11,9 @@ import { Room } from 'src/rooms/room.entity';
 import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
 import { User } from 'src/users/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Payment } from 'src/payments/payment.entity';
 
-enum IStateBooking {
+export enum IStateBooking {
   ACTIVE = 'active',
   PENDING = 'pending',
   CANCELLED = 'cancelled',
@@ -68,4 +69,8 @@ export class Reservation {
   })
   @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.reservation)
   order_detail: OrderDetail;
+
+  @OneToOne(()=> Payment, (payment) => payment.reservation)
+  @JoinColumn()
+  payment: Payment
 }
