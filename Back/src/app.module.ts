@@ -19,6 +19,7 @@ import { PropertyModule } from './properties/property.module';
 import { RoomsModule } from './rooms/room.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { SeedService } from './preload/seed';
+import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { SeedService } from './preload/seed';
     AuthModule,
     EmailModule,
     OwnersModule,
+    DashboardAdminModule,
     PropertyModule,
     RoomsModule,
     ReservationsModule

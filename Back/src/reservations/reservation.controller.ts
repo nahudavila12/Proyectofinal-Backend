@@ -4,61 +4,69 @@ import {
   Post,
   Body,
   Param,
-  Patch,
-  Delete,
   UseGuards,
   ParseUUIDPipe,
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+  InternalServerErrorException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import {
   CreateReservationDto,
-  UpdateReservationDto,
 } from '../dtos/createReservation.dto';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/guards/roles.decorator';
-import { IRol } from 'src/users/user.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('reservations')
 export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
 
   @Post('addReservation/:uuid')
+  @UseGuards(AuthGuard,RolesGuard)
   async addReservation(
     @Body() createReservationDto: CreateReservationDto,
     @Param('uuid', ParseUUIDPipe) userId: string,
   ) {
-    return await this.reservationService.addReservation(createReservationDto, userId);
+    try {
+      const reservation = await this.reservationService.addReservation(createReservationDto, userId);
+      return reservation;
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        throw new ConflictException(error.message);
+      } else if (error instanceof NotFoundException) {
+        throw new NotFoundException('El usuario no fue encontrado'); 
+      } else if (error instanceof BadRequestException) {
+        throw new BadRequestException('Los datos proporcionados son inválidos');
+      }
+      throw new InternalServerErrorException('Error al agregar la reserva.', error.message);
+    }
   }
 
   @Get('user/:userId')
-  getUserReservations(@Param('userId') userId: string) {
-    return this.reservationService.getUserReservations(userId);
-  }
+  @UseGuards(AuthGuard, RolesGuard)
+  async getUserReservations(@Param('userId') userId: string) {
+    try {
+      const reservations = await this.reservationService.getUserReservations(userId);
+  
+      if (!reservations || reservations.length === 0) {
+        throw new NotFoundException('No se encontraron reservas para este usuario');
+      }
+  
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Reservas del usuario obtenidas exitosamente',
+        data: reservations, 
+      };
+    } catch (error) {
 
-  @Get('admin/all')
-  @UseGuards(RolesGuard)
-  @Roles(IRol.Admin)
-  getAllReservations() {
-    return this.reservationService.getAllReservations();
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message); 
+      }
+      throw new InternalServerErrorException('Error al obtener las reservas del usuario.', error.message);
+    }
   }
-
-  @Patch('admin/:uuid')
-  @UseGuards(RolesGuard)
-  @Roles(IRol.Admin)
-  updateReservation(
-    @Param('uuid') uuid: string,
-    @Body() updateReservationDto: UpdateReservationDto,
-  ) {
-    return this.reservationService.updateReservation(
-      uuid,
-      updateReservationDto,
-    );
-  }
-
-  @Delete('admin/:uuid')
-  @UseGuards(RolesGuard)
-  @Roles(IRol.Admin)
-  deleteReservation(@Param('uuid') uuid: string) {
-    return this.reservationService.deleteReservation(uuid);
-  }
+  
+  
 }
