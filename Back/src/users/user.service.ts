@@ -123,14 +123,19 @@ export class UserService {
         await this.profileRepository.save(profile);
     }
 
-    async deleteUser(uuid: string) {
-        const result = await this.userRepository.delete(uuid);
-        if (result.affected === 0) {
-            throw new NotFoundException('Usuario no encontrado');
+    async deleteUser(uuid: string): Promise<void> {
+        try {
+            const result = await this.userRepository.delete(uuid);
+            if (result.affected === 0) {
+                throw new NotFoundException('Usuario no encontrado');
+            }
+        } catch (error) {
+            throw new InternalServerErrorException('Error al eliminar el usuario.', error.message);
         }
     }
+    
 
-    async bannUser(uuid: string) {
+    async bannUser(uuid: string): Promise<boolean> {
         const user = await this.userRepository.findOne({
             where: { uuid },
         });
@@ -139,5 +144,8 @@ export class UserService {
         }
         user.isBanned = true;
         await this.userRepository.save(user);
+        
+        return true; 
     }
+    
 }
