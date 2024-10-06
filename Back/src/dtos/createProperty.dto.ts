@@ -25,7 +25,7 @@ export class PropertyDto {
 
 
   @IsUUID()
-  owner: string;
+  owner?: string;
 
   @IsNotEmpty()
   @IsEnum(PropertyType)

@@ -90,11 +90,14 @@ export class AuthService {
 
     const generateAccessToken = this.jwtService.sign(payload, { expiresIn: '15m' }); 
     const generateRefreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
-
+    
+    const ownerUUID = user.owner ? user.owner.uuid : null;
     return {
       message: "Usuario autenticado",
       generateAccessToken,
       generateRefreshToken,
+      userUUID: user.uuid,
+      ownerUUID: ownerUUID,
     };
   }
 

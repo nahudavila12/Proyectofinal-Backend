@@ -92,6 +92,7 @@ export class UserService {
         try {
             return await this.userRepository.findOne({
                 where: { email },
+                relations: ['owner'],
             });
         } catch (error) {
             throw new InternalServerErrorException(
