@@ -7,6 +7,9 @@ import { Room } from 'src/rooms/room.entity';
 import { User } from 'src/users/user.entity';
 import { Reservation } from 'src/reservations/reservation.entity';
 import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
+import { ReservationService } from 'src/reservations/reservation.service';
+import { Property } from 'src/properties/property.entity';
+import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -14,9 +17,13 @@ import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
     Room,
     User,
     Reservation,
-    OrderDetail
+    OrderDetail,
+    Property
   ])],
-  providers: [PaypalService],
+  providers: [
+    PaypalService,
+    ReservationService,
+    OrderDetailRepository],
   controllers: [PaypalController],
 })
 export class PaymentsModule {}

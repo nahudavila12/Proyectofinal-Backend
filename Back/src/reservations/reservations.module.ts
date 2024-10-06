@@ -10,6 +10,9 @@ import { UserRepository } from 'src/users/user.repository';
 import { RoomRepository } from 'src/rooms/room.Repository';
 import { PropertyRepository } from 'src/properties/property.repository';
 import { Reservation } from './reservation.entity';
+import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
+import { OrdersModule } from 'src/orderDetail/orders.module';
+import { Payment } from 'src/payments/payment.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -17,12 +20,15 @@ import { Reservation } from './reservation.entity';
         User,
         Room,
         OrderDetail,
-        Reservation
-    ])],
+        Reservation,
+        
+    ]), OrdersModule
+    ],
     controllers: [ReservationController],
     providers: [
-        ReservationService,    
+        ReservationService,     
     ],
+    exports: [ReservationService]
     
 })
 export class ReservationsModule {}

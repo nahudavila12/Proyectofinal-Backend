@@ -42,23 +42,23 @@ export class ReservationController {
     return this.reservationService.getAllReservations();
   }
 
-  @Patch('admin/:uuid')
-  @UseGuards(RolesGuard)
-  @Roles(IRol.Admin)
-  updateReservation(
-    @Param('uuid') uuid: string,
-    @Body() updateReservationDto: UpdateReservationDto,
-  ) {
-    return this.reservationService.updateReservation(
-      uuid,
-      updateReservationDto,
-    );
+  // @Patch('admin/:uuid')
+  // @UseGuards(RolesGuard)
+  // @Roles(IRol.Admin)
+  // updateReservation(
+  //   @Param('uuid') uuid: string,
+  //   @Body() updateReservationDto: UpdateReservationDto,
+  // ) {
+  //   return this.reservationService.updateReservation(
+  //     uuid,
+  //     updateReservationDto,
+  //   );
   }
 
-  @Delete('admin/:uuid')
-  @UseGuards(RolesGuard)
-  @Roles(IRol.Admin)
-  deleteReservation(@Param('uuid') uuid: string) {
-    return this.reservationService.deleteReservation(uuid);
-  }
-}
+  // @Delete('admin/:uuid')
+  // @UseGuards(RolesGuard)
+  // @Roles(IRol.Admin)
+  // deleteReservation(@Param('uuid') uuid: string) {
+  //   return this.reservationService.deleteReservation(uuid);
+  // }
+

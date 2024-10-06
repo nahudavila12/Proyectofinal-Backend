@@ -19,6 +19,8 @@ import { PropertyModule } from './properties/property.module';
 import { RoomsModule } from './rooms/room.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { SeedService } from './preload/seed';
+import { PaymentsModule } from './paypal/paypal.module';
+import { OrdersModule } from './orderDetail/orders.module';
 
 @Module({
   imports: [
@@ -43,7 +45,9 @@ import { SeedService } from './preload/seed';
     OwnersModule,
     PropertyModule,
     RoomsModule,
-    ReservationsModule
+    ReservationsModule,
+    OrdersModule,
+    PaymentsModule
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService,SeedService],

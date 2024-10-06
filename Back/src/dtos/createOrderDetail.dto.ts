@@ -7,12 +7,19 @@ import { Payment } from 'src/payments/payment.entity';
 export class CreateOrderDetailDto {
     
 @ApiProperty({
-    example: '2024-09-20T15:00:00Z',
-    description: 'Fecha de la orden',
-    })
-    @IsNotEmpty({ message: 'La fecha de la orden es requerida.' })
-    @IsDate({ message: 'La fecha debe ser una fecha válida.' })
-    date: Date;
+example: '2024-09-20T15:00:00Z',
+description: 'Fecha de la orden',
+})
+@IsNotEmpty({ message: 'La fecha de la orden es requerida.' })
+@IsDate({ message: 'La fecha debe ser una fecha válida.' })
+date: Date;
+
+@ApiProperty({
+example: 'Hotel California',
+description: 'Nombre de la propiedad reservada',
+})
+@IsNotEmpty({ message: 'El nombre de la propiedad es requerido' })
+propertyName: string;
 
 @ApiProperty({
 description: 'Total del costo de la habitación',
@@ -57,6 +64,5 @@ nullable: true,
     description: 'Pago asociado con el usuario',
     type: Reservation,
   })
-  @IsNotEmpty()
-  pago?: Payment; 
+  payment?: Payment; 
 }

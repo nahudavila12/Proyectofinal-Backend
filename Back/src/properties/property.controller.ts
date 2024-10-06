@@ -103,13 +103,10 @@ export class PropertyController{
   }
 
   @Post('addProperty/:id')
-  @UseInterceptors(FilesInterceptor('propImg')) // Cambia para permitir múltiples imágenes
   async addProperty(
     @Param('id', ParseUUIDPipe) id: string,
-    @UploadedFiles() files: Express.Multer.File[], // Recibe los archivos de imagen
     @Body() newProperty: PropertyDto
   ) {
-    newProperty.propImg = files; // Asigna las imágenes al DTO
     return await this.propertyService.addProperty(id, newProperty);
   }
 }
