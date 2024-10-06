@@ -5,6 +5,7 @@ import { RoomImg } from '../rooms/roomImg.entity';
 import { PropertyImg } from '../properties/propertyImg.entity';
 import { Room } from '../rooms/room.entity';
 import { Property } from '../properties/property.entity';
+import { Profile } from 'src/profiles/profile.entity';
 
 @Injectable()
 export class FileUploadRepository {
@@ -13,6 +14,8 @@ export class FileUploadRepository {
         private readonly roomImgRepository: Repository<RoomImg>,
         @InjectRepository(PropertyImg)
         private readonly propertyImgRepository: Repository<PropertyImg>,
+        @InjectRepository(Profile)
+        private readonly profileRepository: Repository<Profile>,
     ) {}
 
     async saveRoomImage(roomId: string, image: string): Promise<RoomImg> {
@@ -29,5 +32,14 @@ export class FileUploadRepository {
 
         propertyImg.property = { uuid: propertyId } as Property;
         return this.propertyImgRepository.save(propertyImg);
+    }
+
+    async saveUserProfileImage(userId: string, imageUrl: string) {
+        const user = await this.profileRepository.findOne({ where: { uuid: userId } });
+        if (user) {
+            user.userIMG = imageUrl; // Asume que tienes un campo profileImageUrl en tu entidad User
+            return this.profileRepository.save(user);
+        }
+        throw new Error('User not found');
     }
 }

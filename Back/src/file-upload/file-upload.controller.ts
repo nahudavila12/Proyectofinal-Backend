@@ -77,5 +77,31 @@ export class FileUploadController {
     ) {
         return this.fileUploadService.uploadPropertyImage(id, file);  
     }
+
+    @ApiOperation({ summary: 'Upload a user profile image' })
+    @ApiResponse({ status: 200, description: 'User profile image uploaded successfully' })
+    @Post('upload-user-image/:id')
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(IRol.User) // Solo usuarios normales pueden subir su imagen de perfil
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadUserImage(
+        @Param('id') id: string,  
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({
+                        maxSize: 10 * 1024 * 1024, // 10MB
+                        message: 'El archivo debe ser menor a 10MB',
+                    }),
+                    new FileTypeValidator({
+                        fileType: /(jpg|jpeg|png|webp)$/,
+                    }),
+                ],
+            }),
+        )
+        file: Express.Multer.File,
+    ) {
+        return this.fileUploadService.uploadUserImage(id, file);  
+    }
     
 }
