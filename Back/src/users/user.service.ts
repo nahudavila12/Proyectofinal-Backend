@@ -40,15 +40,7 @@ export class UserService {
 
         try {
             const user = new User(); 
-            user.firstName = newUser.firstName;  
-            user.lastName = newUser.lastName;    
-            user.user_name = newUser.user_name;  
-            user.email = newUser.email;          
-            user.password = newUser.password;    
-            user.address = newUser.address;      
-            user.phone = newUser.phone;          
-            user.country = newUser.country;      
-            user.birthday = newUser.birthday;
+            Object.assign(user, newUser)
 
             const savedUser = await this.userRepository.save(user); 
 
@@ -66,6 +58,7 @@ export class UserService {
                 profile.userIMG = imageUrl; 
                 await this.profileRepository.save(profile);
             } else {
+
                 const newProfile = await this.profileRepository.create({
                     user: savedUser,
                     userIMG: imageUrl,

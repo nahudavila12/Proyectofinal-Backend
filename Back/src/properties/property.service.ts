@@ -73,9 +73,7 @@ async getPropertyById(uuid: string): Promise<Property> {
     }
   }
 
-  // Dentro del método addProperty
 async addProperty(id: string, newProperty: PropertyDto) {
-  // Agrega la propiedad a la base de datos
   const property = await this.propiertiesRepository.addProperty(id, newProperty);
 
   // Manejo de carga de imágenes

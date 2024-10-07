@@ -8,7 +8,6 @@ import { ICategories } from 'src/rooms/roomCategory.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Payment } from '../payments/payment.entity';
 import { OrderDetail } from '../orderDetail/orderDetail.entity';
-import { IState } from '../payments/payment.entity';
 
 export async function seedDatabase(connection: Connection) {
   // Crear usuarios
@@ -93,7 +92,7 @@ export async function seedDatabase(connection: Connection) {
   // Crear pago
   const payment1 = new Payment();
   payment1.date = new Date();
-  payment1.state = IState.Pending;
+  payment1.state = 'Acepted;
   payment1.total = 50;
   payment1.orderDetail = orderDetail1;
 

@@ -44,6 +44,33 @@ export class ReservationController {
     }
   }
 
+  @Get('admin/all')
+  @UseGuards(RolesGuard)
+  @Roles(IRol.Admin)
+  getAllReservations() {
+    return this.reservationService.getAllReservations();
+  }
+
+  // @Patch('admin/:uuid')
+  // @UseGuards(RolesGuard)
+  // @Roles(IRol.Admin)
+  // updateReservation(
+  //   @Param('uuid') uuid: string,
+  //   @Body() updateReservationDto: UpdateReservationDto,
+  // ) {
+  //   return this.reservationService.updateReservation(
+  //     uuid,
+  //     updateReservationDto,
+  //   );
+  }
+
+  // @Delete('admin/:uuid')
+  // @UseGuards(RolesGuard)
+  // @Roles(IRol.Admin)
+  // deleteReservation(@Param('uuid') uuid: string) {
+  //   return this.reservationService.deleteReservation(uuid);
+  // }
+
   @Get('user/:userId')
   @UseGuards(AuthGuard, RolesGuard)
   async getUserReservations(@Param('userId') userId: string) {
@@ -70,3 +97,4 @@ export class ReservationController {
   
   
 }
+

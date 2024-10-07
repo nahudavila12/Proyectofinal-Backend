@@ -1,11 +1,11 @@
-// import { Injectable } from "@nestjs/common";
-// import { OrderRepository } from "./orders.repository";
+import { Injectable } from "@nestjs/common";
+import { OrderDetailRepository } from "../orderDetail/orderDetail.repository";
 
-// @Injectable()
-// export class OrdersService {
-//     constructor(private orderRepository: OrderRepository) {}
+@Injectable()
+export class OrdersService {
+    constructor(private orderRepository: OrderDetailRepository) {}
 
-//     createOrder(userId: string, roomId : any, days: string ){
-//         return this.orderRepository.createOrder(userId, roomId, days);
-//     }
-// }
+    // createOrder(userId: string, roomId : any, days: string ){
+    //     return this.orderRepository.createOrder(userId, roomId, days);
+    //}
+}

@@ -30,6 +30,13 @@ export class OrderDetail {
   date: Date; 
 
   @ApiProperty({
+    example: 'Hotel California',
+    description: 'Nombre de la propiedad en la cual se hizo la reserva',
+  })
+  @Column()
+  propertyName: string;
+
+  @ApiProperty({
     example: 150.0,
     description: 'Total del costo de la habitación',
   })
@@ -48,13 +55,17 @@ export class OrderDetail {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   total: number;
 
+  @ApiProperty({ example: 'pendding', description: 'Estado del pago de la orden' })
+  @Column({default: 'pendding'})
+  state: string;
+
   @ApiProperty({
     type: () => Payment,
     description: 'Pago asociado al detalle del pedido',
   })
   @OneToOne(() => Payment, (payment) => payment.orderDetail )
   @JoinColumn()
-  payment: Payment;
+  payment?: Payment;
 
   @ApiProperty({
     type: () => OrderDetailAdditionalService,

@@ -19,7 +19,11 @@ import { PropertyModule } from './properties/property.module';
 import { RoomsModule } from './rooms/room.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { SeedService } from './preload/seed';
+import { PaymentsModule } from './paypal/paypal.module';
+import { OrdersModule } from './orderDetail/orders.module';
+
 import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
+
 
 @Module({
   imports: [
@@ -45,7 +49,9 @@ import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
     DashboardAdminModule,
     PropertyModule,
     RoomsModule,
-    ReservationsModule
+    ReservationsModule,
+    OrdersModule,
+    PaymentsModule
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService,SeedService],

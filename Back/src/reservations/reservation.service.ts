@@ -12,6 +12,8 @@ import {
   DataSource} 
   from 'typeorm';
 import { 
+  IStateBooking,
+
   Reservation 
 } from './reservation.entity';
 import {
@@ -25,6 +27,9 @@ import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
 import { CreateOrderDetailDto } from 'src/dtos/createOrderDetail.dto';
 import { AdditionalService } from 'src/additionalsServices/additionalService.entity';
 import { IRoomState } from 'src/rooms/room.entity';
+import { Payment } from 'src/payments/payment.entity';
+import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
+
 
 export class CodeReservation {
   code: string;
@@ -37,6 +42,7 @@ export class CodeReservation {
 @Injectable()
 export class ReservationService {
   constructor(
+    private readonly orderDetailRepository: OrderDetailRepository,
     @InjectRepository(Reservation)
     private reservationRepository: Repository<Reservation>,
     @InjectRepository(User)
@@ -47,6 +53,7 @@ export class ReservationService {
     private readonly propertyRepository: Repository<Property>,
     @InjectRepository(OrderDetail)
     private readonly orderDetailRepository: Repository<OrderDetail>,
+
     @InjectDataSource()
     private readonly dataSource: DataSource
   ) {}
@@ -68,19 +75,19 @@ export class ReservationService {
     
       let total = 0;
     
-      const foundUser = await this.userRepositorio.findOneBy({uuid: userId})
-        if(!foundUser) throw new NotFoundException('Usuario no encontrado');
-      
-      const foundProperty = await this.propertyRepository.findOneBy({uuid: propertyId})
-        if(!foundProperty) throw new NotFoundException('Propiedad no encontrada');
-        
-        const foundRoom = await queryRunner.manager.findOne(Room, {
+      const [foundUser, foundProperty, foundRoom] = await Promise.all([
+        this.userRepositorio.findOneBy({uuid: userId}),
+        this.propertyRepository.findOneBy({uuid: propertyId}),
+        queryRunner.manager.findOne(Room, {
           where: { uuid: roomId },
           lock: { mode: 'pessimistic_write' }, 
-        });  
+        })]);
 
+        if(!foundUser) throw new NotFoundException('Usuario no encontrado');
+        if(!foundProperty) throw new NotFoundException('Propiedad no encontrada');
         if(!foundRoom) throw new NotFoundException('Habitación no encontrada');
-    
+      
+
         if (foundRoom.disponibility !== 'available') {
           throw new ConflictException('La habitación no está disponible');
         }
@@ -111,23 +118,25 @@ export class ReservationService {
       
       total = numberOfNights * pricePerDay;
       
-      const newOrderDetail: CreateOrderDetailDto = { 
-        date: new Date(),
-        room_total: total,
-        total: total,
-        reservation: savedReservation,
-        user: foundUser
-      }
-      
-      await queryRunner.manager.save(OrderDetail, newOrderDetail);
-      
+      const newPayment = new Payment()
+      newPayment.reservation = savedReservation
+      newPayment.total = total
+      newPayment.user = foundUser
+      newPayment.date = new Date()
+      newPayment.reservation = savedReservation
+      savedReservation.payment = newPayment
+          
+      await queryRunner.manager.save(Payment, newPayment)
+      await queryRunner.manager.save(Reservation, savedReservation)
       await queryRunner.commitTransaction();
-
+      await this.orderDetailRepository.createOrderDetail(foundUser,foundProperty.name, savedReservation,total, newPayment )
+      
     return {
       code: savedReservation.uuid,
       checkin: savedReservation.checkin,
       checkout: savedReservation.checkout,
-      state: savedReservation.state
+      state: savedReservation.status
+
     } as CodeReservation;
     
     }catch (error) {
@@ -149,9 +158,6 @@ export class ReservationService {
     await queryRunner.release();
   }
 }
-
-
-
 async getUserReservations(userId: string) {
     return this.reservationRepository.find({
       where: { user: { uuid: userId } },
@@ -162,23 +168,35 @@ async getUserReservations(userId: string) {
     return this.reservationRepository.find();
   }
 
-  async updateReservation(
-    uuid: string,
-    updateReservationDto: UpdateReservationDto,
-  ) {
-    const reservation = await this.reservationRepository.findOne({
-      where: { uuid },
+  // async deleteReservation(uuid: string) {
+  //   const result = await this.reservationRepository.delete({ uuid });
+  //   if (result.affected === 0)
+  //     throw new NotFoundException(`Reservation with UUID ${uuid} not found`);
+  // }
+
+  async activeReservationStatus(newReservationUuid: string) {
+    const reservation = await this.reservationRepository.findOne({ 
+      where: { uuid: newReservationUuid } 
     });
-    if (!reservation)
-      throw new NotFoundException(`Reservation with UUID ${uuid} not found`);
-
-    Object.assign(reservation, updateReservationDto);
-    return this.reservationRepository.save(reservation);
+    
+    if (!reservation) {
+      throw new NotFoundException('Reserva no encontrada');
+    }
+    
+    reservation.status = IStateBooking.ACTIVE;
+    return await this.reservationRepository.save(reservation); 
   }
-
-  async deleteReservation(uuid: string) {
-    const result = await this.reservationRepository.delete({ uuid });
-    if (result.affected === 0)
-      throw new NotFoundException(`Reservation with UUID ${uuid} not found`);
+  
+  async cancelReservationStatus(newReservationUuid: string) {
+    const reservation = await this.reservationRepository.findOne({ 
+      where: { uuid: newReservationUuid } 
+    });
+    
+    if (!reservation) {
+      throw new NotFoundException('Reserva no encontrada');
+    }
+    
+    reservation.status = IStateBooking.CANCELLED;
+    return await this.reservationRepository.save(reservation); 
   }
 }

@@ -34,7 +34,7 @@ export class Reservation {
     description: 'Estado de la reservación',
   })
   @Column({ type: 'enum', enum: IStateBooking, default: IStateBooking.PENDING })
-  state: IStateBooking;
+  status: IStateBooking;
 
   @ApiProperty({
     example: '2024-09-20T15:00:00Z',

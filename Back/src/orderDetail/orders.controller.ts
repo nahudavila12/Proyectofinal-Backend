@@ -6,8 +6,8 @@
 // @ApiTags('Orders')
 // @Controller('orders')
 // @ApiBearerAuth()
-// export class OrdersController {
-//     constructor(private readonly orderService: OrdersService) {}
+// export class OrderDetailController {
+//     constructor(private readonly orderService: OrderDetailService) {}
 
 //     @Post()
 //     createOrder(@Body() order: CreateOrderDto){

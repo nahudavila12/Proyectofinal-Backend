@@ -53,5 +53,11 @@ export class PropertyController{
     }
   }
   
+  @Post('addProperty/:id')
+  async addProperty(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() newProperty: PropertyDto
+  ) {
+    return await this.propertyService.addProperty(id, newProperty);
 
 }
