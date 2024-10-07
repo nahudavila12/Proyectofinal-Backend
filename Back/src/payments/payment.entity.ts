@@ -56,6 +56,7 @@ export class Payment {
     description: 'Total del pago realizado',
 })
   @Column('decimal', { precision: 10, scale: 2 })
+
   total: number;
 
   @ApiProperty({

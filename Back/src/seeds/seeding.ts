@@ -92,7 +92,7 @@ export async function seedDatabase(connection: Connection) {
   // Crear pago
   const payment1 = new Payment();
   payment1.date = new Date();
-  payment1.status = 'pending';
+  payment1.state = 'Acepted;
   payment1.total = 50;
   payment1.orderDetail = orderDetail1;
 

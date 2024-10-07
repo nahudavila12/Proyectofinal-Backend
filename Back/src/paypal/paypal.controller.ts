@@ -1,3 +1,4 @@
+
 import { 
   Controller, 
   Post, 
@@ -12,6 +13,7 @@ import { PaypalService } from './paypal.service';
 @Controller('payments')
 export class PaypalController {
   constructor(private readonly paypalService: PaypalService) {}
+
 
   
   @Post('create-order/:uuid')
@@ -37,5 +39,6 @@ export class PaypalController {
     } catch (error) {
       return { message: 'Error al capturar el pago', error: error.message };
     }
+
   }
 }

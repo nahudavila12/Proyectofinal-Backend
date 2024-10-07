@@ -22,6 +22,9 @@ import { SeedService } from './preload/seed';
 import { PaymentsModule } from './paypal/paypal.module';
 import { OrdersModule } from './orderDetail/orders.module';
 
+import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
+
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -43,6 +46,7 @@ import { OrdersModule } from './orderDetail/orders.module';
     AuthModule,
     EmailModule,
     OwnersModule,
+    DashboardAdminModule,
     PropertyModule,
     RoomsModule,
     ReservationsModule,

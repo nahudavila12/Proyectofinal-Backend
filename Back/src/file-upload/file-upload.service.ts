@@ -18,4 +18,10 @@ export class FileUploadService {
         const result = await this.cloudinaryService.uploadImage(file);
         return this.fileUploadRepository.savePropertyImage(propertyId, result.secure_url);
     }
+
+    async uploadUserImage(userId: string, file: Express.Multer.File) {
+        const result = await this.cloudinaryService.uploadImage(file);
+        // Guardar la URL de la imagen de perfil del usuario en la base de datos
+        return this.fileUploadRepository.saveUserProfileImage(userId, result.secure_url);
+    }
 }

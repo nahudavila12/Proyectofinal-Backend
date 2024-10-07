@@ -13,6 +13,7 @@ import {
   from 'typeorm';
 import { 
   IStateBooking,
+
   Reservation 
 } from './reservation.entity';
 import {
@@ -28,6 +29,7 @@ import { AdditionalService } from 'src/additionalsServices/additionalService.ent
 import { IRoomState } from 'src/rooms/room.entity';
 import { Payment } from 'src/payments/payment.entity';
 import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
+
 
 export class CodeReservation {
   code: string;
@@ -49,6 +51,9 @@ export class ReservationService {
     private readonly roomRepository: Repository<Room>,
     @InjectRepository(Property)
     private readonly propertyRepository: Repository<Property>,
+    @InjectRepository(OrderDetail)
+    private readonly orderDetailRepository: Repository<OrderDetail>,
+
     @InjectDataSource()
     private readonly dataSource: DataSource
   ) {}
@@ -82,6 +87,7 @@ export class ReservationService {
         if(!foundProperty) throw new NotFoundException('Propiedad no encontrada');
         if(!foundRoom) throw new NotFoundException('Habitación no encontrada');
       
+
         if (foundRoom.disponibility !== 'available') {
           throw new ConflictException('La habitación no está disponible');
         }
@@ -112,7 +118,6 @@ export class ReservationService {
       
       total = numberOfNights * pricePerDay;
       
-      
       const newPayment = new Payment()
       newPayment.reservation = savedReservation
       newPayment.total = total
@@ -131,6 +136,7 @@ export class ReservationService {
       checkin: savedReservation.checkin,
       checkout: savedReservation.checkout,
       state: savedReservation.status
+
     } as CodeReservation;
     
     }catch (error) {
@@ -152,7 +158,6 @@ export class ReservationService {
     await queryRunner.release();
   }
 }
-
 async getUserReservations(userId: string) {
     return this.reservationRepository.find({
       where: { user: { uuid: userId } },

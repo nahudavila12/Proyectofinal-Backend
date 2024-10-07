@@ -14,13 +14,12 @@ import * as qs from 'qs'
 import { config as dotenvConfig } from 'dotenv';
 import { ReservationService } from 'src/reservations/reservation.service';
 
-dotenvConfig()
-
 @Injectable()
 export class PaypalService {
   private client: paypal.core.PayPalHttpClient;
   httpService: HttpService;
   
+
   constructor(
     @InjectRepository(OrderDetail)
     private readonly orderDetailRespository: Repository<OrderDetail>,
@@ -143,5 +142,4 @@ export class PaypalService {
 }
   
 
-  
 
