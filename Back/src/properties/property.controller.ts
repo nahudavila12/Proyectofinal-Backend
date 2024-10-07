@@ -1,10 +1,12 @@
 import { 
+  Body,
   Controller, 
   Get, 
   HttpStatus, 
   InternalServerErrorException, 
   Param, 
   ParseUUIDPipe, 
+  Post, 
   Query,
   UseGuards,
 } from "@nestjs/common";
@@ -13,6 +15,7 @@ import { Property } from "./property.entity";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { RolesGuard } from "src/guards/roles.guard";
 import { AuthGuard } from "src/guards/auth.guard";
+import { CreatePropertyDto } from "src/dtos/createProperty.dto";
 
 
 
@@ -27,16 +30,10 @@ export class PropertyController{
       return this.propertyService.getProperties(); 
   }
 
-
-
-
   @Get(':uuid') 
   async getPropertyById(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<Property> {
       return this.propertyService.getPropertyById(uuid); 
   }
-
-
-
 
   @Get('search')
   @UseGuards(AuthGuard) 
@@ -56,8 +53,9 @@ export class PropertyController{
   @Post('addProperty/:id')
   async addProperty(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() newProperty: PropertyDto
+    @Body() newProperty: CreatePropertyDto
   ) {
     return await this.propertyService.addProperty(id, newProperty);
 
+}
 }

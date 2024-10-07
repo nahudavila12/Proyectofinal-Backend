@@ -34,7 +34,17 @@ export class OrderDetailRepository {
     };
 
     await this.orderDetailRepository.save(newOrderDetail);
+  }
+
+  async activeOrderDetailStatus(odUuid:string, newStatus: string): Promise<OrderDetail | null>{
+
+    const orderDetail = await this.orderDetailRepository.findOneBy({uuid: odUuid})
+      if(!orderDetail)throw new NotFoundException('orden no encntrada')  
+      orderDetail.state = newStatus;
+
+    return await this.orderDetailRepository.save(orderDetail)
     
-}
+  }
+    
 
 }

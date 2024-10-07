@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Property } from "../properties/property.entity";
 import { PropertyRepository } from "./property.repository";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
-import { PropertyDto } from "src/dtos/createProperty.dto";
+import { CreatePropertyDto } from "src/dtos/createProperty.dto";
 import { CloudinaryService } from "src/commons/cloudinary.service"; // Asegúrate de tener esto importado
 import { PropertyImg } from "./propertyImg.entity";
 
@@ -73,8 +73,8 @@ async getPropertyById(uuid: string): Promise<Property> {
     }
   }
 
-async addProperty(id: string, newProperty: PropertyDto) {
-  const property = await this.propiertiesRepository.addProperty(id, newProperty);
+async addProperty(uuid: string, newProperty: CreatePropertyDto) {
+  const property = await this.propiertiesRepository.addProperty(uuid, newProperty);
 
   // Manejo de carga de imágenes
   if (newProperty.propImg && newProperty.propImg.length > 0) {

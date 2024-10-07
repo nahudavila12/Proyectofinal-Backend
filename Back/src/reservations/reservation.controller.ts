@@ -18,6 +18,8 @@ import {
 } from '../dtos/createReservation.dto';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/guards/roles.decorator';
+import { IRol } from 'src/users/user.entity';
 
 @Controller('reservations')
 export class ReservationController {
@@ -62,7 +64,7 @@ export class ReservationController {
   //     uuid,
   //     updateReservationDto,
   //   );
-  }
+  
 
   // @Delete('admin/:uuid')
   // @UseGuards(RolesGuard)
@@ -95,6 +97,6 @@ export class ReservationController {
     }
   }
   
-  
-}
+}  
+
 

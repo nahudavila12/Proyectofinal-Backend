@@ -13,7 +13,6 @@ import {
   from 'typeorm';
 import { 
   IStateBooking,
-
   Reservation 
 } from './reservation.entity';
 import {
@@ -29,7 +28,6 @@ import { AdditionalService } from 'src/additionalsServices/additionalService.ent
 import { IRoomState } from 'src/rooms/room.entity';
 import { Payment } from 'src/payments/payment.entity';
 import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
-
 
 export class CodeReservation {
   code: string;
@@ -51,9 +49,7 @@ export class ReservationService {
     private readonly roomRepository: Repository<Room>,
     @InjectRepository(Property)
     private readonly propertyRepository: Repository<Property>,
-    @InjectRepository(OrderDetail)
-    private readonly orderDetailRepository: Repository<OrderDetail>,
-
+    
     @InjectDataSource()
     private readonly dataSource: DataSource
   ) {}
@@ -168,35 +164,33 @@ async getUserReservations(userId: string) {
     return this.reservationRepository.find();
   }
 
-  // async deleteReservation(uuid: string) {
-  //   const result = await this.reservationRepository.delete({ uuid });
-  //   if (result.affected === 0)
-  //     throw new NotFoundException(`Reservation with UUID ${uuid} not found`);
+  // async activeReservationStatus(newReservationUuid: string, newStatus: string) {
+  //   const reservation = await this.reservationRepository.findOne({ 
+  //     where: { uuid: newReservationUuid } 
+  //   });
+    
+  //   if (!reservation) {
+  //     throw new NotFoundException('Reserva no encontrada');
+  //   }
+    
+  //   reservation.status = newStatus;
+  //   return await this.reservationRepository.save(reservation); 
   // }
-
-  async activeReservationStatus(newReservationUuid: string) {
-    const reservation = await this.reservationRepository.findOne({ 
-      where: { uuid: newReservationUuid } 
-    });
-    
-    if (!reservation) {
-      throw new NotFoundException('Reserva no encontrada');
-    }
-    
-    reservation.status = IStateBooking.ACTIVE;
-    return await this.reservationRepository.save(reservation); 
-  }
   
-  async cancelReservationStatus(newReservationUuid: string) {
+  async updateReservation(reservationUuid: string, newStatus: IStateBooking) {
     const reservation = await this.reservationRepository.findOne({ 
-      where: { uuid: newReservationUuid } 
+      where: { uuid: reservationUuid } 
     });
-    
-    if (!reservation) {
+    try{
+      if (!reservation) {
       throw new NotFoundException('Reserva no encontrada');
     }
     
-    reservation.status = IStateBooking.CANCELLED;
-    return await this.reservationRepository.save(reservation); 
+      reservation.status = newStatus;
+      return await this.reservationRepository.save(reservation); 
+  
+  }catch(error){
+    throw new ConflictException(`Error del servidor ${error}`)
+    }
   }
 }

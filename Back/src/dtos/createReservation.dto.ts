@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsNumber, IsDateString, Min, IsString, Matches, IsDate } from 'class-validator';
 import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
+import { IStateBooking } from 'src/reservations/reservation.entity';
 
 export class CreateReservationDto {
 
@@ -29,5 +30,5 @@ export class CreateReservationDto {
 
 export class UpdateReservationDto extends PartialType(CreateReservationDto) {
   @ApiProperty({ example: 'active', enum: ['active', 'pending', 'cancelled'] })
-  state: string;
+  state: IStateBooking;
 }

@@ -6,6 +6,7 @@ import { Roles } from "src/guards/roles.decorator";
 import { RolesGuard } from "src/guards/roles.guard";
 import { OwnerService } from "src/owners/owner.service";
 import { PropertyService } from "src/properties/property.service";
+import { IStateBooking } from "src/reservations/reservation.entity";
 import { ReservationService } from "src/reservations/reservation.service";
 import { UuidValidationPipe } from "src/users/pipe/uuid-validation.pipe";
 import { IRol } from "src/users/user.entity";
@@ -105,8 +106,10 @@ export class AdminController {
     @Body() updateReservationDto: UpdateReservationDto,
   ) {
     try {
-      const updatedReservation = await this.reservationService.updateReservation(uuid, updateReservationDto);
+      const newStatus = updateReservationDto.state
+      const updatedReservation = await this.reservationService.updateReservation(uuid, newStatus );
       
+
       if (!updatedReservation) {
         throw new NotFoundException('La reserva no fue encontrada');
       }
@@ -126,27 +129,28 @@ export class AdminController {
   }
 
 
-  
-  @Delete('reservation/delete/:uuid')
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(IRol.Admin)
-  async deleteReservation(@Param('uuid') uuid: string) {
-    try {
-      const result = await this.reservationService.deleteReservation(uuid);
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'Reserva eliminada exitosamente',
-        data: result, 
-      };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException('La reserva no fue encontrada');
-      } else if (error instanceof BadRequestException) {
-        throw new BadRequestException('La solicitud es inválida');
-      }
-      throw new InternalServerErrorException('Error al eliminar la reserva.', error.message);
-    }
-  }
+  // COMENTO ESTA FUNCION MOMENTANEAMENTE, PORQUE HAY QUE MODIFICAR LA ENTIDAD RESERVATIONS
+  //PARA QUE ACEPTE UNA COLUMNA TIPO "isActive" PARA MANEJAR LA ELIMINACIÓN LÓGICA
+  // @Delete('reservation/delete/:uuid')
+  // @UseGuards(AuthGuard, RolesGuard)
+  // @Roles(IRol.Admin)
+  // async deleteReservation(@Param('uuid') uuid: string) {
+  //   try {
+  //     const result = await this.reservationService.deleteReservation(uuid);
+  //     return {
+  //       statusCode: HttpStatus.OK,
+  //       message: 'Reserva eliminada exitosamente',
+  //       data: result, 
+  //     };
+  //   } catch (error) {
+  //     if (error instanceof NotFoundException) {
+  //       throw new NotFoundException('La reserva no fue encontrada');
+  //     } else if (error instanceof BadRequestException) {
+  //       throw new BadRequestException('La solicitud es inválida');
+  //     }
+  //     throw new InternalServerErrorException('Error al eliminar la reserva.', error.message);
+  //   }
+  //}
 
 
   
@@ -169,10 +173,6 @@ export class AdminController {
       }
   }
   
-
-
-
-  
   @Put('bannUser/:uuid')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(IRol.Admin)
@@ -193,7 +193,6 @@ export class AdminController {
           throw new InternalServerErrorException('Error al banear al usuario.', error.message);
       }
   }
-  
-  
-
 }
+  
+  

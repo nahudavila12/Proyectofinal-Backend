@@ -7,7 +7,7 @@ import { PropertyImg } from "./propertyImg.entity";
 import { RoomImg } from "src/rooms/roomImg.entity";
 import { Owner } from "src/owners/owner.entity";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
-import { PropertyDto } from "src/dtos/createProperty.dto";
+import { CreatePropertyDto } from "src/dtos/createProperty.dto";
 import { CloudinaryService } from "src/commons/cloudinary.service";
 
 @Injectable()
@@ -123,7 +123,7 @@ async findPropertiesByFilters(filters: PropertyFilters): Promise<Property[]> {
   return await queryBuilder.getMany();
 }
 
-async addProperty(uuid: string, property: PropertyDto): Promise<Property | null> {
+async addProperty(uuid: string, property: CreatePropertyDto): Promise<Property | null> {
     
     const owner = await this.ownerRepository.findOneBy({ uuid });
     if (!owner) throw new NotFoundException('Propietario no encontrado');

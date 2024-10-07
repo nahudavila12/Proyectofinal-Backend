@@ -11,6 +11,11 @@ import { PropertyImg } from './propertyImg.entity';
 import { CloudinaryService } from 'src/commons/cloudinary.service';
 import { Room } from 'src/rooms/room.entity';
 import { RoomImg } from 'src/rooms/roomImg.entity';
+import { UserService } from 'src/users/user.service';
+import { UserRepository } from 'src/users/user.repository';
+import { User } from 'src/users/user.entity';
+import { Profile } from 'src/profiles/profile.entity';
+import { ProfileRepository } from 'src/profiles/profile.repository';
 
 @Module({
   imports: [
@@ -19,7 +24,9 @@ import { RoomImg } from 'src/rooms/roomImg.entity';
       Owner, 
       PropertyImg,
       Room,
-      RoomImg
+      RoomImg,
+      User,
+      Profile
     ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -33,7 +40,10 @@ import { RoomImg } from 'src/rooms/roomImg.entity';
   providers: [
     PropertyService, 
     PropertyRepository, 
-    CloudinaryService
+    CloudinaryService,
+    UserService,
+    UserRepository,
+    ProfileRepository
   ],
   controllers: [PropertyController],
   exports: [PropertyRepository, PropertyService],
