@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, HttpStatus, InternalServerErrorException, NotFoundException, Param, ParseUUIDPipe, Patch, Post, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
-import { PropertyDto } from "src/dtos/createProperty.dto";
+import { CreatePropertyDto } from "src/dtos/createProperty.dto";
 import { CreateRoomDto } from "src/dtos/createRoom.dto";
 import { AuthGuard } from "src/guards/auth.guard";
 import { Roles } from "src/guards/roles.decorator";
@@ -75,7 +75,7 @@ async updateProperty(
 async addProperty(
   @Param('uuid', ParseUUIDPipe) uuid: string,
   @UploadedFiles() files: Express.Multer.File[], 
-  @Body() newProperty: PropertyDto
+  @Body() newProperty: CreatePropertyDto
 ) {
   try {
     newProperty.propImg = files; 

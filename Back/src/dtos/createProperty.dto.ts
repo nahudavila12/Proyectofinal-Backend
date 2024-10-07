@@ -11,7 +11,7 @@ import {
 import { CreateRoomDto } from "./createRoom.dto";
 import { PropertyType } from "src/properties/property.entity";
 
-export class PropertyDto {
+export class CreatePropertyDto {
   
   @IsNotEmpty()
   @Length(4, 20)

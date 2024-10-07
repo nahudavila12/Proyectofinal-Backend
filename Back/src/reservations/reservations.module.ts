@@ -11,8 +11,11 @@ import { RoomRepository } from 'src/rooms/room.Repository';
 import { PropertyRepository } from 'src/properties/property.repository';
 import { Reservation } from './reservation.entity';
 import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
-import { OrdersModule } from 'src/orderDetail/orders.module';
-import { Payment } from 'src/payments/payment.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/users/user.service';
+import { CloudinaryService } from 'src/commons/cloudinary.service';
+import { ProfileRepository } from 'src/profiles/profile.repository';
+import { Profile } from 'src/profiles/profile.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -21,14 +24,12 @@ import { Payment } from 'src/payments/payment.entity';
         Room,
         OrderDetail,
         Reservation,
-        
-    ]), OrdersModule
-    ],
+        Profile
+    ])],
     controllers: [ReservationController],
     providers: [
-        ReservationService,     
+        ReservationService, OrderDetailRepository, JwtService, UserService, CloudinaryService, ProfileRepository    
     ],
-    exports: [ReservationService]
     
 })
 export class ReservationsModule {}

@@ -13,6 +13,7 @@ import { HttpService } from '@nestjs/axios';
 import * as qs from 'qs'
 import { config as dotenvConfig } from 'dotenv';
 import { ReservationService } from 'src/reservations/reservation.service';
+import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
 
 @Injectable()
 export class PaypalService {
@@ -23,6 +24,7 @@ export class PaypalService {
   constructor(
     @InjectRepository(OrderDetail)
     private readonly orderDetailRespository: Repository<OrderDetail>,
+    private readonly orderDetailRepository: OrderDetailRepository,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @InjectRepository(Reservation)
@@ -97,8 +99,13 @@ export class PaypalService {
         where: { uuid: founPayment.reservation.uuid },
         relations: ['payment']
     });
+      if (!reservation) throw new NotFoundException('Reserva no encontrada');
 
-    if (!reservation) throw new NotFoundException('Reserva no encontrada');
+    const orderDetail = await this.orderDetailRespository.findOne({
+      where: { uuid: founPayment.reservation.uuid },
+      relations: ['payment']
+    }) 
+      if(!orderDetail)throw new NotFoundException('Orden de compra no encontrada')
 
     try {
         if (order.result.status === 'COMPLETED') {
@@ -108,8 +115,8 @@ export class PaypalService {
             founPayment.status = order.result.purchase_units[0].payments.captures[0].status;
             founPayment.payerId = order.result.payer.payer_id;
 
-            const actualReservation = await this.reservationService.activeReservationStatus(reservation.uuid);
-
+            const actualReservation = await this.reservationService.updateReservation(reservation.uuid, IStateBooking.ACTIVE);
+            const actualOrderDetail = await this.orderDetailRepository.activeOrderDetailStatus(orderDetail.uuid, order.result.status )
             await this.paymentRepository.save(founPayment);
 
             return {
@@ -123,7 +130,8 @@ export class PaypalService {
         if (order.result.status === 'DECLINED') {
             founPayment.status = 'DECLINED'; 
 
-            const actualReservation = await this.reservationService.cancelReservationStatus(reservation.uuid);
+            const actualReservation = await this.reservationService.updateReservation(reservation.uuid, IStateBooking.CANCELLED);
+            const actualOrderDetail = await this.orderDetailRepository.activeOrderDetailStatus(orderDetail.uuid, order.result.status )
 
             await this.paymentRepository.save(founPayment);
             
