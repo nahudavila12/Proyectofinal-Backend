@@ -22,9 +22,13 @@ import { RoomImg } from 'src/rooms/roomImg.entity';
 import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
 import { Profile } from 'src/profiles/profile.entity';
 import { JwtService } from '@nestjs/jwt';
+import { EmailModule } from 'src/email/email.module';  // Asegúrate de que la ruta sea correcta
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Owner, Reservation, User, Room, Property, PropertyImg, RoomImg, OrderDetail, Profile])],
+  imports: [
+    TypeOrmModule.forFeature([Owner, Reservation, User, Room, Property, PropertyImg, RoomImg, OrderDetail, Profile]),
+    EmailModule,  // Agregar EmailModule aquí
+  ],
   controllers: [AdminController],
   providers: [
     OwnerService,
@@ -38,8 +42,7 @@ import { JwtService } from '@nestjs/jwt';
     UserRepository,
     RoomRepository,
     ProfileRepository,
-    JwtService
-    
+    JwtService,
   ],
 })
 export class DashboardAdminModule {}
