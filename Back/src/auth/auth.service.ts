@@ -64,6 +64,7 @@ export class AuthService {
         user_name: `${given_name}`,
         firstName: family_name,
         lastName: family_name,
+        
     };
       user = await this.usersService.addUser(newUser);
     }

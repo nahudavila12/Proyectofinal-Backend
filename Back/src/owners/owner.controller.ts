@@ -20,9 +20,6 @@ export class OwnerController{
     private readonly roomService: RoomService
   ){}
 
-
-
-
 @Delete('propertie/delete/:uuid') 
 @UseGuards(AuthGuard,RolesGuard)
 @Roles(IRol.Owner, IRol.Admin) 
