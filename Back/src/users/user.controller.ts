@@ -23,7 +23,7 @@ export class UsersController {
 
 
     @Get(':uuid')
-    @UseGuards(AuthGuard)
+/*     @UseGuards(AuthGuard) */
     async getUser(
         @Param('uuid', UuidValidationPipe) uuid: string
     ) {
@@ -45,8 +45,8 @@ export class UsersController {
 
 
 
-    @Delete('delete/:id')
-    @UseGuards(AuthGuard)
+    @Delete('delete/:uuid')
+/*     @UseGuards(AuthGuard) */
     async deleteUser(
         @Param('uuid', UuidValidationPipe) uuid: string
     ) {

@@ -84,7 +84,7 @@ export class ReservationService {
         if(!foundRoom) throw new NotFoundException('Habitación no encontrada');
       
 
-        if (foundRoom.disponibility !== 'available') {
+        if (foundRoom.disponibility !== 'avaiable') {
           throw new ConflictException('La habitación no está disponible');
         }
         
