@@ -20,8 +20,7 @@ export class AuthController {
   
   @ApiOperation({ summary: 'signIn / Login' })
   @ApiResponse({ status: 200, description: 'User logged in correctly' })
-  @Post('signin')
-  @UseGuards(AuthGuard) 
+  @Post('signin') 
   async signIn(@Body() loginUserDto: LoginUserDto) {
       try {
           return await this.authService.signIn(loginUserDto);
@@ -37,7 +36,7 @@ export class AuthController {
 
 
 
-  @ApiOperation({ summary: 'signUp / Register' })
+@ApiOperation({ summary: 'signUp / Register' })
 @ApiResponse({ status: 200, description: 'User created correctly' })
 @Post('signup')
 @UseInterceptors(FileInterceptor('file')) 
@@ -46,7 +45,7 @@ async signUp(
     @UploadedFile() file?: Express.Multer.File
 ) {
     try {
-        const user = await this.authService.signUp(createUserDto, file);
+        const user = await this.authService.signUp(createUserDto);
 
         const emailSent = await this.emailService.sendEmail({
             from: "mekhi.mcdermott@ethereal.email",
@@ -54,7 +53,7 @@ async signUp(
             sendTo: createUserDto.email,
             template: Template.WELCOME,
             params: {
-                name: createUserDto.firstName
+                name: createUserDto.user_name
             }
         });
 

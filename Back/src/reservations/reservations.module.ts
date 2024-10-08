@@ -28,7 +28,13 @@ import { Profile } from 'src/profiles/profile.entity';
     ])],
     controllers: [ReservationController],
     providers: [
-        ReservationService, OrderDetailRepository, JwtService, UserService, CloudinaryService, ProfileRepository    
+        ReservationService, 
+        OrderDetailRepository, 
+        JwtService, 
+        UserService, 
+        CloudinaryService, 
+        ProfileRepository,
+        UserRepository    
     ],
     
 })
