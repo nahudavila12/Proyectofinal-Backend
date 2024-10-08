@@ -18,6 +18,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/users/user.service';
 import { Profile } from 'src/profiles/profile.entity';
 import { ProfileRepository } from 'src/profiles/profile.repository';
+import { UserRepository } from 'src/users/user.repository';
 
 
 @Module({
@@ -31,7 +32,8 @@ import { ProfileRepository } from 'src/profiles/profile.repository';
     RoomRepository,
     JwtService,
     UserService,
-    ProfileRepository
+    ProfileRepository,
+    UserRepository
   ],
   controllers:[OwnerController],
   exports: [OwnerService, OwnerRepository]

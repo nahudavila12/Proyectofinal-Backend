@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer'
-import * as dotenv from 'dotenv'
-dotenv.config()
+import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class Email {
@@ -12,6 +13,9 @@ export class Email {
     auth: {
       user: 'mekhi.mcdermott@ethereal.email', 
       pass: 'dkqUCPwfyxtjCDA5zQ'
+    },
+    tls: {
+      rejectUnauthorized: false, // Desactiva la verificación del certificado SSL
     }
   });
 
@@ -27,6 +31,7 @@ export class Email {
       console.log('Message sent: %s', info.messageId); 
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info)); 
     } catch (error) {
+      console.error('Error al enviar el correo:', error.message);
       throw error;
     }
   }
@@ -43,7 +48,8 @@ export class Email {
       console.log('Message sent: %s', info.messageId); 
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info)); 
     } catch (error) {
-      throw error
+      console.error('Error al enviar el correo de prueba:', error.message);
+      throw error;
     }
   }
 }
