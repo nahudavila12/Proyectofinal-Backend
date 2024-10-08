@@ -6,14 +6,14 @@ import { Roles } from "src/guards/roles.decorator";
 import { RolesGuard } from "src/guards/roles.guard";
 import { OwnerService } from "src/owners/owner.service";
 import { PropertyService } from "src/properties/property.service";
-import { IStateBooking } from "src/reservations/reservation.entity";
+/*  import { IStateBooking } from "src/reservations/reservation.entity";  */
 import { ReservationService } from "src/reservations/reservation.service";
 import { UuidValidationPipe } from "src/users/pipe/uuid-validation.pipe";
 import { IRol } from "src/users/user.entity";
 import { UserService } from "src/users/user.service";
 
 @Controller('admin')
-@UseGuards(RolesGuard,AuthGuard)
+/* @UseGuards(RolesGuard,AuthGuard) */
 export class AdminController {
     constructor(
         private readonly ownerService: OwnerService,
@@ -24,8 +24,8 @@ export class AdminController {
 
 
     @Post('addOwner/:uuid')
-    @UseGuards(AuthGuard,RolesGuard) 
-    @Roles(IRol.User, IRol.Admin) 
+/*     @UseGuards(AuthGuard,RolesGuard) 
+    @Roles(IRol.User, IRol.Admin)  */
     async addOwner(
         @Param('uuid', ParseUUIDPipe) uuid: string,
         @Body() newOwner: CreateOwnerDto
@@ -49,8 +49,8 @@ export class AdminController {
 
     
   @Patch('propertie/ban/:uuid')
-  @UseGuards(AuthGuard,RolesGuard) 
-  @Roles(IRol.Admin) 
+/*   @UseGuards(AuthGuard,RolesGuard) 
+  @Roles(IRol.Admin)  */
   async banProperty(
     @Param('uuid', UuidValidationPipe) uuid: string, 
     @Body('ban') ban: boolean 
@@ -154,10 +154,10 @@ export class AdminController {
 
 
   
+  /*   @UseGuards(AuthGuard,  RolesGuard )  */
+  /*   @Roles(IRol.Admin) */
+  /*   @HttpCode(200) */
   @Get('allUsers')
-  @UseGuards(AuthGuard, RolesGuard) 
-  @Roles(IRol.Admin)
-  @HttpCode(200)
   async getAllUsers(
       @Query('page') page: number, 
       @Query('limit') limit: number
@@ -174,8 +174,8 @@ export class AdminController {
   }
   
   @Put('bannUser/:uuid')
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles(IRol.Admin)
+/*   @UseGuards(AuthGuard, RolesGuard) */
+/*   @Roles(IRol.Admin) */
   async bannUser(
       @Param('uuid', UuidValidationPipe) uuid: string
   ) {

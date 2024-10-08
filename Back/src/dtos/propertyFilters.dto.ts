@@ -19,4 +19,8 @@ export class PropertyFilters {
     @IsNumber()
     @Min(0)
     maxPrice?: number;
-  }
+
+    @IsOptional()
+    @IsString() 
+    roomUuid?: string; 
+}

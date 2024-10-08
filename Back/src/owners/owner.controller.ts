@@ -25,7 +25,7 @@ export class OwnerController{
 
 @Delete('propertie/delete/:uuid') 
 @UseGuards(AuthGuard,RolesGuard)
-@Roles(IRol.Owner) 
+@Roles(IRol.Owner, IRol.Admin) 
 async removeProperty(@Param('uuid', UuidValidationPipe) uuid: string) { 
   try {
     const result = await this.propertyService.removeProperty(uuid);
@@ -46,7 +46,7 @@ async removeProperty(@Param('uuid', UuidValidationPipe) uuid: string) {
 
 @Patch('propertie/update/:uuid')
 @UseGuards(AuthGuard,RolesGuard) 
-@Roles(IRol.Owner) 
+@Roles(IRol.Owner, IRol.Admin) 
 async updateProperty(
   @Param('uuid', UuidValidationPipe) uuid: string, 
   @Body() updateData: Partial<Property>

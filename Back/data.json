@@ -3,7 +3,7 @@
         "name": "Hotel Paraíso",
         "location": "Playa del Carmen",
         "propertyType": "hotel", 
-        "rate": 150.00,
+        "rate": 3,
         "isActive": true,
         "owner": { 
             "uuid": "a3b2f4f2-404d-4dc0-a84a-774b54663b19",
@@ -15,6 +15,7 @@
         "propImg": ["hotel1.jpg", "hotel2.jpg"],
         "rooms": [
             {
+                "uuid": "c1e1b1b5-7548-45a3-b64b-76c3e94c7e7f",
                 "room_number": 101,
                 "capacity": 2,
                 "price_per_day": 150,
@@ -24,6 +25,7 @@
                 "roomCategory": "standard"
             },
             {
+                "uuid": "a1b5f33d-56e8-48c1-b8b4-5a2e3e24bc77",
                 "room_number": 102,
                 "capacity": 4,
                 "price_per_day": 200,
@@ -38,7 +40,7 @@
         "name": "Cabaña en la Montaña",
         "location": "San Martín de los Andes",
         "propertyType": "cabaña",
-        "rate": 100.00,
+        "rate": 5,
         "isActive": true,
         "owner": { 
             "uuid": "be2f2e1b-88b8-4c4c-9b26-476c68ff4d25",
@@ -50,6 +52,7 @@
         "propImg": ["cabaña1.jpg"],
         "rooms": [
             {
+                "uuid": "e2f7d03e-4bc9-4475-b6a3-d1b6e2e3c9c9",
                 "room_number": 1,
                 "capacity": 3,
                 "price_per_day": 100,
@@ -63,7 +66,7 @@
         "name": "Departamento Centro",
         "location": "Buenos Aires",
         "propertyType": "departamento",
-        "rate": 120.00,
+        "rate": 5,
         "isActive": true,
         "owner": { 
             "uuid": "2bcb6485-d802-47e6-a457-e29a62bbd547",
@@ -75,6 +78,7 @@
         "propImg": ["departamento1.jpg"],
         "rooms": [
             {
+                "uuid": "f8e9d236-4d70-4f2b-b12f-d1a3cdb1ae44",
                 "room_number": 1,
                 "capacity": 2,
                 "price_per_day": 120,
@@ -88,7 +92,7 @@
         "name": "Hotel Playa",
         "location": "Cancún",
         "propertyType": "hotel",
-        "rate": 180.00,
+        "rate": 5,
         "isActive": true,
         "owner": { 
             "uuid": "39d81435-0836-4797-bb45-4d29d6df8c60",
@@ -100,6 +104,7 @@
         "propImg": ["hotel3.jpg"],
         "rooms": [
             {
+                "uuid": "b207a61c-ef4e-4d74-bd87-1d49ec34273a",
                 "room_number": 201,
                 "capacity": 2,
                 "price_per_day": 180,
@@ -114,7 +119,7 @@
         "name": "Cabaña del Bosque",
         "location": "Bariloche",
         "propertyType": "cabaña",
-        "rate": 150.00,
+        "rate": 4,
         "isActive": true,
         "owner": { 
             "uuid": "39e0de0e-56d3-4b4f-83fc-60d3ef60e009",
@@ -126,6 +131,7 @@
         "propImg": ["cabaña2.jpg"],
         "rooms": [
             {
+                "uuid": "7ac5d5af-c8cc-4d64-a146-5d92d23f6d4e",
                 "room_number": 1,
                 "capacity": 4,
                 "price_per_day": 150,
@@ -139,7 +145,7 @@
         "name": "Departamento Moderno",
         "location": "Santiago",
         "propertyType": "departamento",
-        "rate": 130.00,
+        "rate": 4,
         "isActive": true,
         "owner": { 
             "uuid": "9f0864af-4db3-47f8-a1cc-6f538e635f1e",
@@ -151,6 +157,7 @@
         "propImg": ["departamento2.jpg"],
         "rooms": [
             {
+                "uuid": "dd8a9f80-9bc5-447e-a9b0-7f9054820c9b",
                 "room_number": 1,
                 "capacity": 2,
                 "price_per_day": 130,
@@ -164,7 +171,7 @@
         "name": "Hotel del Lago",
         "location": "Villa la Angostura",
         "propertyType": "hotel",
-        "rate": 250.00,
+        "rate": 5,
         "isActive": true,
         "owner": { 
             "uuid": "0a6c7c7b-f9de-45bc-a3e2-8e3e9939da99",
@@ -176,6 +183,7 @@
         "propImg": ["hotel4.jpg"],
         "rooms": [
             {
+                "uuid": "4015c5aa-e76e-4043-b818-61c57b876ccf",
                 "room_number": 301,
                 "capacity": 2,
                 "price_per_day": 250,
@@ -190,7 +198,7 @@
         "name": "Cabaña Río",
         "location": "El Bolsón",
         "propertyType": "cabaña",
-        "rate": 200.00,
+        "rate": 4,
         "isActive": true,
         "owner": { 
             "uuid": "f61c3cc5-0d3f-4054-87e2-8aaab4a7e1ff",
@@ -202,6 +210,7 @@
         "propImg": ["cabaña3.jpg"],
         "rooms": [
             {
+                "uuid": "bc983cb4-693e-4ef8-9c63-1637354d4d78",
                 "room_number": 1,
                 "capacity": 5,
                 "price_per_day": 200,
@@ -215,7 +224,7 @@
         "name": "Departamento en la Playa",
         "location": "Mendoza",
         "propertyType": "departamento",
-        "rate": 140.00,
+        "rate": 4,
         "isActive": true,
         "owner": { 
             "uuid": "5a70f302-72c6-46a6-9c85-bc9491fc8ae3",
@@ -227,6 +236,7 @@
         "propImg": ["departamento3.jpg"],
         "rooms": [
             {
+                "uuid": "64f3e7d6-6c6b-4b0a-b2b6-8c18b7af4735",
                 "room_number": 1,
                 "capacity": 3,
                 "price_per_day": 140,

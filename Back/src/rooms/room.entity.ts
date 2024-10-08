@@ -13,7 +13,7 @@ import { ICategories} from './roomCategory.entity';
 import { RoomService } from './roomService.entity'
 
 export enum IRoomState {
-  Available = 'available',
+  Avaiable = 'avaiable',
   Reserved = 'reserved',
   Occupied = 'occupied',
   Maintenance = 'maintenance',
@@ -50,10 +50,10 @@ export class Room {
 
   @ApiProperty({
     enum: IRoomState,
-    default: IRoomState.Available,
+    default: IRoomState.Avaiable,
     description: 'Estado de disponibilidad de la habitación',
   })
-  @Column({ type: 'enum', enum: IRoomState, default: IRoomState.Available })
+  @Column({ type: 'enum', enum: IRoomState, default: IRoomState.Avaiable })
   disponibility: IRoomState;
 
   @ApiProperty({
@@ -74,8 +74,8 @@ export class Room {
     type: () => Property,
     description: 'Propiedad a la que pertenece la habitación',
   })
-  @ManyToOne(() => Property, (property) => property.room)
-  property: Property;
+  @ManyToOne(() => Property, property => property.room) 
+    property: Property;
 
   @OneToMany(() => RoomService, (roomService) => roomService.room)
   roomServices?: RoomService;
