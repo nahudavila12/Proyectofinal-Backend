@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, HttpStatus, InternalServerErrorException, NotFoundException, Param, ParseUUIDPipe, Patch, Post, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
+import { CreateOwnerDto } from "src/dtos/createOwner.dto";
 import { CreatePropertyDto } from "src/dtos/createProperty.dto";
 import { CreateRoomDto } from "src/dtos/createRoom.dto";
 import { AuthGuard } from "src/guards/auth.guard";
@@ -10,6 +11,7 @@ import { PropertyService } from "src/properties/property.service";
 import { RoomService } from "src/rooms/room.service";
 import { UuidValidationPipe } from "src/users/pipe/uuid-validation.pipe";
 import { IRol } from "src/users/user.entity";
+import { OwnerService } from "./owner.service";
 
 
 @Controller('owner')
@@ -17,7 +19,8 @@ import { IRol } from "src/users/user.entity";
 export class OwnerController{
   constructor(
     private readonly propertyService: PropertyService,
-    private readonly roomService: RoomService
+    private readonly roomService: RoomService,
+    private readonly ownerService: OwnerService
   ){}
 
 @Delete('propertie/delete/:uuid') 
@@ -96,5 +99,28 @@ async addRoom(
     return this.roomService.addRoom(uuid, newRoom)
 }
 
+@Post('addOwner/:uuid')
+@UseGuards(AuthGuard,RolesGuard) 
+@Roles(IRol.User)  
+async addOwner(
+  @Param('uuid', ParseUUIDPipe) userUuid: string,
+  @Body() newOwner: CreateOwnerDto
+  ) {
+  try {
+    const owner = await this.ownerService.addOwner(userUuid, newOwner);
+    return {
+     statusCode: HttpStatus.CREATED,
+     message: 'Propietario agregado exitosamente',
+     data: owner,
+     };
+
+  }catch(error) {
+           
+    if (error instanceof NotFoundException) {
+      throw new NotFoundException(error.message);
+    }
+  throw new InternalServerErrorException('Hubo un problema al agregar el propietario');
+  }
+}
 
 }

@@ -8,7 +8,7 @@ export class OwnerService{
         private readonly ownerRespository: OwnerRepository
     ){}
 
-    async addOwner(id: string, newOwner: CreateOwnerDto): Promise<Partial<Owner> | null>{
-        return await this.ownerRespository.createOwner(id, newOwner)
+    async addOwner(userUuid: string, newOwner: CreateOwnerDto): Promise<Partial<Owner> | null>{
+        return await this.ownerRespository.addOwner(userUuid, newOwner)
     }
 }

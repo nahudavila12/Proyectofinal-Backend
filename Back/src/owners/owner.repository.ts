@@ -17,24 +17,23 @@ export class OwnerRepository{
         private readonly propertyRepository: Repository<Property>
     ){}
 
-    async createOwner(uuid: string, newOwner: CreateOwnerDto): Promise<Partial<Owner>> | null{
+async addOwner(uuid: string, newOwner: CreateOwnerDto): Promise<Partial<Owner>> | null{
+    const foundUser = await this.userRepository.findOneBy({uuid});
+        if(!foundUser) throw new NotFoundException('Usuario no encontrado');
 
-        const foundUser = await this.userRepository.findOneBy({uuid});
-            if(!foundUser) throw new NotFoundException('Usuario no encontrado');
-
-        const existingOwner = await this.ownerRepository.findOneBy({ bussinesId: newOwner.bussinesId });
-            if (existingOwner) throw new ConflictException('Este ID de negocio ya está registrado.');
+    const existingOwner = await this.ownerRepository.findOneBy({ bussinesId: newOwner.bussinesId });
+        if (existingOwner) throw new ConflictException('Este ID de negocio ya está registrado.');
           
-        const addOwner = new Owner()
-        Object.assign(addOwner, newOwner)
-        addOwner.user = foundUser
-        foundUser.rol = IRol.Owner
-            await this.userRepository.save(foundUser)
+    const addOwner = new Owner()
+    Object.assign(addOwner, newOwner)
+    addOwner.user = foundUser
+    foundUser.rol = IRol.Owner
+        await this.userRepository.save(foundUser)
 
-        const returnedOwner = await this.ownerRepository.save(addOwner);
+    const returnedOwner = await this.ownerRepository.save(addOwner);
 
-        const { bussines_name, email, phone } = returnedOwner;
+    const { bussines_name, email, phone } = returnedOwner;
     
-        return { bussines_name, email, phone };
+    return { bussines_name, email, phone };
     }
 }
