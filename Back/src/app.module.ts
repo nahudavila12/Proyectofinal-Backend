@@ -9,7 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './config/typeOrm.config';
 import { UserModule } from './users/user.module';
 //import { OrdersModule } from './orderDetail/orders.module';
-import { FileUploadModule } from './file-upload/file-upload.module';
+//import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport'
 import { AuthModule } from './auth/auth.module'; 
@@ -23,6 +23,7 @@ import { PaymentsModule } from './paypal/paypal.module';
 import { OrdersModule } from './orderDetail/orders.module';
 
 import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
+import { ProfileModule } from './profiles/profile.module';
 
 
 @Module({
@@ -42,7 +43,7 @@ import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
       signOptions: { expiresIn: '60s' },
     }),
     UserModule,
-    FileUploadModule,
+   // FileUploadModule,
     AuthModule,
     EmailModule,
     OwnersModule,
@@ -51,7 +52,8 @@ import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
     RoomsModule,
     ReservationsModule,
     OrdersModule,
-    PaymentsModule
+    PaymentsModule,
+    ProfileModule
   ],
   controllers: [AppController],
   providers: [AppService, CloudinaryConfig, CloudinaryService,SeedService],

@@ -28,18 +28,18 @@ export class UserService {
     }
 
     // Nuevo método para actualizar la imagen del perfil
-    async updateUserProfileImage(userUuid: string, userImageUrl: string): Promise<void> {
-        const profile = await this.profileRepository.findOne({
-            where: { user: { uuid: userUuid } },
-        });
+    // async updateUserProfileImage(userUuid: string, userImageUrl: string): Promise<void> {
+    //     const profile = await this.profileRepository.findOne({
+    //         where: { user: { uuid: userUuid } },
+    //     });
 
-        if (!profile) {
-            throw new NotFoundException('Perfil no encontrado para el usuario.');
-        }
+    //     if (!profile) {
+    //         throw new NotFoundException('Perfil no encontrado para el usuario.');
+    //     }
 
-        profile.userIMG = userImageUrl;
-        await this.profileRepository.save(profile);
-    }
+    //     profile.userIMG = userImageUrl;
+    //     await this.profileRepository.save(profile);
+    // }
 
     async deleteUser(uuid: string): Promise<void> {
         await this.userRepository.deleteUser(uuid);
