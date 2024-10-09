@@ -5,93 +5,26 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
 import { CloudinaryService } from 'src/commons/cloudinary.service';
 import { ProfileRepository } from 'src/profiles/profile.repository';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(User) private userRepository: Repository<User>,
+        private userRepository: UserRepository,
         private readonly cloudinaryService: CloudinaryService,
         private readonly profileRepository: ProfileRepository
     ) {}
 
     async getAllUsers(page: number, limit: number): Promise<User[]> {
-        const pageNumber = Number(page);
-        const limitNumber = Number(limit);
-
-        if (isNaN(pageNumber) || isNaN(limitNumber)) {
-            throw new Error('Los valores de page y limit deben ser números');
-        }
-
-        const skip = (pageNumber - 1) * limitNumber;
-        return this.userRepository.find({
-            skip: skip,
-            take: limitNumber,
-        });
+        return this.userRepository.getAllUsers(page, limit)
     }
 
-    async addUser(newUser: CreateUserDto, file?: Express.Multer.File): Promise<User> {
-        const existingUser = await this.userRepository.findOne({
-            where: { email: newUser.email },
-        });
-
-        if (existingUser) {
-            throw new ConflictException('El email ya está en uso');
-        }
-
-        try {
-            const user = new User(); 
-            Object.assign(user, newUser)
-
-            const savedUser = await this.userRepository.save(user); 
-
-            let imageUrl: string = ''; 
-            if (file) {
-                const uploadResult = await this.cloudinaryService.uploadImage(file);
-                imageUrl = uploadResult.secure_url; 
-            }
-
-            const profile = await this.profileRepository.findOne({
-                where: { user: savedUser },
-            });
-
-            if (profile) {
-                profile.userIMG = imageUrl; 
-                await this.profileRepository.save(profile);
-            } else {
-
-                const newProfile = await this.profileRepository.create({
-                    user: savedUser,
-                    userIMG: imageUrl,
-                    user_name: savedUser.user_name,
-                    email: savedUser.email,
-                    phone: savedUser.phone,
-                    country: savedUser.country,
-                    address: savedUser.address,
-                    password: savedUser.password,
-                });
-                await this.profileRepository.save(newProfile);
-            }
-
-            return savedUser; 
-        } catch (error) {
-            throw new InternalServerErrorException(
-                'Error al agregar el usuario.',
-                error.message
-            );
-        }
-    }
-
+    async addUser(newUser: CreateUserDto): Promise<User | null> {
+        return this.userRepository.addUser(newUser); 
+    } 
+        
     async findByEmail(email: string): Promise<User | undefined> {
-        try {
-            return await this.userRepository.findOne({
-                where: { email },
-            });
-        } catch (error) {
-            throw new InternalServerErrorException(
-                'Error al buscar el usuario por email en el servicio.',
-                error.message
-            );
-        }
+       return this.userRepository.findByEmail(email)
     }
 
     // Nuevo método para actualizar la imagen del perfil
@@ -109,28 +42,12 @@ export class UserService {
     }
 
     async deleteUser(uuid: string): Promise<void> {
-        try {
-            const result = await this.userRepository.delete(uuid);
-            if (result.affected === 0) {
-                throw new NotFoundException('Usuario no encontrado');
-            }
-        } catch (error) {
-            throw new InternalServerErrorException('Error al eliminar el usuario.', error.message);
-        }
+        await this.userRepository.deleteUser(uuid);
     }
     
 
-    async bannUser(uuid: string): Promise<boolean> {
-        const user = await this.userRepository.findOne({
-            where: { uuid },
-        });
-        if (!user) {
-            throw new NotFoundException('Usuario no encontrado');
-        }
-        user.isBanned = true;
-        await this.userRepository.save(user);
-        
-        return true; 
+    async bannUser(uuid: string): Promise<void> {
+        return this.userRepository.bannUser(uuid); 
     }
     
 }

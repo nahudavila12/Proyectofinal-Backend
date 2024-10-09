@@ -35,26 +35,16 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  async signUp(user: CreateUserDto, file?: Express.Multer.File) {
-    const { email } = user;
+  async signUp(createUser: CreateUserDto) {
+    const { email } = createUser;
 
     const foundUser = await this.usersService.findByEmail(email);
     if (foundUser) throw new BadRequestException('El email ya se encuentra registrado');
 
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    const createdUser = await this.usersService.addUser({ ...user, password: hashedPassword });
+    const hashedPassword = await bcrypt.hash(createUser.password, 10);
+    const createdUser = await this.usersService.addUser({ ...createUser, password: hashedPassword });   
 
-    // Cargar la imagen a Cloudinary si existe
-    let userImageUrl = '';
-    if (file) {
-      const uploadResult = await this.cloudinaryService.uploadImage(file);
-      userImageUrl = uploadResult.secure_url;
-    }
-
-    // Actualizar el perfil del usuario con la URL de la imagen
-    await this.usersService.updateUserProfileImage(createdUser.uuid, userImageUrl);
-
-    return createdUser; // Retornar el usuario creado
+    return createdUser; 
   }
 
 
@@ -74,6 +64,7 @@ export class AuthService {
         user_name: `${given_name}`,
         firstName: family_name,
         lastName: family_name,
+        
     };
       user = await this.usersService.addUser(newUser);
     }

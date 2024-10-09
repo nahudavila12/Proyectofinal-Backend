@@ -30,7 +30,13 @@ import { EmailModule } from 'src/email/email.module';
     EmailModule],
     controllers: [ReservationController],
     providers: [
-        ReservationService, OrderDetailRepository, JwtService, UserService, CloudinaryService, ProfileRepository    
+        ReservationService, 
+        OrderDetailRepository, 
+        JwtService, 
+        UserService, 
+        CloudinaryService, 
+        ProfileRepository,
+        UserRepository    
     ],
     
 })
