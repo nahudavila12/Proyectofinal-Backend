@@ -15,7 +15,7 @@ export class RoomImg {
     @Column()
     img: string; 
 
-    @ManyToOne(() => Room, (room) => room.img)
+    @ManyToOne(() => Room, (room) => room.roomImages)
     @JoinColumn()
     room: Room; 
 }

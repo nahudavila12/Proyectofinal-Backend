@@ -13,14 +13,33 @@ import { MatchPassword } from "../decorators/matchPassword.decorator";
 import { AgeValidator } from "src/decorators/ageValidator";
 
 export class CreateUserDto {
+
     /**
-     * Debe ser un string entre 3 y 80 caracteres
+     * Debe ser un string entre 3 y 20 caracteres
+     * @example 'Test John'
+     */
+    @IsNotEmpty({ message: 'El nombre es requerido'})
+    @IsString({ message: 'El nombre debe ser una cadena de texto'})
+    @Length(3, 20, {message: 'El nombre debe tener entre 3 y 20 caracteres'})
+    firstName:string;
+
+    /**
+     * Debe ser un string entre 3 y 20 caracteres
+     * @example 'Test Doe'
+     */
+    @IsNotEmpty({ message: 'El apellido es requerido'})
+    @IsString({ message: 'El apellido debe ser una cadena de texto'})
+    @Length(3, 20, {message: 'El apellido debe tener entre 3 y 20 caracteres'})
+    lastName:string;
+    /**
+     * Debe ser un string entre 3 y 10 caracteres
      * @example 'Test User01'
      */
-    @IsNotEmpty({ message: 'El nombre es requerido.' })
+
+    @IsNotEmpty({ message: 'El nombre de usuario es requerido.' })
     @IsString({ message: 'El nombre debe ser una cadena de texto.' })
-    @Length(3, 80, { message: 'El nombre debe tener entre 3 y 80 caracteres.' })
-    name?:string;
+    @Length(3, 20, { message: 'El nombre de usuario debe tener entre 3 y 20 caracteres.' })
+    user_name:string;
      
     /**
      * Debe ser un string y un email valido 
@@ -48,7 +67,7 @@ export class CreateUserDto {
     {
     message: 'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*',
     })
-    @Length(8, 15, { message: 'La contraseña debe tener entre 8 y 15 caracteres.' })
+    @Length(8, 80, { message: 'La contraseña debe tener entre 8 y 15 caracteres.' })
     password?:string;
 
     /**
@@ -89,5 +108,7 @@ export class CreateUserDto {
     @Length(3, 20, { message: 'El pais debe tener entre 5 y 20 caracteres.' })
     country?:string;
 
+    @IsEmpty()
+    imageUrl?: string;
 
 }

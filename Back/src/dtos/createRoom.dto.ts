@@ -1,15 +1,17 @@
 import { IsArray, IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
 import { IRoomState } from "src/rooms/room.entity";
 import { ICategories } from "../rooms/roomCategory.entity"
+import { RoomImg } from "src/rooms/roomImg.entity";
+import { RoomService } from "src/rooms/roomService.entity";
 
-export class RoomDto {
+export class CreateRoomDto {
   @IsNumber()
   @Min(1) 
   room_number: number;
 
   @IsOptional()
   @IsEnum(ICategories)
-  category?: ICategories;
+  roomCategory?: ICategories;
 
   @IsNumber()
   @Min(1) 
@@ -19,16 +21,13 @@ export class RoomDto {
   @Min(0) 
   price_per_day: number;
 
-  @IsEnum(IRoomState)
-  disponibility: IRoomState;
-
   @IsOptional()
   @IsArray()
   @IsString({ each: true }) 
-  roomImages?: string[];
+  roomImages?: RoomImg[];
   
   @IsOptional()
   @IsArray()
   @IsString({ each: true }) 
-  services?: string[];
+  services?: RoomService[];
 }

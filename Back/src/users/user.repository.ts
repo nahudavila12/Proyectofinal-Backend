@@ -1,78 +1,64 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "./user.entity";
-import { Repository } from "typeorm";
-import { CreateUserDto } from "src/dtos/createUser.dto";
-import { Profile } from "src/profiles/profile.entity";
-
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
+import { Profile } from '../profiles/profile.entity';  // Asegúrate de importar tu entidad Profile
+import { CreateUserDto } from 'src/dtos/createUser.dto';
 
 @Injectable()
-export class UserRepository{
+export class UserRepository {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
-        @InjectRepository(Profile)
+        
+        @InjectRepository(Profile)  // Asegúrate de inyectar el repositorio de Profile
         private readonly profileRepository: Repository<Profile>
-    ){}
+    ) {}
 
-    async getAllUsers(offset, limit){
-
-        const splitUsers = await this.userRepository.find();
-        splitUsers.slice(offset, offset + limit)
-
-        return splitUsers;
+    async getAllUsers(offset: number, limit: number): Promise<User[]> {
+        const users = await this.userRepository.find({
+            skip: offset,
+            take: limit,
+        });
+        return users;
     }
 
-    async addUser(newUser: CreateUserDto): Promise<User>{
-        try{
-            const { email } = newUser;
+    async addUser(newUser: CreateUserDto): Promise<User> {
+        const user = this.userRepository.create(newUser);  
+        const savedUser = await this.userRepository.save(user);  
+        
 
-            const checkMail = await this.userRepository.findOne({ where: {email}})
-                if (checkMail) throw new ConflictException('El email ya esta en uso');
-        
-            const addUser = await this.userRepository.create(newUser)
-                await this.userRepository.save(addUser);
-        
-            const profileUser: Profile = new Profile
-            profileUser.user_name = addUser.name
-            profileUser.mail = addUser.email
-            profileUser.password = addUser.password
-            profileUser.phone = addUser.phone
-            profileUser.address = addUser.address
-            profileUser.country = addUser.country
-            profileUser.user = addUser
-                await this.profileRepository.save(profileUser)
+        const addUser = await this.userRepository.create(newUser)
+            await this.userRepository.save(addUser);
             
-            return addUser;
+        const profileUser: Profile = new Profile
+        Object.assign(profileUser, newUser)
+        profileUser.user = addUser
         
-        }catch{
-            throw new InternalServerErrorException('Error en el servidor')
-        }
+        await this.profileRepository.save(profileUser) 
 
-        
+
+        return savedUser;  
     }
+
+    async findOne(conditions: any): Promise<User | undefined> {
+        return await this.userRepository.findOne({ where: conditions });
+    }
+
     async getUserByEmail(email: string): Promise<User | undefined> {
-        try {
-            return await this.userRepository.findOne({ where: { email } });
-        } catch (error) {
-            throw new InternalServerErrorException('Error al buscar el usuario por email en el repositorio.', error.message);
-        }
+        return await this.userRepository.findOne({ where: { email } });
     }
 
-    async deleteUser(uuid: string){
-        try{
-            const foundUser = await this.userRepository.findOne({where: {uuid}})
-                if (!foundUser) throw new NotFoundException('usuario no encontrado');
+    async deleteUser(uuid: string): Promise<void> {
+        await this.userRepository.delete({ uuid });
+    }
 
-                foundUser.isActive = false;
-
-                await this.userRepository.save(foundUser);
-            
-            return foundUser;
-        
-        }catch{
-            throw new InternalServerErrorException('Error en el servidor')
+    async bannUser(uuid: string): Promise<void> {
+        const user = await this.userRepository.findOne({ where: { uuid } });
+        if (user) {
+            user.isBanned = true;
+            user.isActive = false;
+            await this.userRepository.save(user);
         }
     }
 }
-

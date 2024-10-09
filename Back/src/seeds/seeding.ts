@@ -1,19 +1,19 @@
 import { Connection } from 'typeorm';
 import { User, IRol } from '../users/user.entity';
 import { Owner } from '../owners/owner.entity';
-import { Property, PropertyType } from '../propierties/property.entity';
+import { Property, PropertyType } from '../properties/property.entity';
 import { Room } from '../rooms/room.entity';
 import { RoomCategory } from 'src/rooms/roomCategory.entity';
 import { ICategories } from 'src/rooms/roomCategory.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Payment } from '../payments/payment.entity';
-import { OrderDetail } from '../orderDetails/orderDetail.entity';
-import { IState } from '../payments/payment.entity';
+import { OrderDetail } from '../orderDetail/orderDetail.entity';
 
 export async function seedDatabase(connection: Connection) {
   // Crear usuarios
   const user1 = new User();
-  user1.name = 'John Doe';
+  user1.firstName = 'John';
+  user1.lastName = 'Doe'
   user1.email = 'john@example.com';
   user1.country = 'Argentina'
   user1.birthday = new Date('1990-01-01');
@@ -23,7 +23,8 @@ export async function seedDatabase(connection: Connection) {
   user1.rol = IRol.User;
 
   const user2 = new User();
-  user2.name = 'Jane Smith';
+  user2.firstName = 'Jane ';
+  user2.lastName = 'Smith'
   user2.email = 'jane@example.com';
   user2.birthday = new Date('1985-05-05');
   user2.phone = '987654321';
@@ -60,7 +61,7 @@ export async function seedDatabase(connection: Connection) {
 
   const room1 = new Room();
   room1.room_number = 101;
-  room1.category = savedRoomCategory;
+  room1.roomCategory = savedRoomCategory;
   room1.capacity = 2;
   room1.price_per_day = 150.0;
   room1.property = property1;
@@ -70,8 +71,8 @@ export async function seedDatabase(connection: Connection) {
 
   // Crear reservación
   const reservation1 = new Reservation();
-  reservation1.checkIn = new Date('2024-09-20');
-  reservation1.checkOut = new Date('2024-09-25');
+  reservation1.checkin = new Date('2024-09-20');
+  reservation1.checkout = new Date('2024-09-25');
   reservation1.user = user1;
   reservation1.room = room1;
 
@@ -91,8 +92,8 @@ export async function seedDatabase(connection: Connection) {
   // Crear pago
   const payment1 = new Payment();
   payment1.date = new Date();
-  payment1.state = IState.Pending;
-  payment1.method = 'credit card';
+  payment1.status = 'Acepted';
+  payment1.total = 50;
   payment1.orderDetail = orderDetail1;
 
   // Guardar pago

@@ -17,7 +17,7 @@ export class Profile{
     user_name: string;
 
     @Column({ unique: true })
-    mail: string;
+    email: string;
 
     @Column()
     phone: string;

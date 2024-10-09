@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Room } from './room.entity'
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
 
 export enum ICategories{
     STANDARD = 'standard',
@@ -18,6 +18,4 @@ export class RoomCategory {
     @Column({ nullable: true })
     description: string;
 
-    @OneToMany(() => Room, room => room.category)
-    rooms: Room[];
 }

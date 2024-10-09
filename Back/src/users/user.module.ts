@@ -6,12 +6,15 @@ import { User } from './user.entity';
 import { UserRepository } from './user.repository'; 
 import { ProfileRepository } from 'src/profiles/profile.repository';
 import { Profile } from 'src/profiles/profile.entity';
-
+import { EmailModule } from 'src/email/email.module';
+import { CloudinaryService } from '../commons/cloudinary.service'; // Importación de CloudinaryService
+import { FileUploadModule } from '../file-upload/file-upload.module'; // Importación del módulo de carga de archivos
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Profile])], 
+  imports: [TypeOrmModule.forFeature([User, Profile]), EmailModule, FileUploadModule], // Agregado FileUploadModule
   controllers: [UsersController],
-  providers: [UserService, UserRepository, ProfileRepository],
+  providers: [UserService, UserRepository, ProfileRepository, CloudinaryService, JwtService], // Agregado CloudinaryService
   exports: [UserService]
 })
-export class UserModule {}  
+export class UserModule {}

@@ -4,13 +4,15 @@ import {
   Column,
   OneToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Profile } from '../profiles/profile.entity';
-// import { OrderDetail } from '../orderDetails/orderDetail.entity';
+import { OrderDetail } from '../orderDetail/orderDetail.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Orders } from 'src/orders/order.entity';
+import { Payment } from 'src/payments/payment.entity';
+
 
 export enum IRol {
   User = 'user',
@@ -26,10 +28,17 @@ export class User {
   })
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
+  @ApiProperty({ example: 'John', description: 'Nombre de pila del usuario' })
+  @Column()
+  firstName: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Nombre del usuario' })
-  @Column({ nullable: false })
-  name: string;
+  @ApiProperty({ example: 'Doe', description: 'Apellido del usuario'})
+  @Column()
+  lastName: string;
+
+  @ApiProperty({ example: 'John_Doe12', description: 'Nombre del usuario' })
+  @Column({ nullable: false, unique: true })
+  user_name: string;
 
   @ApiProperty({
     example: 'john.doe@example.com',
@@ -78,38 +87,40 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
-  @OneToOne(() => Profile, (profile) => profile.user)
-  profile: Profile;
   
   @Column({default:false})
-  isAdmin: boolean
-
+  isBanned: boolean
+  
   @ApiProperty({
     type: () => Owner,
     description: 'Propietario relacionado al usuario',
   })
-  @OneToOne(() => Owner, (owner) => owner.user)
+  @OneToOne(() => Owner, (owner) => owner.user, {eager:false})
   owner: Owner;
-
-  // @ApiProperty({
-  //   type: () => [OrderDetail],
-  //   description: 'Detalles de órdenes del usuario',
-  // })
-  // @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
-  // orderDetail: OrderDetail[];
-
+  
+  @ApiProperty({ type: () => Profile, description: 'Perfil del usuario' })
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
   @ApiProperty({
-    type: () => [Orders],
-    description: 'Ordenes del usuario',
+    type: () => [OrderDetail],
+    description: 'Detalles de órdenes del usuario',
   })
-  @OneToMany(() => Orders, (orders) => orders.user)
-  orders: Orders[];
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
+  orderDetail: OrderDetail[];
 
   @ApiProperty({
     type: () => [Reservation],
     description: 'Reservas del usuario',
   })
   @OneToMany(() => Reservation, (reservation) => reservation.user)
+  @JoinColumn()
   reservation: Reservation[];
+
+  @OneToOne(()=> Payment, (payment) => payment.user)
+  payment: Payment;
+
+
 }
+
+  
+  
