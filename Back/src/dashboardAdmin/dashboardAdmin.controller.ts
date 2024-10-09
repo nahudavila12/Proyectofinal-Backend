@@ -26,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { CreateOwnerDto } from 'src/dtos/createOwner.dto';
 import { UpdateReservationDto } from 'src/dtos/createReservation.dto';
+import { Template } from 'src/email/enums/template.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/guards/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -35,6 +36,7 @@ import { ReservationService } from 'src/reservations/reservation.service';
 import { UuidValidationPipe } from 'src/users/pipe/uuid-validation.pipe';
 import { IRol } from 'src/users/user.entity';
 import { UserService } from 'src/users/user.service';
+import { EmailService } from 'src/email/services/email/email.service';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -45,6 +47,7 @@ export class AdminController {
     private readonly propertyService: PropertyService,
     private readonly reservationService: ReservationService,
     private readonly userService: UserService,
+    private readonly emailService: EmailService,
   ) {}
 
   @Post('addOwner/:uuid')
@@ -176,6 +179,22 @@ export class AdminController {
       if (!updatedReservation) {
         throw new NotFoundException('La reserva no fue encontrada');
       }
+
+
+      const userEmail = updatedReservation.user.email;
+    // Enviar notificación por correo
+    await this.emailService.sendEmail({
+      from: "mekhi.mcdermott@ethereal.email",
+      subjectEmail: "Actualización de Reserva",
+      sendTo: userEmail,
+      template: Template.UPDATE_RESERVATION, 
+      params: {
+        name: updatedReservation.user.firstName, 
+        reservationId: updatedReservation.uuid,
+        updatedDetails: JSON.stringify(updatedReservation), 
+      },
+    });
+
       return {
         statusCode: HttpStatus.OK,
         message: 'Reserva actualizada exitosamente',
