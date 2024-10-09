@@ -246,27 +246,49 @@ export class AdminController {
   }
 
   @Put('bannUser/:uuid')
-  @Roles(IRol.Admin)
-  @ApiOperation({ summary: 'Banear un usuario por UUID' })
-  @ApiParam({ name: 'uuid', description: 'UUID del usuario', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Usuario baneado exitosamente' })
-  @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  async bannUser(@Param('uuid', UuidValidationPipe) uuid: string) {
-    try {
-      await this.userService.bannUser(uuid);
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'Usuario baneado exitosamente',
-      };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw new InternalServerErrorException(
-        'Error al banear al usuario.',
-        error.message,
-      );
+@Roles(IRol.Admin)
+@ApiOperation({ summary: 'Banear un usuario por UUID' })
+@ApiParam({ name: 'uuid', description: 'UUID del usuario', type: 'string' })
+@ApiResponse({ status: 200, description: 'Usuario baneado exitosamente' })
+@ApiResponse({ status: 404, description: 'Usuario no encontrado' })
+@ApiResponse({ status: 500, description: 'Error interno del servidor' })
+async bannUser(@Param('uuid', UuidValidationPipe) uuid: string) {
+  try {
+    // Obtener el usuario antes de banearlo
+    const user = await this.userService.findByEmail(uuid);
+    
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
     }
+
+    // Banear al usuario
+    await this.userService.bannUser(uuid);
+
+    // Enviar notificación al usuario
+    await this.emailService.sendEmail({
+      from: "mekhi.mcdermott@ethereal.email",
+      subjectEmail: "Notificación de Baneo",
+      sendTo: user.email, 
+      template: Template.BAN_NOTIFICATION,
+      params: {
+        name: user.firstName, 
+        uuid: user.uuid,
+      },
+    });
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Usuario baneado exitosamente',
+    };
+  } catch (error) {
+    if (error instanceof NotFoundException) {
+      throw new NotFoundException(error.message);
+    }
+    throw new InternalServerErrorException(
+      'Error al banear al usuario.',
+      error.message,
+    );
   }
+}
+
 }
