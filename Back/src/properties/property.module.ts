@@ -16,6 +16,7 @@ import { UserRepository } from 'src/users/user.repository';
 import { User } from 'src/users/user.entity';
 import { Profile } from 'src/profiles/profile.entity';
 import { ProfileRepository } from 'src/profiles/profile.repository';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ProfileRepository } from 'src/profiles/profile.repository';
       }),
       inject: [ConfigService],
     }),
+    EmailModule
   ],
   providers: [
     PropertyService, 

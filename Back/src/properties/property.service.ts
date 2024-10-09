@@ -5,6 +5,8 @@ import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { CreatePropertyDto } from "src/dtos/createProperty.dto";
 import { CloudinaryService } from "src/commons/cloudinary.service"; // Asegúrate de tener esto importado
 import { PropertyImg } from "./propertyImg.entity";
+import { EmailService } from "src/email/services/email/email.service";
+import { SendEmailDto } from "src/email/dtos/send-email.dto";
 
 
 
@@ -13,7 +15,8 @@ import { PropertyImg } from "./propertyImg.entity";
 export class PropertyService {
   constructor(
     private readonly propiertiesRepository: PropertyRepository,
-    private readonly cloudinaryService: CloudinaryService   
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly emailService: EmailService,   
   ) {}
 
   async getProperties(): Promise<Property[]> {
@@ -103,6 +106,20 @@ async addProperty(uuid: string, newProperty: CreatePropertyDto) {
     }
   }
 
+  // Enviar email al propietario
+  const emailData: SendEmailDto = {
+    from: 'mekhi.mcdermott@ethereal.email',
+    subjectEmail: 'Nueva Propiedad Creada',
+    sendTo: uuid, // Usar el UUID del propietario o el email correspondiente
+    template: 'property_created', // Nombre de la plantilla
+    params: {
+        name: 'Nombre del Propietario', // Deberías obtener esto desde la base de datos
+        propertyId: property.uuid,
+        propertyTitle: property.name,
+    },
+};
+
+await this.emailService.sendEmail(emailData); // Envía el email
   return property; // Retorna la propiedad creada
 }
 

@@ -19,10 +19,12 @@ import { UserService } from 'src/users/user.service';
 import { Profile } from 'src/profiles/profile.entity';
 import { ProfileRepository } from 'src/profiles/profile.repository';
 import { UserRepository } from 'src/users/user.repository';
+import { EmailModule } from 'src/email/email.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Owner, Property, User, Profile, Room, RoomImg, PropertyImg])],
+  imports: [TypeOrmModule.forFeature([Owner, Property, User, Profile, Room, RoomImg, PropertyImg]),
+EmailModule],
   providers: [OwnerService, 
     OwnerRepository,
     PropertyService,
