@@ -2,15 +2,15 @@ import {
   BadRequestException,
   ConflictException, 
   Injectable, 
-  NotFoundException } 
-  from '@nestjs/common';
+  NotFoundException 
+} from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { 
   LessThan, 
   MoreThan, 
-  Repository , 
-  DataSource} 
-  from 'typeorm';
+  Repository, 
+  DataSource 
+} from 'typeorm';
 import { 
   IStateBooking,
   Reservation 
@@ -28,14 +28,15 @@ import { AdditionalService } from 'src/additionalsServices/additionalService.ent
 import { IRoomState } from 'src/rooms/room.entity';
 import { Payment } from 'src/payments/payment.entity';
 import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
+import { EmailService } from 'src/email/services/email/email.service';  // Asegúrate de que esta importación sea correcta
+import { Template } from 'src/email/enums/template.enum';  // Importar el enum para las plantillas
 
 export class CodeReservation {
   code: string;
   checkin: Date;
   checkout: Date;
-  state: string
+  state: string;
 }
-
 
 @Injectable()
 export class ReservationService {
@@ -49,19 +50,18 @@ export class ReservationService {
     private readonly roomRepository: Repository<Room>,
     @InjectRepository(Property)
     private readonly propertyRepository: Repository<Property>,
-    
     @InjectDataSource()
-    private readonly dataSource: DataSource
+    private readonly dataSource: DataSource,
+    private readonly emailService: EmailService, // Agregar EmailService
   ) {}
-  
-  async addReservation(newReservation: CreateReservationDto,userId: string,): Promise<CodeReservation | null> {
+
+  async addReservation(newReservation: CreateReservationDto, userId: string): Promise<CodeReservation | null> {
     
     const queryRunner = this.dataSource.createQueryRunner();
-      await queryRunner.connect()
-      await queryRunner.startTransaction()
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     
-    try{
-
+    try {
       const { 
         propertyId, 
         roomId,
@@ -72,22 +72,22 @@ export class ReservationService {
       let total = 0;
     
       const [foundUser, foundProperty, foundRoom] = await Promise.all([
-        this.userRepositorio.findOneBy({uuid: userId}),
-        this.propertyRepository.findOneBy({uuid: propertyId}),
+        this.userRepositorio.findOneBy({ uuid: userId }),
+        this.propertyRepository.findOneBy({ uuid: propertyId }),
         queryRunner.manager.findOne(Room, {
           where: { uuid: roomId },
           lock: { mode: 'pessimistic_write' }, 
-        })]);
+        })
+      ]);
 
-        if(!foundUser) throw new NotFoundException('Usuario no encontrado');
-        if(!foundProperty) throw new NotFoundException('Propiedad no encontrada');
-        if(!foundRoom) throw new NotFoundException('Habitación no encontrada');
+      if (!foundUser) throw new NotFoundException('Usuario no encontrado');
+      if (!foundProperty) throw new NotFoundException('Propiedad no encontrada');
+      if (!foundRoom) throw new NotFoundException('Habitación no encontrada');
       
-
-        if (foundRoom.disponibility !== 'avaiable') {
-          throw new ConflictException('La habitación no está disponible');
-        }
-        
+      if (foundRoom.disponibility !== 'avaiable') {
+        throw new ConflictException('La habitación no está disponible');
+      }
+      
       const existingReservation = await this.reservationRepository.findOne({
         where: {
           room: { uuid: roomId },
@@ -95,65 +95,77 @@ export class ReservationService {
           checkout: MoreThan(checkin)  
         },
       });
-        if(existingReservation) throw new ConflictException('Fechas de reserva no disponibles')
+      if (existingReservation) throw new ConflictException('Fechas de reserva no disponibles');
       
-      const addReservation = new Reservation()
-      addReservation.checkin = newReservation.checkin
-      addReservation.checkout = newReservation.checkout
-      addReservation.room = foundRoom
-      addReservation.user = foundUser
+      const addReservation = new Reservation();
+      addReservation.checkin = newReservation.checkin;
+      addReservation.checkout = newReservation.checkout;
+      addReservation.room = foundRoom;
+      addReservation.user = foundUser;
       
-      const savedReservation = await queryRunner.manager.save(Reservation,addReservation)
+      const savedReservation = await queryRunner.manager.save(Reservation, addReservation);
 
       const pricePerDay = foundRoom.price_per_day; 
       const checkinDate = new Date(newReservation.checkin);
       const checkoutDate = new Date(newReservation.checkout);
       const timeDiff = checkoutDate.getTime() - checkinDate.getTime();
       const numberOfNights = timeDiff / (1000 * 3600 * 24); 
-        if (numberOfNights <= 0) throw new BadRequestException('Las fechas de check-in y check-out son inválidas');
+      if (numberOfNights <= 0) throw new BadRequestException('Las fechas de check-in y check-out son inválidas');
       
       total = numberOfNights * pricePerDay;
       
-      const newPayment = new Payment()
-      newPayment.reservation = savedReservation
-      newPayment.total = total
-      newPayment.user = foundUser
-      newPayment.date = new Date()
-      newPayment.reservation = savedReservation
-      savedReservation.payment = newPayment
+      const newPayment = new Payment();
+      newPayment.reservation = savedReservation;
+      newPayment.total = total;
+      newPayment.user = foundUser;
+      newPayment.date = new Date();
+      newPayment.reservation = savedReservation;
+      savedReservation.payment = newPayment;
           
-      await queryRunner.manager.save(Payment, newPayment)
-      await queryRunner.manager.save(Reservation, savedReservation)
+      await queryRunner.manager.save(Payment, newPayment);
+      await queryRunner.manager.save(Reservation, savedReservation);
       await queryRunner.commitTransaction();
-      await this.orderDetailRepository.createOrderDetail(foundUser,foundProperty.name, savedReservation,total, newPayment )
+      await this.orderDetailRepository.createOrderDetail(foundUser, foundProperty.name, savedReservation, total, newPayment);
       
-    return {
-      code: savedReservation.uuid,
-      checkin: savedReservation.checkin,
-      checkout: savedReservation.checkout,
-      state: savedReservation.status
+      // Enviar el correo electrónico de confirmación
+      const emailSent = await this.emailService.sendEmail({
+          from: "mekhi.mcdermott@ethereal.email",
+          subjectEmail: "Confirmación de tu reserva",
+          sendTo: foundUser.email, 
+          template: Template.CONFIRMATION,  // Usar la plantilla de confirmación
+          params: {
+              name: foundUser.firstName,  // Si tienes el nombre del usuario
+              checkin: newReservation.checkin,
+              checkout: newReservation.checkout,
+              propertyName: foundProperty.name, // Nombre de la propiedad
+          }
+      });
+ 
+      return {
+          code: savedReservation.uuid,
+          checkin: savedReservation.checkin,
+          checkout: savedReservation.checkout,
+          state: savedReservation.status
+      } as CodeReservation;
 
-    } as CodeReservation;
-    
-    }catch (error) {
+    } catch (error) {
       if (error instanceof BadRequestException || 
-        error instanceof NotFoundException || 
-        error instanceof ConflictException)
-      {
+          error instanceof NotFoundException || 
+          error instanceof ConflictException) {
         throw error;
       }
       
-    await queryRunner.rollbackTransaction();
-    
-    throw { 
-      message: `La habitación no se encuentra disponible. Lamentamos las molestias ocasionadas ${error}`
-    };
+      await queryRunner.rollbackTransaction();
+      
+      throw { 
+        message: `La habitación no se encuentra disponible. Lamentamos las molestias ocasionadas ${error}`
+      };
   
-  } finally {
-   
-    await queryRunner.release();
+    } finally {
+      await queryRunner.release();
+    }
   }
-}
+
 async getUserReservations(userId: string) {
     return this.reservationRepository.find({
       where: { user: { uuid: userId } },

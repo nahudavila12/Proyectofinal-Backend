@@ -16,6 +16,7 @@ import { UserService } from 'src/users/user.service';
 import { CloudinaryService } from 'src/commons/cloudinary.service';
 import { ProfileRepository } from 'src/profiles/profile.repository';
 import { Profile } from 'src/profiles/profile.entity';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -25,7 +26,8 @@ import { Profile } from 'src/profiles/profile.entity';
         OrderDetail,
         Reservation,
         Profile
-    ])],
+    ]),
+    EmailModule],
     controllers: [ReservationController],
     providers: [
         ReservationService, 
