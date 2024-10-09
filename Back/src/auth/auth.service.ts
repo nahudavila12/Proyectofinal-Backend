@@ -3,8 +3,8 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from '../users/user.service'; 
-import { LoginUserDto } from 'src/dtos/LoginUser.dto';
+import { UserService } from '../users/user.service';
+import { LoginUserDto } from 'src/dtos/loginUser.dto';
 import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -16,22 +16,24 @@ export class AuthService {
   constructor(
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async signIn(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
     if (!email || !password) {
-      throw new UnauthorizedException('El email y la contraseña son requeridos.');
+      throw new UnauthorizedException(
+        'El email y la contraseña son requeridos.',
+      );
     }
     const user = await this.usersService.findByEmail(email);
-    
+
     if (!user) throw new BadRequestException('Usuario no encontrado');
 
     const validPassword = await bcrypt.compare(password, user.password);
-    
+
     if (!validPassword) throw new BadRequestException('Credenciales inválidas');
-    
+
     return this.generateTokens(user);
   }
 
@@ -39,21 +41,30 @@ export class AuthService {
     const { email } = createUser;
 
     const foundUser = await this.usersService.findByEmail(email);
-    if (foundUser) throw new BadRequestException('El email ya se encuentra registrado');
+    if (foundUser)
+      throw new BadRequestException('El email ya se encuentra registrado');
 
     const hashedPassword = await bcrypt.hash(createUser.password, 10);
-    const createdUser = await this.usersService.addUser({ ...createUser, password: hashedPassword });   
+    const createdUser = await this.usersService.addUser({
+      ...createUser,
+      password: hashedPassword,
+    });
 
-    return createdUser; 
+    return createdUser;
   }
 
-
   async googleAuth(req: any) {
-    const userProfile = req.user; 
+    const userProfile = req.user;
     return this.handleOAuthUser(userProfile);
   }
 
-  private async handleOAuthUser(userProfile: any): Promise<{ message: string; generateAccessToken: string; generateRefreshToken: string }> {
+  private async handleOAuthUser(
+    userProfile: any,
+  ): Promise<{
+    message: string;
+    generateAccessToken: string;
+    generateRefreshToken: string;
+  }> {
     const { email, given_name, family_name } = userProfile._json;
 
     let user: User = await this.usersService.findByEmail(email);
@@ -64,8 +75,7 @@ export class AuthService {
         user_name: `${given_name}`,
         firstName: family_name,
         lastName: family_name,
-        
-    };
+      };
       user = await this.usersService.addUser(newUser);
     }
 
@@ -81,11 +91,15 @@ export class AuthService {
       rol: user.rol,
     };
 
-    const generateAccessToken = this.jwtService.sign(payload, { expiresIn: '15m' }); 
-    const generateRefreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
+    const generateAccessToken = this.jwtService.sign(payload, {
+      expiresIn: '15m',
+    });
+    const generateRefreshToken = this.jwtService.sign(payload, {
+      expiresIn: '7d',
+    });
 
     return {
-      message: "Usuario autenticado",
+      message: 'Usuario autenticado',
       generateAccessToken,
       generateRefreshToken,
     };
