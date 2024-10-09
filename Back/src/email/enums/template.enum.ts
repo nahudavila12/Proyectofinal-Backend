@@ -3,5 +3,6 @@ export enum Template {
     CONFIRMATION = 'confirmation',
     PAYPAL_PAYMENT = 'paypal_payment',
     UPDATE_RESERVATION = 'update_reservation',
-    BAN_NOTIFICATION = "ban_notification"
+    BAN_NOTIFICATION = "ban_notification",
+    OWNER_CONFIRMATION = "owner_confirmation"
 }

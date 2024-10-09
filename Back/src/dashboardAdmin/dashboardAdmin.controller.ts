@@ -74,6 +74,19 @@ export class AdminController {
   ) {
     try {
       const owner = await this.ownerService.addOwner(uuid, newOwner);
+  
+      // Enviar notificación por correo
+      await this.emailService.sendEmail({
+        from: "mekhi.mcdermott@ethereal.email",
+        subjectEmail: "Confirmación de Propietario Agregado",
+        sendTo: newOwner.email, // Asumiendo que el DTO tiene el email del nuevo propietario
+        template: Template.OWNER_CONFIRMATION, // Asegúrate de que este es el template correcto
+        params: {
+          name: newOwner.bussines_name, // Asegúrate de que `name` existe
+          ownerId: owner.uuid,  // UUID del nuevo propietario
+        },
+      });
+  
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Propietario agregado exitosamente',
@@ -88,6 +101,7 @@ export class AdminController {
       );
     }
   }
+  
 
   @Patch('propertie/ban/:uuid')
   @Roles(IRol.Admin)
