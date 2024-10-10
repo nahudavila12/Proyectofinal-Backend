@@ -3,16 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CloudinaryConfig } from './config/cloudinary.config';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import typeOrmConfig from './config/typeOrm.config';
+import typeOrmConfig from './Config/typeOrm.config';
 import { UserModule } from './users/user.module';
 //import { OrdersModule } from './orderDetail/orders.module';
 //import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport'
-import { AuthModule } from './auth/auth.module'; 
+import { PassportModule } from '@nestjs/passport';
+import { AuthModule } from './auth/auth.module';
 import { EmailModule } from './email/email.module';
 import { OwnersModule } from './owners/owner.module';
 import { PropertyModule } from './properties/property.module';
@@ -39,7 +38,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     }),
     PassportModule.register({ session: false }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET, 
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '60s' },
     }),
     UserModule,
@@ -56,6 +55,6 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService], 
+  providers: [AppService, SeedService],
 })
 export class AppModule {}

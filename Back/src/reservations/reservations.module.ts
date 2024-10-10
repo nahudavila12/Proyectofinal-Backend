@@ -22,6 +22,8 @@ import { RoomImg } from 'src/rooms/roomImg.entity';
 import { OwnerRepository } from 'src/owners/owner.repository';
 import { Owner } from 'src/owners/owner.entity';
 import { CloudinaryConfig } from 'src/config/cloudinary.config';
+import { EmailModule } from 'src/email/email.module';
+
 
 @Module({
     imports: [TypeOrmModule.forFeature([
