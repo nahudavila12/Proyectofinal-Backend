@@ -26,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { CreateOwnerDto } from 'src/dtos/createOwner.dto';
 import { UpdateReservationDto } from 'src/dtos/createReservation.dto';
+import { Template } from 'src/email/enums/template.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/guards/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -35,6 +36,7 @@ import { ReservationService } from 'src/reservations/reservation.service';
 import { UuidValidationPipe } from 'src/users/pipe/uuid-validation.pipe';
 import { IRol } from 'src/users/user.entity';
 import { UserService } from 'src/users/user.service';
+import { EmailService } from 'src/email/services/email/email.service';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -45,6 +47,7 @@ export class AdminController {
     private readonly propertyService: PropertyService,
     private readonly reservationService: ReservationService,
     private readonly userService: UserService,
+    private readonly emailService: EmailService,
   ) {}
 
   @Post('addOwner/:uuid')
@@ -71,6 +74,19 @@ export class AdminController {
   ) {
     try {
       const owner = await this.ownerService.addOwner(uuid, newOwner);
+  
+      // Enviar notificación por correo
+      await this.emailService.sendEmail({
+        from: "mekhi.mcdermott@ethereal.email",
+        subjectEmail: "Confirmación de Propietario Agregado",
+        sendTo: newOwner.email, // Asumiendo que el DTO tiene el email del nuevo propietario
+        template: Template.OWNER_CONFIRMATION, // Asegúrate de que este es el template correcto
+        params: {
+          name: newOwner.bussines_name, // Asegúrate de que `name` existe
+          ownerId: owner.uuid,  // UUID del nuevo propietario
+        },
+      });
+  
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Propietario agregado exitosamente',
@@ -86,6 +102,7 @@ export class AdminController {
     }
 
   }
+  
 
   @Patch('propertie/ban/:uuid')
   @Roles(IRol.Admin)
@@ -177,6 +194,22 @@ export class AdminController {
       if (!updatedReservation) {
         throw new NotFoundException('La reserva no fue encontrada');
       }
+
+
+      const userEmail = updatedReservation.user.email;
+    // Enviar notificación por correo
+    await this.emailService.sendEmail({
+      from: "mekhi.mcdermott@ethereal.email",
+      subjectEmail: "Actualización de Reserva",
+      sendTo: userEmail,
+      template: Template.UPDATE_RESERVATION, 
+      params: {
+        name: updatedReservation.user.firstName, 
+        reservationId: updatedReservation.uuid,
+        updatedDetails: JSON.stringify(updatedReservation), 
+      },
+    });
+
       return {
         statusCode: HttpStatus.OK,
         message: 'Reserva actualizada exitosamente',
@@ -228,27 +261,49 @@ export class AdminController {
   }
 
   @Put('bannUser/:uuid')
-  @Roles(IRol.Admin)
-  @ApiOperation({ summary: 'Banear un usuario por UUID' })
-  @ApiParam({ name: 'uuid', description: 'UUID del usuario', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Usuario baneado exitosamente' })
-  @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  async bannUser(@Param('uuid', UuidValidationPipe) uuid: string) {
-    try {
-      await this.userService.bannUser(uuid);
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'Usuario baneado exitosamente',
-      };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw new InternalServerErrorException(
-        'Error al banear al usuario.',
-        error.message,
-      );
+@Roles(IRol.Admin)
+@ApiOperation({ summary: 'Banear un usuario por UUID' })
+@ApiParam({ name: 'uuid', description: 'UUID del usuario', type: 'string' })
+@ApiResponse({ status: 200, description: 'Usuario baneado exitosamente' })
+@ApiResponse({ status: 404, description: 'Usuario no encontrado' })
+@ApiResponse({ status: 500, description: 'Error interno del servidor' })
+async bannUser(@Param('uuid', UuidValidationPipe) uuid: string) {
+  try {
+    // Obtener el usuario antes de banearlo
+    const user = await this.userService.findByEmail(uuid);
+    
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
     }
+
+    // Banear al usuario
+    await this.userService.bannUser(uuid);
+
+    // Enviar notificación al usuario
+    await this.emailService.sendEmail({
+      from: "mekhi.mcdermott@ethereal.email",
+      subjectEmail: "Notificación de Baneo",
+      sendTo: user.email, 
+      template: Template.BAN_NOTIFICATION,
+      params: {
+        name: user.firstName, 
+        uuid: user.uuid,
+      },
+    });
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Usuario baneado exitosamente',
+    };
+  } catch (error) {
+    if (error instanceof NotFoundException) {
+      throw new NotFoundException(error.message);
+    }
+    throw new InternalServerErrorException(
+      'Error al banear al usuario.',
+      error.message,
+    );
   }
+}
+
 }

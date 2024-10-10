@@ -4,6 +4,8 @@ import { PropertyRepository } from "./property.repository";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { CreatePropertyDto } from "src/dtos/createProperty.dto";
 import { PropertyImg } from "./propertyImg.entity";
+import { EmailService } from "src/email/services/email/email.service";
+import { SendEmailDto } from "src/email/dtos/send-email.dto";
 
 
 
@@ -12,6 +14,8 @@ import { PropertyImg } from "./propertyImg.entity";
 export class PropertyService {
   constructor(
     private readonly propiertiesRepository: PropertyRepository,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly emailService: EmailService,  
   ) {}
 
   async getProperties(): Promise<Property[]> {
@@ -75,6 +79,7 @@ async getPropertyById(uuid: string): Promise<Property> {
 async addProperty(ownerUuid: string, createProperty: CreatePropertyDto, files: Express.Multer.File[]) {
   return await this.propiertiesRepository.addProperty(ownerUuid, createProperty, files)
  
+
 }
 
   

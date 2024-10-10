@@ -28,7 +28,6 @@ import { CloudinaryConfig } from 'src/config/cloudinary.config';
   imports: [
     TypeOrmModule.forFeature([Owner, Property, User, Profile, Room, RoomImg, PropertyImg]),
     PropertyModule
-  ],
   providers: [OwnerService, 
     OwnerRepository,
     RoomService, 

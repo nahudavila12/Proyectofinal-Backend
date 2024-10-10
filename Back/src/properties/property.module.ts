@@ -19,6 +19,8 @@ import { UserRepository } from 'src/users/user.repository';
 import { ProfileRepository } from 'src/profiles/profile.repository';
 import { CloudinaryConfig } from 'src/config/cloudinary.config';
 
+import { EmailModule } from 'src/email/email.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Property, PropertyImg, Room, Owner, User, Profile, RoomImg]),
