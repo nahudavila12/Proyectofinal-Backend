@@ -76,8 +76,11 @@ export class Property {
   @JoinColumn()
   owner: Owner;
 
-
   @OneToMany(() => Room, room => room.property)
     room?: Room[];
+
+  @OneToMany(()=> PropertyImg, (propertyImg) => propertyImg.property)
+  @JoinColumn()
+  propertiImgs: PropertyImg[]
 
 }

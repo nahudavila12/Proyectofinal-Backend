@@ -9,7 +9,7 @@ import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
-import { CloudinaryService } from 'src/commons/cloudinary.service'; // Importar CloudinaryService
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class AuthService {

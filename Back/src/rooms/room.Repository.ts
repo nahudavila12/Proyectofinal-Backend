@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Room } from "./room.entity";
 import { Repository } from "typeorm";
@@ -8,8 +8,9 @@ import { CreateRoomDto } from "src/dtos/createRoom.dto";
 import { Property } from "src/properties/property.entity";
 import { ICategories } from "./roomCategory.entity";
 import { IRoomState } from "./room.entity";
+import { CloudinaryService } from "src/cloudinary/cloudinary.service";
 
-export class PartialRoomDto {
+export class PartialRoom {
     capacity: number;
     roomCategory: ICategories;
     disponibility: IRoomState;
@@ -26,11 +27,10 @@ export class RoomRepository{
         private readonly roomImgRepository: Repository<RoomImg>,
         @InjectRepository(Property)
         private readonly propertyRepository: Repository<Property>,
+        private readonly cloudinaryService: CloudinaryService
     ){}
-    async addRoom(uuid: string, newRoom: CreateRoomDto):Promise<PartialRoomDto | null>{
+    async addRoom(uuid: string, newRoom: CreateRoomDto, files: Express.Multer.File[]):Promise<PartialRoom | null>{
         
-
-
         const foundProperty = await this.propertyRepository.findOneBy({uuid});
             if (!foundProperty) throw new NotFoundException('Propiedad no encontrada');
 
@@ -40,14 +40,22 @@ export class RoomRepository{
         addRoom.property = foundProperty;
 
         const savedRoom = await this.roomRepository.save(addRoom)   
-
+    try{    
+        const roomImg =  await Promise.all(files.map(file => this.cloudinaryService.uploadRoomImage(savedRoom.uuid, file)))
+            if(!roomImg)throw new BadRequestException('Ocurrió un problema al cargar las imagenes')
+                
         return {
             capacity: savedRoom.capacity,
             roomCategory: savedRoom.roomCategory,
             disponibility: savedRoom.disponibility,
             price_per_day: savedRoom.price_per_day,
             room_number: savedRoom.room_number,
-        } as PartialRoomDto;
+        } as PartialRoom;
+    
+    }catch(error){
+        await this.roomRepository.delete(savedRoom)
+        throw new ConflictException( `Ocurrió un error al cargar la habitación. ${error}`)
     }
+}
 
 }

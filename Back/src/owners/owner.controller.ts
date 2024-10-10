@@ -60,6 +60,68 @@ export class OwnerController {
     }
   }
 
+<<<<<<< HEAD
+
+
+@Patch('propertie/update/:uuid')
+@UseGuards(AuthGuard,RolesGuard) 
+@Roles(IRol.Owner, IRol.Admin) 
+async updateProperty(
+  @Param('uuid', UuidValidationPipe) uuid: string, 
+  @Body() updateData: Partial<Property>
+) {
+  try {
+    const updatedProperty = await this.propertyService.updateProperty(uuid, updateData);
+    return {
+      statusCode: HttpStatus.OK,
+      data: updatedProperty,
+    };
+  } catch (error) {
+    if (error instanceof NotFoundException) {
+      throw new NotFoundException(error.message);
+    }
+    console.error('Error actualizando la propiedad:', error.message);
+    throw new InternalServerErrorException('Hubo un problema al actualizar la propiedad.');
+  }
+}
+
+
+
+// @Post('addProperty/:uuid')
+// @UseGuards(AuthGuard, RolesGuard) 
+// @Roles(IRol.Owner) 
+// async addProperty(
+//   @Param('uuid', ParseUUIDPipe) uuid: string,
+//   @Body() newProperty: CreatePropertyDto
+// ) {
+//   try { 
+//     return await this.propertyService.addProperty(uuid, newProperty);
+//   } catch (error) {
+//     if (error instanceof NotFoundException) {
+//       throw new NotFoundException(error.message);
+//     }
+//     throw new InternalServerErrorException('Error al agregar la propiedad.', error.message);
+//   }
+//}
+
+
+
+// @Post('addRoom/:uuid')
+// @Roles(IRol.Owner)
+// async addRoom(
+//     @Param('uuid', ParseUUIDPipe) uuid:string,
+//     @Body() newRoom: CreateRoomDto
+// ){
+//     return this.roomService.addRoom(uuid, newRoom)
+// }
+
+@Post('addOwner/:uuid')
+@UseGuards(AuthGuard,RolesGuard) 
+@Roles(IRol.User)  
+async addOwner(
+  @Param('uuid', ParseUUIDPipe) userUuid: string,
+  @Body() newOwner: CreateOwnerDto
+=======
   @Patch('propertie/update/:uuid')
   @Roles(IRol.Owner, IRol.Admin)
   @ApiResponse({ status: 200, description: 'Property updated successfully.' })
@@ -67,6 +129,7 @@ export class OwnerController {
   async updateProperty(
     @Param('uuid', UuidValidationPipe) uuid: string,
     @Body() updateData: Partial<Property>,
+>>>>>>> 87abfb6fee617df2f78af7d1ed10a8f20cf6fac6
   ) {
     try {
       const updatedProperty = await this.propertyService.updateProperty(
