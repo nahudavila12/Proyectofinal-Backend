@@ -17,29 +17,13 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/users/user.service';
 import { UserRepository } from 'src/users/user.repository';
 import { ProfileRepository } from 'src/profiles/profile.repository';
+import { CloudinaryConfig } from 'src/config/cloudinary.config';
 
 import { EmailModule } from 'src/email/email.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      Property, 
-      Owner, 
-      PropertyImg,
-      Room,
-      RoomImg,
-      User,
-      Profile
-    ]),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '60m' },
-      }),
-      inject: [ConfigService],
-    }),
-    EmailModule
+    TypeOrmModule.forFeature([Property, PropertyImg, Room, Owner, User, Profile, RoomImg]),
   ],
   providers: [
     PropertyService,
