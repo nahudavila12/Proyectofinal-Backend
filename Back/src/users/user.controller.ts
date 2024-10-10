@@ -7,6 +7,9 @@ import {
   UseGuards,
   HttpStatus,
   NotFoundException,
+  Post,
+  Body,
+  Patch,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UuidValidationPipe } from './pipe/uuid-validation.pipe';
@@ -14,6 +17,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { UserService } from './user.service';
 import { User } from './user.entity';
+import { UpdateRoleDto } from 'src/dtos/updateRol';
 
 @ApiTags('Users')
 @Controller('users')
@@ -48,6 +52,14 @@ export class UsersController {
         error.message,
       );
     }
+  }
+
+  @Patch(':uuid/role')
+  async updateRole(
+    @Param('uuid') uuid: string,
+    @Body() updateRoleDto: UpdateRoleDto,
+  ) {
+    return this.userService.updateRole(uuid, updateRoleDto);
   }
 
   @Delete('delete/:uuid')

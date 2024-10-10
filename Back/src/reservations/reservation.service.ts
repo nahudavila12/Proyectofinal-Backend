@@ -144,12 +144,15 @@ export class ReservationService {
     } catch (error) {
       await queryRunner.rollbackTransaction();
       
+      // Log del error para depuración
+      console.error('Error al agregar la reserva:', error);
+    
       if (error instanceof BadRequestException || 
           error instanceof NotFoundException || 
           error instanceof ConflictException) {
         throw error; // Re-lanzar el error conocido
       }
-  
+    
       throw new InternalServerErrorException('Error al agregar la reserva. Lamentamos las molestias.');
     } finally {
       await queryRunner.release();
