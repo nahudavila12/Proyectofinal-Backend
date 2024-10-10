@@ -9,7 +9,7 @@ import { OwnerController } from './owner.controller';
 import { PropertyService } from 'src/properties/property.service';
 import { RoomService } from 'src/rooms/room.service';
 import { PropertyRepository } from 'src/properties/property.repository';
-import { CloudinaryService } from 'src/commons/cloudinary.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { RoomRepository } from 'src/rooms/room.Repository';
 import { Room } from 'src/rooms/room.entity';
 import { RoomImg } from 'src/rooms/roomImg.entity';
@@ -27,7 +27,6 @@ import { EmailModule } from 'src/email/email.module';
 EmailModule],
   providers: [OwnerService, 
     OwnerRepository,
-    PropertyService,
     RoomService, 
     PropertyRepository, 
     CloudinaryService, 
@@ -35,7 +34,9 @@ EmailModule],
     JwtService,
     UserService,
     ProfileRepository,
-    UserRepository
+    UserRepository,
+    CloudinaryRepository,
+    CloudinaryConfig
   ],
   controllers:[OwnerController],
   exports: [OwnerService, OwnerRepository]

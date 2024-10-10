@@ -3,7 +3,6 @@ import { Property } from "../properties/property.entity";
 import { PropertyRepository } from "./property.repository";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { CreatePropertyDto } from "src/dtos/createProperty.dto";
-import { CloudinaryService } from "src/commons/cloudinary.service"; // Asegúrate de tener esto importado
 import { PropertyImg } from "./propertyImg.entity";
 import { EmailService } from "src/email/services/email/email.service";
 import { SendEmailDto } from "src/email/dtos/send-email.dto";
@@ -16,12 +15,13 @@ export class PropertyService {
   constructor(
     private readonly propiertiesRepository: PropertyRepository,
     private readonly cloudinaryService: CloudinaryService,
-    private readonly emailService: EmailService,   
+    private readonly emailService: EmailService,  
   ) {}
 
   async getProperties(): Promise<Property[]> {
     return this.propiertiesRepository.getProperties(); 
-}
+
+  }
 
 async getPropertyById(uuid: string): Promise<Property> {
     const property = await this.propiertiesRepository.getPropertyById(uuid); 
@@ -121,6 +121,7 @@ async addProperty(uuid: string, newProperty: CreatePropertyDto) {
 
 await this.emailService.sendEmail(emailData); // Envía el email
   return property; // Retorna la propiedad creada
+
 }
 
   

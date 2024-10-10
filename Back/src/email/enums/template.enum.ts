@@ -4,6 +4,8 @@ export enum Template {
     PAYPAL_PAYMENT = 'paypal_payment',
     UPDATE_RESERVATION = 'update_reservation',
     BAN_NOTIFICATION = "ban_notification",
+
     OWNER_CONFIRMATION = "owner_confirmation",
     PROPERTY_CREATED = "property_created"
+
 }

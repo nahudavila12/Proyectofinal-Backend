@@ -100,6 +100,7 @@ export class AdminController {
         'Hubo un problema al agregar el propietario',
       );
     }
+
   }
   
 
