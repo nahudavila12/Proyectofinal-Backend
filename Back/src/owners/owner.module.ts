@@ -19,16 +19,12 @@ import { UserService } from 'src/users/user.service';
 import { Profile } from 'src/profiles/profile.entity';
 import { ProfileRepository } from 'src/profiles/profile.repository';
 import { UserRepository } from 'src/users/user.repository';
-import { CloudinaryRepository } from 'src/cloudinary/cloudinary.repository';
-import { PropertyModule } from 'src/properties/property.module';
-import { CloudinaryConfig } from 'src/config/cloudinary.config';
+import { EmailModule } from 'src/email/email.module';
 
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Owner, Property, User, Profile, Room, RoomImg, PropertyImg]),
-    PropertyModule
-  ],
+  imports: [TypeOrmModule.forFeature([Owner, Property, User, Profile, Room, RoomImg, PropertyImg]),
+EmailModule],
   providers: [OwnerService, 
     OwnerRepository,
     RoomService, 
