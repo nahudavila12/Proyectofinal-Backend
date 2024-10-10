@@ -5,4 +5,5 @@ export enum Template {
     UPDATE_RESERVATION = 'update_reservation',
     BAN_NOTIFICATION = "ban_notification",
     OWNER_CONFIRMATION = "owner_confirmation"
+
 }

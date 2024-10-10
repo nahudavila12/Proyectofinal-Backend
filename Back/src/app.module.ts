@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CloudinaryConfig } from './config/cloudinary';
-import { CloudinaryService } from './commons/cloudinary.service';
-
+import { CloudinaryConfig } from './config/cloudinary.config';
+import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './Config/typeOrm.config';
 import { UserModule } from './users/user.module';
 //import { OrdersModule } from './orderDetail/orders.module';
-import { FileUploadModule } from './file-upload/file-upload.module';
+//import { FileUploadModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './auth/auth.module';
@@ -21,8 +20,10 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { SeedService } from './preload/seed';
 import { PaymentsModule } from './paypal/paypal.module';
 import { OrdersModule } from './orderDetail/orders.module';
+import { DashboardAdminModule} from './dashboardAdmin/dashboardAdmin.module';
+import { ProfileModule } from './profiles/profile.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
-import { DashboardAdminModule } from './dashboardAdmin/dashboardAdmin.module';
 
 @Module({
   imports: [
@@ -41,18 +42,19 @@ import { DashboardAdminModule } from './dashboardAdmin/dashboardAdmin.module';
       signOptions: { expiresIn: '60s' },
     }),
     UserModule,
-    FileUploadModule,
     AuthModule,
     EmailModule,
     OwnersModule,
     DashboardAdminModule,
-    PropertyModule,
+    PropertyModule, 
     RoomsModule,
     ReservationsModule,
     OrdersModule,
     PaymentsModule,
+    ProfileModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CloudinaryConfig, CloudinaryService, SeedService],
+  providers: [AppService, SeedService],
 })
 export class AppModule {}

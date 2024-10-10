@@ -8,8 +8,8 @@ export class RoomService {
         private readonly roomRepository: RoomRepository
     ){}
 
-    async addRoom(uuid: string, newRoom: CreateRoomDto){
+    async addRoom(uuid: string, newRoom: CreateRoomDto, files: Express.Multer.File[]){
 
-        return await this.roomRepository.addRoom(uuid, newRoom)
+        return await this.roomRepository.addRoom(uuid, newRoom, files)
     }
 }
