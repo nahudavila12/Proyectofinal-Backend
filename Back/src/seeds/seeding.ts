@@ -16,6 +16,7 @@ export async function seedDatabase(connection: Connection) {
   user1.lastName = 'Doe'
   user1.email = 'john@example.com';
   user1.country = 'Argentina'
+  user1.country = 'Argentina'
   user1.birthday = new Date('1990-01-01');
   user1.phone = '123456789';
   user1.address = '123 Main St';
@@ -54,6 +55,11 @@ export async function seedDatabase(connection: Connection) {
   await connection.getRepository(Property).save(property1);
 
   // Crear habitación
+  const roomCategory = new RoomCategory();
+  roomCategory.name = ICategories.STANDARD;
+  
+  const savedRoomCategory = await this.roomCategoryRepository.save(roomCategory);
+
   const roomCategory = new RoomCategory();
   roomCategory.name = ICategories.STANDARD;
   

@@ -38,7 +38,10 @@
     "cloudinary": "^2.5.0",
     "dotenv": "^16.4.5",
     "nest-commander": "^3.15.0",
+<<<<<<< HEAD
     "nodemailer": "^6.9.15",
+=======
+>>>>>>> 62d958efc80e53bf42ddb8a10dc9801c214cbfd6
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.13.0",
     "reflect-metadata": "^0.2.0",

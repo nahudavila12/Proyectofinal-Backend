@@ -12,6 +12,7 @@ import { Reservation } from '../reservations/reservation.entity';
 import { Owner } from '../owners/owner.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Payment } from 'src/payments/payment.entity';
+import { Orders } from 'src/orders/order.entity';
 
 
 export enum IRol {
@@ -81,6 +82,7 @@ export class User {
     description: 'Rol del usuario',
   })
   @Column({ type: 'enum', enum: IRol, default: IRol.User })
+  @Column({ type: 'enum', enum: IRol, default: IRol.User })
   rol: IRol;
 
   @ApiProperty({ example: true, description: 'Si el usuario está activo' })
@@ -101,11 +103,11 @@ export class User {
   @OneToOne(() => Profile, (profile) => profile.user)
   profile: Profile;
   @ApiProperty({
-    type: () => [OrderDetail],
-    description: 'Detalles de órdenes del usuario',
+    type: () => [Orders],
+    description: 'Ordenes del usuario',
   })
-  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
-  orderDetail: OrderDetail[];
+  @OneToMany(() => Orders, (orders) => orders.user)
+  orders: Orders[];
 
   @ApiProperty({
     type: () => [Reservation],

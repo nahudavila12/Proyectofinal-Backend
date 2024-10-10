@@ -34,6 +34,7 @@ export class Room {
 
   @ApiProperty({
     example: 'STANDARD',
+    example: 'STANDARD',
     description: 'Categoría de la habitación',
   })
 

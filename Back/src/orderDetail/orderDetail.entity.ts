@@ -11,6 +11,7 @@ import { OrderDetailAdditionalService } from '../additionalsServices/orderDetail
 import { User } from '../users/user.entity';
 import { Reservation } from '../reservations/reservation.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Orders } from 'src/orders/order.entity';
 
 
 @Entity('Orders_details')
@@ -80,13 +81,12 @@ export class OrderDetail {
   @JoinColumn()
   additionalServiceOrderDetail?: OrderDetailAdditionalService; 
 
-  @ApiProperty({
-    type: () => User,
-    description: 'Usuario asociado con el detalle del pedido',
-  })
-  @ManyToOne(() => User, (user) => user.orderDetail)
-  @JoinColumn()
-  user: User;
+  @ApiProperty({ 
+    type: () => Orders,
+    description: 'Orden asociado con el detalle del pedido' })
+  @OneToOne(() => Orders, (orders) => orders.orderDetails)
+  @JoinColumn({name: 'order_id'})
+  orders: Orders;
 
   @ApiProperty({
     type: () => Reservation,
@@ -96,4 +96,5 @@ export class OrderDetail {
   @JoinColumn()
   reservation: Reservation;
 }
+
 
