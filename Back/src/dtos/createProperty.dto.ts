@@ -6,10 +6,12 @@ import {
   IsOptional, 
   IsString, 
   IsUUID, 
-  Length, 
+  Length,
+  ValidateNested, 
 } from "class-validator";
 import { CreateRoomDto } from "./createRoom.dto";
 import { PropertyType } from "src/properties/property.entity";
+import { Type } from "class-transformer";
 
 export class CreatePropertyDto {
   
@@ -23,21 +25,8 @@ export class CreatePropertyDto {
   @IsString()
   location: string;
 
-
-  @IsUUID()
-  owner: string;
-
   @IsNotEmpty()
   @IsEnum(PropertyType)
   propertyType: PropertyType;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  propImg?: (Express.Multer.File)[];
-
-  @IsOptional()
-  @IsArray()
-  @IsArray({ each: true })
-  rooms?: CreateRoomDto[];
 }
