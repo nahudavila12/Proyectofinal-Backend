@@ -8,7 +8,14 @@ import { RoomImg } from "src/rooms/roomImg.entity";
 import { Owner } from "src/owners/owner.entity";
 import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { CreatePropertyDto } from "src/dtos/createProperty.dto";
-import { CloudinaryService } from "src/commons/cloudinary.service";
+import { CloudinaryService } from "src/cloudinary/cloudinary.service";
+
+class PropertyReturned{
+    propertyName: string;
+    propertyUuid: string;
+    ownerName: string;
+    ownerUuid: string
+}
 
 @Injectable()
 export class PropertyRepository {
@@ -19,10 +26,6 @@ export class PropertyRepository {
         private readonly roomRepository: Repository<Room>,
         @InjectRepository(PropertyImg)
         private readonly propertyImgRepository: Repository<PropertyImg>,
-        @InjectRepository(RoomImg)
-        private readonly roomImgRepository: Repository<RoomImg>,
-        // @InjectRepository(RoomService)
-        // private readonly roomServiceRepository: Repository<RoomService>,
         @InjectRepository(Owner)
         private readonly ownerRepository: Repository<Owner>,
         private readonly cloudinaryService: CloudinaryService
@@ -56,16 +59,6 @@ export class PropertyRepository {
   
       await this.propertyImgRepository.delete({ property: { uuid } });
   
-
-    //   const rooms = await this.roomRepository.find({ where: { property: { uuid } } });
-    //   for (const room of rooms) {
-
-    //       await this.roomImgRepository.delete({ room: { uuid: room.uuid } });
-
-    //       await this.roomServiceRepository.delete({ room: { uuid: room.uuid } });
-    //   }
-  
-
       await this.roomRepository.delete({ property: { uuid } });
 
       await this.propertyRepository.remove(property);
@@ -123,24 +116,35 @@ async findPropertiesByFilters(filters: PropertyFilters): Promise<Property[]> {
   return await queryBuilder.getMany();
 }
 
-async addProperty(uuid: string, property: CreatePropertyDto): Promise<Property | null> {
-    
-    const owner = await this.ownerRepository.findOneBy({ uuid });
+async addProperty(ownerUuid: string, createProperty: CreatePropertyDto, files: Express.Multer.File[]): Promise<PropertyReturned | null> {
+    const owner = await this.ownerRepository.findOneBy({ uuid: ownerUuid });
     if (!owner) throw new NotFoundException('Propietario no encontrado');
 
-    const { name} = property;
-
+    const { name } = createProperty;
     const foundProperty = await this.propertyRepository.findOneBy({ name });
     if (foundProperty) throw new ConflictException('Propiedad ya existente');
 
-    const newProperty = new Property()
-    
-    Object.assign(newProperty, property)
+    const newProperty = new Property();
+    Object.assign(newProperty, createProperty);
+    newProperty.propertyType = createProperty.propertyType;
     newProperty.owner = owner;
 
     const addedProperty = await this.propertyRepository.save(newProperty);
     
-    return addedProperty;
+    try {
+        const uploadedImages = await Promise.all(files.map(file => this.cloudinaryService.uploadPropertyImage(addedProperty.uuid, file)));
+
+        return {
+            propertyName: addedProperty.name,
+            propertyUuid: addedProperty.uuid,
+            ownerName: addedProperty.owner.bussines_name,
+            ownerUuid: addedProperty.owner.uuid    
+        } as PropertyReturned;
+
+    } catch (error) {
+        await this.propertyRepository.delete(addedProperty.uuid); 
+        throw new ConflictException(`Ocurrió un error al crear la propiedad: ${error.message}`);
+    }
 }
 
 async saveImages(images: PropertyImg[]): Promise<PropertyImg[]> {

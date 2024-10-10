@@ -1,3 +1,5 @@
+
+
 import {
   Body,
   Controller,
@@ -8,8 +10,19 @@ import {
   ParseUUIDPipe,
   Post,
   Query,
+  UploadedFiles,
   UseGuards,
-} from '@nestjs/common';
+  UseInterceptors,
+} from "@nestjs/common";
+import { PropertyService } from "./property.service";
+import { Property } from "./property.entity";
+import { PropertyFilters } from "src/dtos/propertyFilters.dto";
+import { RolesGuard } from "src/guards/roles.guard";
+import { AuthGuard } from "src/guards/auth.guard";
+import { CreatePropertyDto } from "src/dtos/createProperty.dto";
+import { FilesInterceptor } from "@nestjs/platform-express";
+import { multerOptions } from "src/decorators/multerOptions";
+
 import {
   ApiTags,
   ApiOperation,
@@ -18,12 +31,6 @@ import {
   ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
-import { PropertyService } from './property.service';
-import { Property } from './property.entity';
-import { PropertyFilters } from 'src/dtos/propertyFilters.dto';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { CreatePropertyDto } from 'src/dtos/createProperty.dto';
 
 @ApiTags('Properties')
 @Controller('properties')
@@ -89,24 +96,25 @@ export class PropertyController {
       );
     }
   }
-
-  @Post('addProperty/:id')
+  @Post('addProperty/:uuid')
   @ApiOperation({ summary: 'Agregar una propiedad nueva' })
   @ApiParam({
-    name: 'id',
+    name: 'uuid',
     description: 'UUID del usuario o entidad que agrega la propiedad',
     type: 'string',
   })
   @ApiBody({
     type: CreatePropertyDto,
     description: 'Información de la nueva propiedad',
-  }) // Información esperada en el body
+  }) 
   @ApiResponse({ status: 201, description: 'Propiedad creada con éxito' })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta' })
+  @UseInterceptors(FilesInterceptor('files', 5, multerOptions))
   async addProperty(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() newProperty: CreatePropertyDto,
+    @Param('uuid', ParseUUIDPipe) ownerUuid: string,
+    @Body() createProperty: CreatePropertyDto,
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return await this.propertyService.addProperty(id, newProperty);
+    return this.propertyService.addProperty(ownerUuid, createProperty, files);
   }
 }

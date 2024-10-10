@@ -87,6 +87,7 @@ export class AdminController {
         'Hubo un problema al agregar el propietario',
       );
     }
+
   }
 
   @Patch('propertie/ban/:uuid')
