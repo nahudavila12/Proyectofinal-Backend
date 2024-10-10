@@ -31,9 +31,7 @@ import { Reservation } from './reservation.entity';
 @Controller('reservations')
 export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
-
   @Post('addReservation/:uuid')
-  /* @UseGuards(AuthGuard, RolesGuard) */
   @ApiOperation({ summary: 'Crear una nueva reserva para un usuario' })
   @ApiParam({
     name: 'uuid',
@@ -57,25 +55,22 @@ export class ReservationController {
     @Param('uuid', ParseUUIDPipe) userId: string,
   ) {
     try {
-      const reservation = await this.reservationService.addReservation(
-        createReservationDto,
-        userId,
-      );
+      const reservation = await this.reservationService.addReservation(createReservationDto, userId);
       return reservation;
     } catch (error) {
-      if (error instanceof ConflictException) {
-        throw new ConflictException(error.message);
-      } else if (error instanceof NotFoundException) {
-        throw new NotFoundException('El usuario no fue encontrado');
+      // Se puede lanzar un error genérico si no se puede categorizar
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message || 'El usuario o la entidad relacionada no fue encontrada');
+      } else if (error instanceof ConflictException) {
+        throw new ConflictException(error.message || 'Conflicto al procesar la reserva');
       } else if (error instanceof BadRequestException) {
-        throw new BadRequestException('Los datos proporcionados son inválidos');
+        throw new BadRequestException(error.message || 'Datos inválidos proporcionados');
       }
-      throw new InternalServerErrorException(
-        'Error al agregar la reserva.',
-        error.message,
-      );
+      // Manejo de errores genérico
+      throw new InternalServerErrorException('Error al agregar la reserva. Por favor intente más tarde.');
     }
   }
+  
 
   @Get('admin/all')
 /*   @UseGuards(RolesGuard) */

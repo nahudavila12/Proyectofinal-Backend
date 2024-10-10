@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException, 
   Injectable, 
+  InternalServerErrorException, 
   NotFoundException 
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
@@ -55,117 +56,105 @@ export class ReservationService {
     private readonly emailService: EmailService, // Agregar EmailService
   ) {}
 
+
   async addReservation(newReservation: CreateReservationDto, userId: string): Promise<CodeReservation | null> {
-    
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    
+  
     try {
-      const { 
-        propertyId, 
-        roomId,
-        checkin,
-        checkout
-      } = newReservation;
-    
-      let total = 0;
-    
+      const { propertyId, roomId, checkin, checkout } = newReservation;
+  
+      // Validar que los elementos existen
       const [foundUser, foundProperty, foundRoom] = await Promise.all([
         this.userRepositorio.findOneBy({ uuid: userId }),
         this.propertyRepository.findOneBy({ uuid: propertyId }),
         queryRunner.manager.findOne(Room, {
           where: { uuid: roomId },
-          lock: { mode: 'pessimistic_write' }, 
-        })
+          lock: { mode: 'pessimistic_write' },
+        }),
       ]);
-
+  
       if (!foundUser) throw new NotFoundException('Usuario no encontrado');
       if (!foundProperty) throw new NotFoundException('Propiedad no encontrada');
       if (!foundRoom) throw new NotFoundException('Habitación no encontrada');
-      
+  
       if (foundRoom.disponibility !== 'avaiable') {
         throw new ConflictException('La habitación no está disponible');
       }
-      
+  
       const existingReservation = await this.reservationRepository.findOne({
         where: {
           room: { uuid: roomId },
           checkin: LessThan(checkout),
-          checkout: MoreThan(checkin)  
+          checkout: MoreThan(checkin),
         },
       });
+  
       if (existingReservation) throw new ConflictException('Fechas de reserva no disponibles');
-      
+  
       const addReservation = new Reservation();
       addReservation.checkin = newReservation.checkin;
       addReservation.checkout = newReservation.checkout;
       addReservation.room = foundRoom;
       addReservation.user = foundUser;
-      
-      const savedReservation = await queryRunner.manager.save(Reservation, addReservation);
-
-      const pricePerDay = foundRoom.price_per_day; 
+  
+      const pricePerDay = foundRoom.price_per_day;
       const checkinDate = new Date(newReservation.checkin);
       const checkoutDate = new Date(newReservation.checkout);
       const timeDiff = checkoutDate.getTime() - checkinDate.getTime();
-      const numberOfNights = timeDiff / (1000 * 3600 * 24); 
+      const numberOfNights = timeDiff / (1000 * 3600 * 24);
+      
       if (numberOfNights <= 0) throw new BadRequestException('Las fechas de check-in y check-out son inválidas');
-      
-      total = numberOfNights * pricePerDay;
-      
+  
+      const total = numberOfNights * pricePerDay;
       const newPayment = new Payment();
-      newPayment.reservation = savedReservation;
+      newPayment.reservation = addReservation;
       newPayment.total = total;
       newPayment.user = foundUser;
       newPayment.date = new Date();
-      newPayment.reservation = savedReservation;
-      savedReservation.payment = newPayment;
-          
+  
       await queryRunner.manager.save(Payment, newPayment);
-      await queryRunner.manager.save(Reservation, savedReservation);
-      await queryRunner.commitTransaction();
-      await this.orderDetailRepository.createOrderDetail(foundUser, foundProperty.name, savedReservation, total, newPayment);
+      addReservation.payment = newPayment; // Establecer la relación
+      const savedReservation = await queryRunner.manager.save(Reservation, addReservation);
       
-      // Enviar el correo electrónico de confirmación
-      const emailSent = await this.emailService.sendEmail({
-          from: "mekhi.mcdermott@ethereal.email",
-          subjectEmail: "Confirmación de tu reserva",
-          sendTo: foundUser.email, 
-          template: Template.CONFIRMATION,  // Usar la plantilla de confirmación
-          params: {
-              name: foundUser.firstName,  // Si tienes el nombre del usuario
-              checkin: newReservation.checkin,
-              checkout: newReservation.checkout,
-              propertyName: foundProperty.name, // Nombre de la propiedad
-          }
+      await queryRunner.commitTransaction();
+  
+      await this.orderDetailRepository.createOrderDetail(foundUser, foundProperty.name, savedReservation, total, newPayment);
+      await this.emailService.sendEmail({
+        from: "mekhi.mcdermott@ethereal.email",
+        subjectEmail: "Confirmación de tu reserva",
+        sendTo: foundUser.email,
+        template: Template.CONFIRMATION,
+        params: {
+          name: foundUser.firstName,
+          checkin: newReservation.checkin,
+          checkout: newReservation.checkout,
+          propertyName: foundProperty.name,
+        },
       });
- 
+  
       return {
-          code: savedReservation.uuid,
-          checkin: savedReservation.checkin,
-          checkout: savedReservation.checkout,
-          state: savedReservation.status
+        code: savedReservation.uuid,
+        checkin: savedReservation.checkin,
+        checkout: savedReservation.checkout,
+        state: savedReservation.status,
       } as CodeReservation;
-
+  
     } catch (error) {
+      await queryRunner.rollbackTransaction();
+      
       if (error instanceof BadRequestException || 
           error instanceof NotFoundException || 
           error instanceof ConflictException) {
-        throw error;
+        throw error; // Re-lanzar el error conocido
       }
-      
-      await queryRunner.rollbackTransaction();
-      
-      throw { 
-        message: `La habitación no se encuentra disponible. Lamentamos las molestias ocasionadas ${error}`
-      };
   
+      throw new InternalServerErrorException('Error al agregar la reserva. Lamentamos las molestias.');
     } finally {
       await queryRunner.release();
     }
   }
-
 async getUserReservations(userId: string) {
     return this.reservationRepository.find({
       where: { user: { uuid: userId } },
