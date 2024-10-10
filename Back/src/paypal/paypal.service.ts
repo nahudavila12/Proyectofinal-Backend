@@ -1,3 +1,4 @@
+// src/payments/paypal.service.ts
 import {
   ConflictException,
   Injectable,
@@ -21,6 +22,8 @@ import * as qs from 'qs';
 import { config as dotenvConfig } from 'dotenv';
 import { ReservationService } from 'src/reservations/reservation.service';
 import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
+import { EmailService } from 'src/email/services/email/email.service';
+import { Template } from 'src/email/enums/template.enum';
 
 @Injectable()
 export class PaypalService {
@@ -40,6 +43,7 @@ export class PaypalService {
     private readonly paymentRepository: Repository<Payment>,
     @InjectRepository(Room)
     private readonly roomRepository: Repository<Room>,
+    private readonly emailService: EmailService // Inyección del servicio de correo
   ) {
     this.client = client;
   }
@@ -138,7 +142,26 @@ export class PaypalService {
             orderDetail.uuid,
             order.result.status,
           );
+
         await this.paymentRepository.save(founPayment);
+
+        // Envío de correo tras la captura del pago
+        const emailSent = await this.emailService.sendEmail({
+          from: 'mekhi.mcdermott@ethereal.email',
+          subjectEmail: 'Confirmación de Pago',
+          sendTo: founPayment.payerEmail, // Email del pagador
+          template: Template.PAYPAL_PAYMENT,
+          params: {
+            name: reservation.user.user_name, // Asumiendo que el usuario está relacionado con la reserva
+            amount: founPayment.total,
+            transactionId: order.result.id,
+            date: new Date().toLocaleDateString(), // Formato de fecha deseado
+          },
+        });
+
+        if (!emailSent) {
+          throw new ConflictException('Error al enviar el correo de confirmación.');
+        }
 
         return {
           message: 'Pago capturado y registro creado.',
