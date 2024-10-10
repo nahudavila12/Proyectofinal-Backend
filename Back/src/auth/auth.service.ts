@@ -9,14 +9,12 @@ import { User } from '../users/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
-import { CloudinaryService } from 'src/commons/cloudinary.service'; // Importar CloudinaryService
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
-    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async signIn(loginUserDto: LoginUserDto) {

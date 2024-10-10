@@ -1,4 +1,5 @@
 import { 
+  BadRequestException,
   Body,
   Controller, 
   Get, 
@@ -8,7 +9,9 @@ import {
   ParseUUIDPipe, 
   Post, 
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from "@nestjs/common";
 import { PropertyService } from "./property.service";
 import { Property } from "./property.entity";
@@ -16,6 +19,8 @@ import { PropertyFilters } from "src/dtos/propertyFilters.dto";
 import { RolesGuard } from "src/guards/roles.guard";
 import { AuthGuard } from "src/guards/auth.guard";
 import { CreatePropertyDto } from "src/dtos/createProperty.dto";
+import { FilesInterceptor } from "@nestjs/platform-express";
+import { multerOptions } from "src/decorators/multerOptions";
 
 
 
@@ -50,12 +55,13 @@ export class PropertyController{
     }
   }
   
-  @Post('addProperty/:id')
-  async addProperty(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() newProperty: CreatePropertyDto
-  ) {
-    return await this.propertyService.addProperty(id, newProperty);
-
-}
+  @Post('addProperty/:uuid')
+    @UseInterceptors(FilesInterceptor('files', 5, multerOptions))
+    async addProperty(
+        @Param('uuid', ParseUUIDPipe) ownerUuid: string,
+        @Body() createProperty: CreatePropertyDto,
+        @UploadedFiles() files: Express.Multer.File[]
+    ) {
+        return this.propertyService.addProperty(ownerUuid, createProperty, files);
+    }
 }

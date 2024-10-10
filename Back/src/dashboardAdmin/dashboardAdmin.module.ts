@@ -8,7 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Owner } from 'src/owners/owner.entity';
 import { OwnerRepository } from 'src/owners/owner.repository';
 import { PropertyRepository } from 'src/properties/property.repository';
-import { CloudinaryService } from 'src/commons/cloudinary.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
 import { Reservation } from 'src/reservations/reservation.entity';
 import { UserRepository } from 'src/users/user.repository';
@@ -22,6 +22,8 @@ import { RoomImg } from 'src/rooms/roomImg.entity';
 import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
 import { Profile } from 'src/profiles/profile.entity';
 import { JwtService } from '@nestjs/jwt';
+import { CloudinaryRepository } from 'src/cloudinary/cloudinary.repository';
+import { CloudinaryConfig } from 'src/config/cloudinary.config';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Owner, Reservation, User, Room, Property, PropertyImg, RoomImg, OrderDetail, Profile])],
@@ -38,7 +40,9 @@ import { JwtService } from '@nestjs/jwt';
     UserRepository,
     RoomRepository,
     ProfileRepository,
-    JwtService
+    JwtService,
+    CloudinaryRepository,
+    CloudinaryConfig
     
   ],
 })

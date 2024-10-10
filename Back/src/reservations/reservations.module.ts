@@ -13,9 +13,15 @@ import { Reservation } from './reservation.entity';
 import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/users/user.service';
-import { CloudinaryService } from 'src/commons/cloudinary.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ProfileRepository } from 'src/profiles/profile.repository';
 import { Profile } from 'src/profiles/profile.entity';
+import { CloudinaryRepository } from 'src/cloudinary/cloudinary.repository';
+import { PropertyImg } from 'src/properties/propertyImg.entity';
+import { RoomImg } from 'src/rooms/roomImg.entity';
+import { OwnerRepository } from 'src/owners/owner.repository';
+import { Owner } from 'src/owners/owner.entity';
+import { CloudinaryConfig } from 'src/config/cloudinary.config';
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -24,7 +30,10 @@ import { Profile } from 'src/profiles/profile.entity';
         Room,
         OrderDetail,
         Reservation,
-        Profile
+        Profile,
+        PropertyImg,
+        RoomImg,
+        Owner
     ])],
     controllers: [ReservationController],
     providers: [
@@ -34,7 +43,13 @@ import { Profile } from 'src/profiles/profile.entity';
         UserService, 
         CloudinaryService, 
         ProfileRepository,
-        UserRepository    
+        UserRepository,
+        CloudinaryRepository,
+        PropertyRepository,
+        OwnerRepository,
+        CloudinaryConfig
+        
+            
     ],
     
 })

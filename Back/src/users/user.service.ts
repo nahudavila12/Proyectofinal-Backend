@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/dtos/createUser.dto';
-import { CloudinaryService } from 'src/commons/cloudinary.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ProfileRepository } from 'src/profiles/profile.repository';
 import { UserRepository } from './user.repository';
 

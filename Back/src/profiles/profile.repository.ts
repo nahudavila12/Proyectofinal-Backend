@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Profile } from './profile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 export class ProfileDto {
   user_name: string;
@@ -17,6 +18,7 @@ export class ProfileRepository  {
   constructor(
     @InjectRepository(Profile)
     private readonly profileRepository: Repository<Profile>,
+    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async getProfile(userUuid: string): Promise<ProfileDto | null>{
@@ -30,5 +32,9 @@ export class ProfileRepository  {
     const { user_name, email, phone,country,address,password,userIMG } = foundProfile;
     
     return {user_name, email, phone,country,address,password,userIMG} as ProfileDto
+  }
+
+  async profileImgUploadImage(profileUuid: string, file: Express.Multer.File){
+    return await this.cloudinaryService.profileImgUploadImage(profileUuid, file)
   }
 }

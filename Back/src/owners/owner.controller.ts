@@ -68,36 +68,33 @@ async updateProperty(
 
 
 
-@Post('addProperty/:uuid')
-@UseGuards(AuthGuard, RolesGuard) 
-@Roles(IRol.Owner) 
-@UseInterceptors(FilesInterceptor('propImg')) 
-async addProperty(
-  @Param('uuid', ParseUUIDPipe) uuid: string,
-  @UploadedFiles() files: Express.Multer.File[], 
-  @Body() newProperty: CreatePropertyDto
-) {
-  try {
-    newProperty.propImg = files; 
-    return await this.propertyService.addProperty(uuid, newProperty);
-  } catch (error) {
-    if (error instanceof NotFoundException) {
-      throw new NotFoundException(error.message);
-    }
-    throw new InternalServerErrorException('Error al agregar la propiedad.', error.message);
-  }
-}
+// @Post('addProperty/:uuid')
+// @UseGuards(AuthGuard, RolesGuard) 
+// @Roles(IRol.Owner) 
+// async addProperty(
+//   @Param('uuid', ParseUUIDPipe) uuid: string,
+//   @Body() newProperty: CreatePropertyDto
+// ) {
+//   try { 
+//     return await this.propertyService.addProperty(uuid, newProperty);
+//   } catch (error) {
+//     if (error instanceof NotFoundException) {
+//       throw new NotFoundException(error.message);
+//     }
+//     throw new InternalServerErrorException('Error al agregar la propiedad.', error.message);
+//   }
+//}
 
 
 
-@Post('addRoom/:uuid')
-@Roles(IRol.Owner)
-async addRoom(
-    @Param('uuid', ParseUUIDPipe) uuid:string,
-    @Body() newRoom: CreateRoomDto
-){
-    return this.roomService.addRoom(uuid, newRoom)
-}
+// @Post('addRoom/:uuid')
+// @Roles(IRol.Owner)
+// async addRoom(
+//     @Param('uuid', ParseUUIDPipe) uuid:string,
+//     @Body() newRoom: CreateRoomDto
+// ){
+//     return this.roomService.addRoom(uuid, newRoom)
+// }
 
 @Post('addOwner/:uuid')
 @UseGuards(AuthGuard,RolesGuard) 

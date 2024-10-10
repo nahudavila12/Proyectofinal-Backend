@@ -10,5 +10,9 @@ export class ProfilesService {
 
 async  getProfile(userUuid: string){
     return await this.profileRepository.getProfile(userUuid)
-}  
+}
+
+async profileImgUploadImage(profileUuid, file){
+    return await this.profileRepository.profileImgUploadImage(profileUuid, file)
+}
 }

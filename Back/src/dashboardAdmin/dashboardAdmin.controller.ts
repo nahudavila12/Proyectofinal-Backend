@@ -46,8 +46,6 @@ export class AdminController {
         }
     }
     
-
-    
   @Patch('propertie/ban/:uuid')
 /*   @UseGuards(AuthGuard,RolesGuard) 
   @Roles(IRol.Admin)  */
@@ -70,8 +68,6 @@ export class AdminController {
     }
   }
   
-
-
   @Get('reservation/all')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(IRol.Admin)
@@ -94,9 +90,6 @@ export class AdminController {
       throw new InternalServerErrorException('Error al obtener las reservas.', error.message);
     }
   }
-  
-
-
   
   @Patch('reservation/update:uuid')
   @UseGuards(AuthGuard,RolesGuard)
