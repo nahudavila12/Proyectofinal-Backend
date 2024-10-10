@@ -33,7 +33,7 @@ export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
 
   @Post('addReservation/:uuid')
-  @UseGuards(AuthGuard, RolesGuard)
+  /* @UseGuards(AuthGuard, RolesGuard) */
   @ApiOperation({ summary: 'Crear una nueva reserva para un usuario' })
   @ApiParam({
     name: 'uuid',
@@ -78,8 +78,8 @@ export class ReservationController {
   }
 
   @Get('admin/all')
-  @UseGuards(RolesGuard)
-  @Roles(IRol.Admin)
+/*   @UseGuards(RolesGuard) */
+/*   @Roles(IRol.Admin) */
   @ApiOperation({ summary: 'Obtener todas las reservas (Admin)' })
   @ApiResponse({
     status: 200,
@@ -91,7 +91,7 @@ export class ReservationController {
   }
 
   @Get('user/:userId')
-  @UseGuards(AuthGuard, RolesGuard)
+/*   @UseGuards(AuthGuard, RolesGuard) */
   @ApiOperation({
     summary: 'Obtener todas las reservas de un usuario específico',
   })

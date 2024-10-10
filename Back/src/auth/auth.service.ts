@@ -17,25 +17,36 @@ export class AuthService {
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
     private readonly cloudinaryService: CloudinaryService,
-  ) {}
-
-  async signIn(loginUserDto: LoginUserDto) {
+  ) {}async signIn(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
+    
     if (!email || !password) {
       throw new UnauthorizedException(
         'El email y la contraseña son requeridos.',
       );
     }
+    
     const user = await this.usersService.findByEmail(email);
-
-    if (!user) throw new BadRequestException('Usuario no encontrado');
-
+  
+    if (!user) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+  
     const validPassword = await bcrypt.compare(password, user.password);
-
-    if (!validPassword) throw new BadRequestException('Credenciales inválidas');
-
-    return this.generateTokens(user);
+  
+    if (!validPassword) {
+      throw new BadRequestException('Credenciales inválidas');
+    }
+  
+    const tokens = this.generateTokens(user);
+    
+    // Retornar el UUID junto con los tokens
+    return {
+      uuid: user.uuid, // Asegúrate de que el UUID está disponible en el objeto `user`
+      ...tokens,
+    };
   }
+  
 
   async signUp(createUser: CreateUserDto) {
     const { email } = createUser;

@@ -2,17 +2,21 @@
     {
         "name": "Hotel Paraíso",
         "location": "Playa del Carmen",
-        "propertyType": "hotel", 
+        "propertyType": "hotel",
         "rate": 3,
         "isActive": true,
-        "owner": { 
+        "owner": {
             "uuid": "a3b2f4f2-404d-4dc0-a84a-774b54663b19",
             "bussines_name": "Hotel Paraíso S.A.",
             "bussinesId": "HP123",
             "phone": "555-0101",
             "email": "info@hotelparaiso.com"
         },
-        "propImg": ["hotel1.jpg", "hotel2.jpg"],
+        "propImg": [
+            {
+                "img": "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+            }
+        ],
         "rooms": [
             {
                 "uuid": "c1e1b1b5-7548-45a3-b64b-76c3e94c7e7f",
@@ -20,7 +24,9 @@
                 "capacity": 2,
                 "price_per_day": 150,
                 "disponibility": "avaiable",
-                "roomImages": ["room1.jpg", "room2.jpg"],
+                "roomImages": [
+                    "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+                ],
                 "roomServices": ["WiFi", "Desayuno"],
                 "roomCategory": "standard"
             },
@@ -30,7 +36,9 @@
                 "capacity": 4,
                 "price_per_day": 200,
                 "disponibility": "avaiable",
-                "roomImages": ["room3.jpg"],
+                "roomImages": [
+                    "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+                ],
                 "roomServices": ["WiFi", "Estacionamiento"],
                 "roomCategory": "standard"
             }
@@ -42,14 +50,18 @@
         "propertyType": "cabaña",
         "rate": 5,
         "isActive": true,
-        "owner": { 
+        "owner": {
             "uuid": "be2f2e1b-88b8-4c4c-9b26-476c68ff4d25",
             "bussines_name": "Cabañas en la Montaña",
             "bussinesId": "CM456",
             "phone": "555-0102",
             "email": "info@cabanasenlamontana.com"
         },
-        "propImg": ["cabaña1.jpg"],
+        "propImg": [
+            {
+                "img": "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+            }
+        ],
         "rooms": [
             {
                 "uuid": "e2f7d03e-4bc9-4475-b6a3-d1b6e2e3c9c9",
@@ -57,7 +69,9 @@
                 "capacity": 3,
                 "price_per_day": 100,
                 "disponibility": "avaiable",
-                "roomImages": ["room4.jpg"],
+                "roomImages": [
+                    "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+                ],
                 "roomServices": ["WiFi", "Chimenea"]
             }
         ]
@@ -68,14 +82,18 @@
         "propertyType": "departamento",
         "rate": 5,
         "isActive": true,
-        "owner": { 
+        "owner": {
             "uuid": "2bcb6485-d802-47e6-a457-e29a62bbd547",
             "bussines_name": "Departamentos Buenos Aires",
             "bussinesId": "DB789",
             "phone": "555-0103",
             "email": "info@departamentosbuenosaires.com"
         },
-        "propImg": ["departamento1.jpg"],
+        "propImg": [
+            {
+                "img": "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+            }
+        ],
         "rooms": [
             {
                 "uuid": "f8e9d236-4d70-4f2b-b12f-d1a3cdb1ae44",
@@ -83,7 +101,9 @@
                 "capacity": 2,
                 "price_per_day": 120,
                 "disponibility": "avaiable",
-                "roomImages": ["room5.jpg"],
+                "roomImages": [
+                    "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+                ],
                 "roomServices": ["WiFi"]
             }
         ]
@@ -94,14 +114,18 @@
         "propertyType": "hotel",
         "rate": 5,
         "isActive": true,
-        "owner": { 
+        "owner": {
             "uuid": "39d81435-0836-4797-bb45-4d29d6df8c60",
             "bussines_name": "Hotel Playa S.A.",
             "bussinesId": "HP321",
             "phone": "555-0104",
             "email": "info@hotelplaya.com"
         },
-        "propImg": ["hotel3.jpg"],
+        "propImg": [
+            {
+                "img": "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+            }
+        ],
         "rooms": [
             {
                 "uuid": "b207a61c-ef4e-4d74-bd87-1d49ec34273a",
@@ -109,7 +133,9 @@
                 "capacity": 2,
                 "price_per_day": 180,
                 "disponibility": "reserved",
-                "roomImages": ["room6.jpg"],
+                "roomImages": [
+                    "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+                ],
                 "roomServices": ["WiFi", "Desayuno"],
                 "roomCategory": "deluxe"
             }
@@ -121,14 +147,18 @@
         "propertyType": "cabaña",
         "rate": 4,
         "isActive": true,
-        "owner": { 
+        "owner": {
             "uuid": "39e0de0e-56d3-4b4f-83fc-60d3ef60e009",
             "bussines_name": "Cabañas del Bosque",
             "bussinesId": "CB102",
             "phone": "555-0105",
             "email": "info@cabanasdelbosque.com"
         },
-        "propImg": ["cabaña2.jpg"],
+        "propImg": [
+            {
+                "img": "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+            }
+        ],
         "rooms": [
             {
                 "uuid": "7ac5d5af-c8cc-4d64-a146-5d92d23f6d4e",
@@ -136,7 +166,9 @@
                 "capacity": 4,
                 "price_per_day": 150,
                 "disponibility": "avaiable",
-                "roomImages": ["room7.jpg"],
+                "roomImages": [
+                    "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+                ],
                 "roomServices": ["WiFi", "Chimenea", "Desayuno"]
             }
         ]
@@ -147,102 +179,29 @@
         "propertyType": "departamento",
         "rate": 4,
         "isActive": true,
-        "owner": { 
+        "owner": {
             "uuid": "9f0864af-4db3-47f8-a1cc-6f538e635f1e",
             "bussines_name": "Departamentos Modernos",
             "bussinesId": "DM204",
             "phone": "555-0106",
             "email": "info@departamentosmodernos.com"
         },
-        "propImg": ["departamento2.jpg"],
+        "propImg": [
+            {
+                "img": "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+            }
+        ],
         "rooms": [
             {
-                "uuid": "dd8a9f80-9bc5-447e-a9b0-7f9054820c9b",
+                "uuid": "e8078eb4-d4d4-42f3-91e0-6149f62b56d5",
                 "room_number": 1,
                 "capacity": 2,
                 "price_per_day": 130,
                 "disponibility": "avaiable",
-                "roomImages": ["room8.jpg"],
-                "roomServices": ["WiFi", "Estacionamiento"]
-            }
-        ]
-    },
-    {
-        "name": "Hotel del Lago",
-        "location": "Villa la Angostura",
-        "propertyType": "hotel",
-        "rate": 5,
-        "isActive": true,
-        "owner": { 
-            "uuid": "0a6c7c7b-f9de-45bc-a3e2-8e3e9939da99",
-            "bussines_name": "Hotel del Lago S.A.",
-            "bussinesId": "HDL505",
-            "phone": "555-0107",
-            "email": "info@hoteldellago.com"
-        },
-        "propImg": ["hotel4.jpg"],
-        "rooms": [
-            {
-                "uuid": "4015c5aa-e76e-4043-b818-61c57b876ccf",
-                "room_number": 301,
-                "capacity": 2,
-                "price_per_day": 250,
-                "disponibility": "avaiable",
-                "roomImages": ["room9.jpg"],
-                "roomServices": ["WiFi", "Spa"],
-                "roomCategory": "suite"
-            }
-        ]
-    },
-    {
-        "name": "Cabaña Río",
-        "location": "El Bolsón",
-        "propertyType": "cabaña",
-        "rate": 4,
-        "isActive": true,
-        "owner": { 
-            "uuid": "f61c3cc5-0d3f-4054-87e2-8aaab4a7e1ff",
-            "bussines_name": "Cabañas Río",
-            "bussinesId": "CR808",
-            "phone": "555-0108",
-            "email": "info@cabanasrio.com"
-        },
-        "propImg": ["cabaña3.jpg"],
-        "rooms": [
-            {
-                "uuid": "bc983cb4-693e-4ef8-9c63-1637354d4d78",
-                "room_number": 1,
-                "capacity": 5,
-                "price_per_day": 200,
-                "disponibility": "avaiable",
-                "roomImages": ["room10.jpg"],
-                "roomServices": ["WiFi"]
-            }
-        ]
-    },
-    {
-        "name": "Departamento en la Playa",
-        "location": "Mendoza",
-        "propertyType": "departamento",
-        "rate": 4,
-        "isActive": true,
-        "owner": { 
-            "uuid": "5a70f302-72c6-46a6-9c85-bc9491fc8ae3",
-            "bussines_name": "Departamentos en la Playa",
-            "bussinesId": "DP202",
-            "phone": "555-0109",
-            "email": "info@departamentoenlaplaya.com"
-        },
-        "propImg": ["departamento3.jpg"],
-        "rooms": [
-            {
-                "uuid": "64f3e7d6-6c6b-4b0a-b2b6-8c18b7af4735",
-                "room_number": 1,
-                "capacity": 3,
-                "price_per_day": 140,
-                "disponibility": "reserved",
-                "roomImages": ["room11.jpg"],
-                "roomServices": ["WiFi", "Estacionamiento"]
+                "roomImages": [
+                    "https://res.cloudinary.com/dhrys2lqz/image/upload/v1726539006/hotel_1_jazez1.jpg"
+                ],
+                "roomServices": ["WiFi", "Cocina"]
             }
         ]
     }

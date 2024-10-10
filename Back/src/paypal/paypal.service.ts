@@ -1,178 +1,66 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
 import * as paypal from '@paypal/checkout-server-sdk';
-import client from 'src/Config/paypal.config';
-import { OrderDetail } from 'src/orderDetail/orderDetail.entity';
-import { Payment } from 'src/payments/payment.entity';
-import {
-  IStateBooking,
-  Reservation,
-} from 'src/reservations/reservation.entity';
-import { User } from 'src/users/user.entity';
-import { Repository } from 'typeorm';
-import { Room } from 'src/rooms/room.entity';
-import { lastValueFrom } from 'rxjs';
-import { HttpService } from '@nestjs/axios';
-import * as qs from 'qs';
-import { config as dotenvConfig } from 'dotenv';
-import { ReservationService } from 'src/reservations/reservation.service';
-import { OrderDetailRepository } from 'src/orderDetail/orderDetail.repository';
 
 @Injectable()
 export class PaypalService {
   private client: paypal.core.PayPalHttpClient;
-  httpService: HttpService;
 
-  constructor(
-    @InjectRepository(OrderDetail)
-    private readonly orderDetailRespository: Repository<OrderDetail>,
-    private readonly orderDetailRepository: OrderDetailRepository,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-    @InjectRepository(Reservation)
-    private readonly reservationRepository: Repository<Reservation>,
-    private readonly reservationService: ReservationService,
-    @InjectRepository(Payment)
-    private readonly paymentRepository: Repository<Payment>,
-    @InjectRepository(Room)
-    private readonly roomRepository: Repository<Room>,
-  ) {
-    this.client = client;
+  constructor() {
+    const environment = new paypal.core.SandboxEnvironment(
+      process.env.PAYPAL_CLIENT_ID,
+      process.env.PAYPAL_CLIENT_SECRET,
+    );
+    this.client = new paypal.core.PayPalHttpClient(environment);
   }
 
-  async createOrder(paymentUuid: string, currency: string): Promise<any> {
-    let paymentOrder = await this.paymentRepository.findOneBy({
-      uuid: paymentUuid,
-    });
-    if (!paymentOrder)
-      throw new NotFoundException('Orden de pago no encontrada');
-
-    let amountValue = paymentOrder.total;
-
+  async createOrder(body: { currency: string; amount: number; paymentUuid: string }) {
+    const { currency, amount, paymentUuid } = body;
     const request = new paypal.orders.OrdersCreateRequest();
     request.prefer('return=representation');
-
     request.requestBody({
       intent: 'CAPTURE',
       purchase_units: [
         {
           amount: {
             currency_code: currency,
-            value: amountValue,
+            value: amount.toFixed(2), // Asegúrate de que el monto tenga dos decimales
           },
-          reference_id: paymentOrder.uuid,
         },
       ],
-      application_context: {
-        return_url: `http://localhost:3000/?paymentOrder=${paymentOrder.uuid}`,
-        cancel_url: 'http://tu-aplicacion.com/paypal/cancel',
-      },
     });
-
+  
     try {
-      const order = await this.client.execute(request);
-
-      paymentOrder.orderId = order.result.id;
-      await this.paymentRepository.save(paymentOrder);
-
-      return order.result.links.find((link) => link.rel === 'approve').href;
-    } catch (err) {
-      throw new Error(`Error al crear la orden de PayPal: ${err.message}`);
+      const response = await this.client.execute(request);
+      
+      // Aquí puedes usar paymentUuid para guardar en la base de datos
+      await this.savePaymentInfo({ paymentUuid, orderId: response.result.id });
+  
+      return response.result; // Retorna la respuesta de PayPal
+    } catch (error) {
+      // Manejo de errores más detallado
+      console.error(`Error creating PayPal order: ${error.message}`);
+      throw new Error(`Error creating PayPal order: ${error.response?.message || error.message}`);
     }
   }
+  
+  // Ejemplo de método para guardar la información del pago
+  private async savePaymentInfo(paymentInfo: { paymentUuid: string; orderId: string }) {
+    // Aquí iría la lógica para guardar paymentInfo en la base de datos
+    console.log(`Saving payment info: ${JSON.stringify(paymentInfo)}`);
+  }
+  
+  
 
-  async captureOrder(
-    token: string,
-    payerId: string,
-    paymentUuid: string,
-  ): Promise<any> {
-    const request = new paypal.orders.OrdersCaptureRequest(token);
-    request.requestBody({
-      payer_id: payerId,
-    });
-
-    const order = await this.client.execute(request);
-    const founPayment = await this.paymentRepository.findOne({
-      where: { uuid: paymentUuid },
-      relations: ['reservation', 'orderDetail'],
-    });
-
-    if (!founPayment) throw new NotFoundException('Orden no hallada');
-
-    const reservation = await this.reservationRepository.findOne({
-      where: { uuid: founPayment.reservation.uuid },
-      relations: ['payment'],
-    });
-    if (!reservation) throw new NotFoundException('Reserva no encontrada');
-
-    const orderDetail = await this.orderDetailRespository.findOne({
-      where: { uuid: founPayment.reservation.uuid },
-      relations: ['payment'],
-    });
-    if (!orderDetail)
-      throw new NotFoundException('Orden de compra no encontrada');
-
+  async captureOrder(orderId: string) {
+    const request = new paypal.orders.OrdersCaptureRequest(orderId);
+    request.requestBody({});
     try {
-      if (order.result.status === 'COMPLETED') {
-        founPayment.total =
-          order.result.purchase_units[0].payments.captures[0].amount.value;
-        founPayment.currency =
-          order.result.purchase_units[0].payments.captures[0].amount.currency_code;
-        founPayment.payerEmail =
-          order.result.payment_source.paypal.email_address;
-        founPayment.status =
-          order.result.purchase_units[0].payments.captures[0].status;
-        founPayment.payerId = order.result.payer.payer_id;
-
-        const actualReservation =
-          await this.reservationService.updateReservation(
-            reservation.uuid,
-            IStateBooking.ACTIVE,
-          );
-        const actualOrderDetail =
-          await this.orderDetailRepository.activeOrderDetailStatus(
-            orderDetail.uuid,
-            order.result.status,
-          );
-        await this.paymentRepository.save(founPayment);
-
-        return {
-          message: 'Pago capturado y registro creado.',
-          reservationUuid: actualReservation.uuid,
-          reservationStatus: actualReservation.status,
-          paymentStatus: founPayment.status,
-        };
-      }
-
-      if (order.result.status === 'DECLINED') {
-        founPayment.status = 'DECLINED';
-
-        const actualReservation =
-          await this.reservationService.updateReservation(
-            reservation.uuid,
-            IStateBooking.CANCELLED,
-          );
-        const actualOrderDetail =
-          await this.orderDetailRepository.activeOrderDetailStatus(
-            orderDetail.uuid,
-            order.result.status,
-          );
-
-        await this.paymentRepository.save(founPayment);
-
-        return {
-          message: 'Pago rechazado',
-          reservationUuid: actualReservation.uuid,
-          reservationStatus: actualReservation.status,
-          paymentStatus: founPayment.status,
-        };
-      }
-    } catch (err) {
-      throw new Error(`Error al capturar la orden de PayPal: ${err.message}`);
+      const response = await this.client.execute(request);
+      return response.result; // Retorna la respuesta de la captura
+    } catch (error) {
+      // Manejo de errores más detallado
+      console.error(`Error capturing PayPal payment: ${error.message}`);
+      throw new Error(`Error capturing PayPal payment: ${error.response?.message || error.message}`);
     }
   }
 }

@@ -32,7 +32,8 @@ export class AuthController {
   @Post('signin')
   async signIn(@Body() loginUserDto: LoginUserDto) {
     try {
-      return await this.authService.signIn(loginUserDto);
+      const response = await this.authService.signIn(loginUserDto);
+      return response; // Devuelve la respuesta que ahora incluye el UUID y los tokens
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException('Credenciales incorrectas');

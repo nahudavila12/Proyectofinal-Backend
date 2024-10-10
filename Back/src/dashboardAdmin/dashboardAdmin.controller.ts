@@ -38,7 +38,7 @@ import { UserService } from 'src/users/user.service';
 
 @ApiTags('Admin')
 @Controller('admin')
-@UseGuards(AuthGuard, RolesGuard)
+/* @UseGuards(AuthGuard, RolesGuard) */
 export class AdminController {
   constructor(
     private readonly ownerService: OwnerService,
@@ -48,7 +48,7 @@ export class AdminController {
   ) {}
 
   @Post('addOwner/:uuid')
-  @Roles(IRol.User, IRol.Admin)
+  /* @Roles(IRol.User, IRol.Admin) */
   @ApiOperation({ summary: 'Agregar un nuevo propietario' })
   @ApiParam({
     name: 'uuid',
@@ -87,7 +87,7 @@ export class AdminController {
   }
 
   @Patch('propertie/ban/:uuid')
-  @Roles(IRol.Admin)
+/*   @Roles(IRol.Admin) */
   @ApiOperation({ summary: 'Banear o reactivar una propiedad' })
   @ApiParam({
     name: 'uuid',
@@ -125,7 +125,7 @@ export class AdminController {
   }
 
   @Get('reservation/all')
-  @Roles(IRol.Admin)
+/*   @Roles(IRol.Admin) */
   @ApiOperation({ summary: 'Obtener todas las reservas' })
   @ApiResponse({ status: 200, description: 'Reservas obtenidas exitosamente' })
   @ApiResponse({ status: 404, description: 'No se encontraron reservas' })
@@ -153,7 +153,7 @@ export class AdminController {
   }
 
   @Patch('reservation/update:uuid')
-  @Roles(IRol.Admin)
+/*   @Roles(IRol.Admin) */
   @ApiOperation({ summary: 'Actualizar estado de una reserva' })
   @ApiParam({ name: 'uuid', description: 'UUID de la reserva', type: 'string' })
   @ApiBody({
@@ -195,7 +195,7 @@ export class AdminController {
   }
 
   @Get('allUsers')
-  @Roles(IRol.Admin)
+/*   @Roles(IRol.Admin) */
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
   @ApiQuery({
     name: 'page',
@@ -227,7 +227,7 @@ export class AdminController {
   }
 
   @Put('bannUser/:uuid')
-  @Roles(IRol.Admin)
+/*   @Roles(IRol.Admin) */
   @ApiOperation({ summary: 'Banear un usuario por UUID' })
   @ApiParam({ name: 'uuid', description: 'UUID del usuario', type: 'string' })
   @ApiResponse({ status: 200, description: 'Usuario baneado exitosamente' })

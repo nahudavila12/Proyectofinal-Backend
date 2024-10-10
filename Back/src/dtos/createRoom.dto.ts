@@ -1,5 +1,5 @@
 import { IsArray, IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
-import { IRoomState } from "src/rooms/room.entity";
+
 import { ICategories } from "../rooms/roomCategory.entity"
 import { RoomImg } from "src/rooms/roomImg.entity";
 import { RoomService } from "src/rooms/roomService.entity";
